@@ -219,6 +219,7 @@ export const ltTranslations = {
         success: 'Sėkmingai',
         settings: 'Nustatymai',
         search: 'Paieška',
+        help: 'Pagalba',
     },
 
     // PWA Update
@@ -274,6 +275,34 @@ export const ltTranslations = {
         ctaSubtitle: 'Jūsų privati erdvė laukia. Jokios registracijos. Jokio stebėjimo. Tik privatumas.',
         enterRockgarden: 'Įeiti į Rockgarden',
         footer: '© 2025 Rockgarden. Jūsų privatumas yra mūsų vienintelė misija.',
+    },
+
+    // Onboarding Tutorial
+    onboarding: {
+        welcomeTitle: 'Sveiki atvykę į Rockgarden',
+        welcomeDesc: 'Jūsų privati, šifruota erdvė mintims ir patirtims. Viskas lieka jūsų įrenginyje — mes niekada nematome jūsų duomenų.',
+        welcomeTip: 'Patarimas: Jūsų slaptažodis yra šifravimo raktas. Niekada jo neužmirškite!',
+        createTitle: 'Sukurkite pirmą įrašą',
+        createDesc: 'Bakstelėkite + mygtuką, kad pridėtumėte naują "akmenį" į savo sodą. Parašykite, kas atsitiko, pridėkite balso pastabas ir pažymėkite intensyvumą.',
+        createTip: 'Patarimas: Būkite sąžiningi dėl intensyvumo — tai padeda sekti modelius laikui bėgant.',
+        visualizeTitle: 'Jūsų akmenų sodas',
+        visualizeDesc: 'Kiekvienas baltas akmuo yra momentas. Didesni akmenys = stipresnės emocijos. Senesni akmenys švelniai išblėsta laikui bėgant. Bakstelėkite bet kurį akmenį, kad pamatytumėte detales.',
+        visualizeTip: 'Patarimas: Išbandykite skirtingus vaizdus — išsklaidytą, laiko juostų krūvas ar akmenų bokštą.',
+        securityTitle: 'Išlikite saugūs',
+        securityDesc: 'Trigubas bakstelėjimas logotipu bet kurioje programos vietoje akimirksniu užrakina. Nustatymuose galite nustatyti "Burn PIN", kuris iš karto ištrina visus duomenis, jei įvedamas.',
+        securityTip: 'Saugumas: Jūsų duomenys šifruojami AES-256. Net mes negalime prie jų prieiti.',
+        analysisTitle: 'Sekite modelius',
+        analysisDesc: 'Apsilankykite Analizės skirtuke, kad pamatytumėte tendencijas, aptiktumėte eskalavimo modelius ir generuotumėte PDF ataskaitas dokumentacijai.',
+        analysisTip: 'Patarimas: Reguliarūs įrašai padeda kurti aiškesnį vaizdą laikui bėgant.',
+        completeTitle: 'Jūs pasiruošę!',
+        completeDesc: 'Jūsų sodas laukia. Prisiminkite: tai yra jūsų saugi erdvė. Rašykite laisvai, išlikite privatūs ir rūpinkitės savimi.',
+        next: 'Kitas',
+        back: 'Atgal',
+        skip: 'Praleisti pamoką',
+        finish: 'Pradėti rašyti',
+        restartTitle: 'Paleisti instrukciją iš naujo',
+        restartDesc: 'Žiūrėkite įvadą dar kartą, kad sužinotumėte apie visas funkcijas.',
+        restartButton: 'Pradėti instrukciją',
     },
 
     // Languages

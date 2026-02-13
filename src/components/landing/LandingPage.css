@@ -8,6 +8,35 @@
     overflow-x: hidden;
 }
 
+/* Loading State */
+.landing-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.landing-loading-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    opacity: 0;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.landing-loading-content .landing-nav-icon {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
 /* Navigation */
 .landing-nav {
     position: fixed;
@@ -76,6 +105,45 @@
 .landing-nav-cta:hover {
     background: rgba(255, 255, 255, 0.1);
     border-color: rgba(255, 255, 255, 0.4);
+}
+
+.landing-nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.landing-language-switcher {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-text-secondary, #888);
+}
+
+.landing-language-switcher .language-switcher {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--color-text-primary, #fff);
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.landing-language-switcher .language-switcher:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+@media (max-width: 640px) {
+    .landing-nav {
+        padding: 0 1.5rem;
+    }
+    
+    .landing-language-switcher {
+        display: none;
+    }
 }
 
 /* Hero Section */

@@ -6,7 +6,8 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ArchiveRestore, Trash2 } from 'lucide-react';
+import { ArchiveRestore, Trash2, GraduationCap } from 'lucide-react';
+import { resetOnboarding } from '../onboarding/Onboarding';
 import { useSettings } from '../../hooks/useSettings';
 import { useEntries } from '../../hooks/useEntries';
 import { deleteAllData } from '../../services/storage';
@@ -108,6 +109,11 @@ export function SettingsPage() {
         setCurrentTheme(theme);
         await setTheme(theme);
         updateSetting('theme', theme);
+    };
+
+    const handleRestartTutorial = () => {
+        resetOnboarding();
+        window.location.reload();
     };
 
     const handlePanic = async () => {
@@ -283,6 +289,21 @@ export function SettingsPage() {
                                                 </option>
                                             ))}
                                         </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="setting-group">
+                                <div className="setting-section-label">{t('common.help')}</div>
+                                <div className="setting-row">
+                                    <div className="setting-info">
+                                        <span className="setting-title">{t('onboarding.restartTitle')}</span>
+                                        <span className="setting-desc">{t('onboarding.restartDesc')}</span>
+                                    </div>
+                                    <div className="setting-action">
+                                        <button className="btn-action" onClick={handleRestartTutorial}>
+                                            <GraduationCap size={16} />
+                                            {t('onboarding.restartButton')}
+                                        </button>
                                     </div>
                                 </div>
                             </div>

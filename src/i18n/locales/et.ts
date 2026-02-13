@@ -216,6 +216,7 @@ export const etTranslations = {
         success: 'Õnnestus',
         settings: 'Seaded',
         search: 'Otsi',
+        help: 'Abi',
     },
 
     // PWA Update
@@ -271,6 +272,34 @@ export const etTranslations = {
         ctaSubtitle: 'Teie privaatne ruum ootab. Registreerumist pole. Jälgimist pole. Ainult privaatsus.',
         enterRockgarden: 'Sisene Rockgardeni',
         footer: '© 2025 Rockgarden. Teie privaatsus on meie ainus missioon.',
+    },
+
+    // Onboarding Tutorial
+    onboarding: {
+        welcomeTitle: 'Tere tulemast Rockgardeni',
+        welcomeDesc: 'Teie privaatne, krüpteeritud ruum mõtete ja kogemuste jaoks. Kõik jääb teie seadmesse — me kunagi ei näe teie andmeid.',
+        welcomeTip: 'Nõuanne: Teie parool on teie krüpteerimisvõti. Ärge unustage seda kunagi!',
+        createTitle: 'Looge oma esimene kirje',
+        createDesc: 'Puudutage + nuppu, et lisada oma aeda uus "kivi". Kirjutage, mis juhtus, lisage häälmärkmed ja märgistage intensiivsus.',
+        createTip: 'Nõuanne: Olge intensiivsuse osas aus — see aitab aja jooksul mustreid jälgida.',
+        visualizeTitle: 'Teie kiviaed',
+        visualizeDesc: 'Iga valge kivi on hetk. Suuremad kivid = tugevamad tunded. Vanemad kivid tuhmuvad aja jooksul õrnalt. Puudutage mis tahes kivi, et üksikasju vaadata.',
+        visualizeTip: 'Nõuanne: Proovige erinevaid vaateid — hajutatud, ajajoonte virnad või kivihunnik.',
+        securityTitle: 'Püsige turvalisena',
+        securityDesc: 'Kolmekordne puudutus logol kõikjal rakenduses kohest lukustamist jaoks. Seadetes saate määrata "Burn PIN", mis kustutab kõik andmed kohe, kui see sisestatakse.',
+        securityTip: 'Turvalisus: Teie andmed on krüpteeritud AES-256-ga. Isegi meie ei pääse neile ligi.',
+        analysisTitle: 'Jälgige mustreid',
+        analysisDesc: 'Külastage Analüüsi vahekaarti, et näha suundumusi, tuvastada eskalatsiooni mustreid ja luua PDF aruandeid dokumentatsiooniks.',
+        analysisTip: 'Nõuanne: Regulaarsed kirjed aitavad aja jooksul selgemat pilti luua.',
+        completeTitle: 'Olete valmis!',
+        completeDesc: 'Teie aed ootab. Mäletage: see on teie turvaline ruum. Kirjutage vabalt, püsige privaatsena ja hoolitsege enda eest.',
+        next: 'Edasi',
+        back: 'Tagasi',
+        skip: 'Jäta juhend vahele',
+        finish: 'Alusta kirjutamist',
+        restartTitle: 'Taaskäivita õpetus',
+        restartDesc: 'Vaadake sissejuhatus uuesti, et õppida kõiki funktsioone tundma.',
+        restartButton: 'Alusta õpetust',
     },
 
     // Languages

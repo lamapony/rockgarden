@@ -12,6 +12,7 @@ import { EntryEditor } from './components/journal/EntryEditor';
 import { ExportPage } from './components/export/ExportPage';
 import { AnalysisPage } from './components/analysis/AnalysisPage';
 import { SettingsPage } from './components/settings/SettingsPage';
+import { Onboarding, shouldShowOnboarding } from './components/onboarding/Onboarding';
 import './i18n/config';
 import './styles/themes.css';
 import './styles/global.css';
@@ -24,6 +25,7 @@ const LANDING_SEEN_KEY = 'rockgarden_landing_seen';
 function AppRoutes() {
   const { isAuthenticated, isLoading, needsSetup } = useAuth();
   const [showLanding, setShowLanding] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   // Initialize theme on app load
   useEffect(() => {
@@ -38,9 +40,30 @@ function AppRoutes() {
     }
   }, [isAuthenticated, needsSetup]);
 
+  // Check if onboarding should be shown after authentication
+  useEffect(() => {
+    if (isAuthenticated && !needsSetup) {
+      // Small delay to ensure the user sees the transition
+      const timer = setTimeout(() => {
+        if (shouldShowOnboarding()) {
+          setShowOnboarding(true);
+        }
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [isAuthenticated, needsSetup]);
+
   const handleLandingEnter = () => {
     localStorage.setItem(LANDING_SEEN_KEY, 'true');
     setShowLanding(false);
+  };
+
+  const handleOnboardingComplete = () => {
+    setShowOnboarding(false);
+  };
+
+  const handleOnboardingSkip = () => {
+    setShowOnboarding(false);
   };
 
   if (isLoading) {
@@ -62,16 +85,26 @@ function AppRoutes() {
   }
 
   return (
-    <Routes>
-      <Route path="/" element={<JournalPage />} />
-      <Route path="/new" element={<EntryEditor />} />
-      <Route path="/entry/:id" element={<EntryEditor />} />
-      <Route path="/export" element={<ExportPage />} />
-      <Route path="/analysis" element={<AnalysisPage />} />
-      <Route path="/settings" element={<SettingsPage />} />
-      <Route path="/landing" element={<LandingPage onEnter={handleLandingEnter} />} />
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+    <>
+      <Routes>
+        <Route path="/" element={<JournalPage />} />
+        <Route path="/new" element={<EntryEditor />} />
+        <Route path="/entry/:id" element={<EntryEditor />} />
+        <Route path="/export" element={<ExportPage />} />
+        <Route path="/analysis" element={<AnalysisPage />} />
+        <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/landing" element={<LandingPage onEnter={handleLandingEnter} />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+      
+      {/* Onboarding Tutorial */}
+      {showOnboarding && (
+        <Onboarding 
+          onComplete={handleOnboardingComplete}
+          onSkip={handleOnboardingSkip}
+        />
+      )}
+    </>
   );
 }
 

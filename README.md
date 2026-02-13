@@ -1,34 +1,44 @@
-# Safe Journal (Sikker Dagbog) 🛡️
+# Rockgarden 🪨
 
-**A private, encrypted-first Progressive Web App (PWA) for journaling.**
-*Safe Journal is designed for individuals in sensitive situations who need a secure place to document their thoughts and experiences without fear of discovery.*
+**Your private, encrypted-first Progressive Web App (PWA) for journaling.**
 
-![Status](https://img.shields.io/badge/Status-Beta-blue)
-![Security](https://img.shields.io/badge/Security-AES--GCM-green)
+*Rockgarden is designed for individuals who need a secure, private space to document their thoughts, experiences, and emotions. Built with privacy as the foundation.*
+
+![Status](https://img.shields.io/badge/Status-Production-green)
+![Security](https://img.shields.io/badge/Security-AES--256--GCM-green)
 ![Privacy](https://img.shields.io/badge/Privacy-Local_Only-green)
+![Languages](https://img.shields.io/badge/Languages-14-blue)
+
+**🌐 Live Demo**: [https://lamapony.github.io/rockgarden](https://lamapony.github.io/rockgarden)
 
 ---
 
 ## 🌟 Key Features
 
-*   **🔒 Client-Side Encryption**: All data is encrypted in the browser using `AES-GCM` before being stored. The server (if one existed) would never see the raw data.
-*   **🔑 Password Derivation**: Your master password is never stored. It derives an encryption key using `PBKDF2` (100,000 iterations).
-*   **📱 PWA Support**: Installable on mobile and desktop. Works offline.
-*   **🎙️ Secure Voice Notes**: Record audio journals which are encrypted on-the-fly.
-*   **🚨 Panic Button**: Instantly nukes all local data in case of emergency.
-*   **📊 Insights**: Emotional intensity tracking and statistics.
-*   **🌍 Multi-language**: Supports English, Russian, and Danish.
+*   **🔒 Military-Grade Encryption**: All data is encrypted using `AES-256-GCM` before storage. Your encryption key is derived from your password and never stored.
+*   **🔑 Secure Password Derivation**: Uses `PBKDF2` with 100,000 iterations and a unique random salt.
+*   **📱 PWA Support**: Installable on mobile and desktop. Works completely offline.
+*   **🎙️ Secure Voice Notes**: Record audio journals that are encrypted on-the-fly.
+*   **📊 Pattern Analysis**: Track emotional intensity over time with beautiful visualizations.
+*   **📄 PDF Export**: Generate reports with Unicode support for legal documentation.
+*   **🌍 14 Languages**: Full i18n support for English, Russian, Danish, Lithuanian, Latvian, Estonian, Ukrainian, Polish, Portuguese, Spanish, French, German, Italian, and Turkish.
+*   **🎨 Visual Metaphors**: White stone garden visualization - larger stones for intense moments, fading opacity with time.
+*   **🚨 Panic Button**: Triple-tap the logo for instant lock. Optional Burn PIN for emergency data deletion.
+*   **⏱️ Auto-Lock**: Automatically locks after period of inactivity.
 
 ---
 
 ## 🛠️ Technology Stack
 
-*   **Framework**: [React 19](https://react.dev/) + [Vite](https://vitejs.dev/)
-*   **Language**: TypeScript
-*   **Storage**: [Dexie.js](https://dexie.org/) (Wrapper for IndexedDB)
+*   **Framework**: [React 19](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
+*   **Build Tool**: [Vite](https://vitejs.dev/)
+*   **Routing**: [React Router](https://reactrouter.com/) (HashRouter for GitHub Pages compatibility)
+*   **Storage**: [Dexie.js](https://dexie.org/) (IndexedDB wrapper)
 *   **Styling**: CSS Modules + Glassmorphism Design System + [Lucide Icons](https://lucide.dev/)
-*   **Animations**: [Framer Motion](https://www.framer.com/motion/)
-*   **Testing**: [Vitest](https://vitest.dev/)
+*   **Charts**: [Chart.js](https://www.chartjs.org/)
+*   **PDF**: [jsPDF](https://parall.ax/products/jspdf) with Unicode transliteration
+*   **Testing**: [Vitest](https://vitest.dev/) + [React Testing Library](https://testing-library.com/)
+*   **i18n**: [i18next](https://www.i18next.com/) with lazy loading
 
 ---
 
@@ -36,75 +46,74 @@
 
 ```
 safe-journal/
-├── public/              # Static assets (icons, manifest)
+├── public/                   # Static assets (icons, manifest)
 ├── src/
-│   ├── components/      # React components
-│   │   ├── auth/        # Login & Setup screens
-│   │   ├── export/      # PDF Export logic
-│   │   ├── journal/     # Editor, Card, List components
-│   │   ├── layout/      # AnimatedLayout, Navigation
-│   │   └── panic/       # Panic Button component
-│   ├── hooks/           # Custom React Hooks
-│   │   ├── useAuth.tsx         # Authentication state
-│   │   ├── useEntries.ts       # CRUD for journal entries
-│   │   └── useVoiceRecorder.ts # Audio recording & encryption logic
-│   ├── i18n/            # Localization (i18next)
-│   ├── services/        # Core Business Logic (Framework agnostic)
-│   │   ├── auth.ts      # Key management & session handling
-│   │   ├── crypto.ts    # Web Crypto API implementation (PBKDF2, AES-GCM)
-│   │   └── storage.ts   # Dexie.js database schema & queries
-│   ├── styles/          # Global CSS & Design Tokens
-│   └── types/           # TypeScript interfaces
-└── ...config files      # Vite, TS, ESLint
+│   ├── components/           # React components
+│   │   ├── auth/             # Login & Setup screens
+│   │   ├── export/           # PDF Export functionality
+│   │   ├── journal/          # Editor, Card, List, Stone visualizations
+│   │   ├── landing/          # Landing/Promo page
+│   │   ├── layout/           # Navigation, AutoLock, PWA notifications
+│   │   └── settings/         # Settings page
+│   ├── hooks/                # Custom React Hooks
+│   │   ├── useAuth.tsx       # Authentication state & key management
+│   │   ├── useEntries.ts     # CRUD for journal entries
+│   │   └── useVoiceRecorder.ts # Audio recording & encryption
+│   ├── i18n/                 # Localization (14 languages)
+│   │   ├── config.ts         # i18next configuration
+│   │   └── locales/          # Translation files
+│   ├── services/             # Core Business Logic
+│   │   ├── analytics.ts      # Pattern analysis & statistics
+│   │   ├── auth.ts           # Web Crypto API - key derivation
+│   │   ├── crypto.ts         # Web Crypto API - AES encryption
+│   │   ├── pdf.ts            # PDF generation with Unicode support
+│   │   └── storage.ts        # Dexie.js database schema
+│   ├── styles/               # Global CSS, themes, design tokens
+│   └── types/                # TypeScript interfaces
+└── ...config files
 ```
 
 ---
 
 ## 🔐 Security Architecture
 
-### 1. Key Derivation (PBKDF2)
-When a user sets a password:
-1.  A random 16-byte `salt` is generated.
-2.  `PBKDF2` derives a 256-bit Key Encryption Key (KEK) from the password + salt.
-3.  This KEK encrypts a verification string ("VALID").
-4.  The `salt` and `verificationBlock` are stored. **The password is never stored.**
+### Zero-Knowledge Design
+*   **No password storage**: Your password is never stored anywhere
+*   **No cloud**: Everything stays on your device
+*   **No tracking**: No analytics, no cookies, no external requests
 
-### 2. Data Encryption (AES-GCM)
-When saving an entry:
-1.  A random 12-byte `IV` (Initialization Vector) is generated.
-2.  The data (JSON) is encrypted using `AES-GCM` with the KEK and IV.
-3.  The `IV` + `Ciphertext` + `AuthTag` are concatenated and stored as a Base64 string.
+### Key Derivation (PBKDF2)
+1.  A random 16-byte `salt` is generated per account
+2.  `PBKDF2` derives a 256-bit Key Encryption Key (KEK) from password + salt (100,000 iterations)
+3.  This KEK encrypts a verification string to validate password correctness
+4.  Only `salt` and `verificationBlock` are stored locally
 
-### 3. Audio Encryption
-*   **Challenge**: Large audio blobs can cause stack overflows if converted naively.
-*   **Solution**: We use `FileReader` to convert Blobs to Base64 in chunks/streams (optimized) before encryption.
+### Data Encryption (AES-256-GCM)
+1.  Random 12-byte `IV` generated for each entry
+2.  Data encrypted using AES-256-GCM with the KEK
+3.  IV + Ciphertext + AuthTag stored as Base64
+
+### Side-Channel Protection
+*   Randomized timing delays (800-1500ms) for password verification to prevent timing attacks
 
 ---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-*   Node.js (v18+)
+*   Node.js (v20+)
 *   npm
 
 ### Installation
 
-1.  Clone the repository:
-    ```bash
-    git clone https://github.com/your-repo/safe-journal.git
-    cd safe-journal
-    ```
-
-2.  Install dependencies:
-    ```bash
-    npm install
-    # or
-    npm ci
-    ```
+```bash
+git clone https://github.com/lamapony/rockgarden.git
+cd rockgarden/safe-journal
+npm ci
+```
 
 ### Development
 
-Start the local development server:
 ```bash
 npm run dev
 ```
@@ -112,54 +121,67 @@ Open `http://localhost:5173` in your browser.
 
 ### Building for Production
 
-Create an optimized build:
 ```bash
 npm run build
-```
-Preview the build locally:
-```bash
-npm run preview
 ```
 
 ### Testing
 
-Run unit tests (covers Crypto, Storage, and Utils):
 ```bash
-npm run test
+npm test
 ```
 
 ---
 
-## 🐛 Troubleshooting & FAQ
+## 🌍 Supported Languages
 
-### "RangeError: Maximum call stack size exceeded" when recording audio
-*   **Cause**: Converting large `Uint8Array` to string using spread syntax (`...array`) fails for large files.
-*   **Fix**: Update `crypto.ts` to use `FileReader` or chunk-based processing for Blobs.
+| Language | Code | Native Name |
+|----------|------|-------------|
+| English | en | English |
+| Russian | ru | Русский |
+| Danish | da | Dansk |
+| Lithuanian | lt | Lietuvių |
+| Latvian | lv | Latviešu |
+| Estonian | et | Eesti |
+| Ukrainian | uk | Українська |
+| Polish | pl | Polski |
+| Portuguese | pt | Português |
+| Spanish | es | Español |
+| French | fr | Français |
+| German | de | Deutsch |
+| Italian | it | Italiano |
+| Turkish | tr | Türkçe |
 
-### "AddEntry is not a function"
-*   **Cause**: Naming mismatch in `useEntries` hook versus `EntryEditor` component.
-*   **Fix**: Ensure `useEntries` exports `createEntry`, and `EntryEditor` imports and uses `createEntry`.
+---
 
-### PWA not installing
-*   **Requirement**: PWAs require `HTTPS` (or `localhost`) and a valid `manifest.json`.
-*   **Check**: Look at the "Application" tab in Chrome DevTools -> "Manifest" for errors.
+## 🐛 Troubleshooting
 
 ### Forgot Password?
-*   **Result**: Data is **lost forever**.
-*   **Reason**: Since the key is derived from the password, there is no backdoor or reset mechanism. This is a feature, not a bug.
+**Data is lost forever.** Since the encryption key is derived from your password, there is absolutely no backdoor or reset mechanism. This is by design for your security.
+
+### Data Export Before Updates
+Always export your data before app updates. The encrypted export can be re-imported later.
+
+### PWA Installation
+Requires HTTPS (or localhost) and a valid manifest. Check Chrome DevTools → Application → Manifest for errors.
 
 ---
 
 ## 🤝 Contributing
 
-1.  Fork the repo
-2.  Create your feature branch (`git checkout -b feature/amazing-feature`)
-3.  Commit your changes (`git commit -m 'Add some amazing feature'`)
-4.  Push to the branch (`git push origin feature/amazing-feature`)
-5.  Open a Pull Request
+Contributions are welcome! Please ensure:
+1. All tests pass (`npm test`)
+2. TypeScript compiles without errors (`npm run build`)
+3. Follow the existing code style
 
 ---
 
 ## 📄 License
 
 Distributed under the MIT License. See `LICENSE` for more information.
+
+---
+
+## 🙏 Acknowledgments
+
+Built with care for those who need a safe space to document their experiences. Special focus on supporting survivors of domestic violence and abuse across multiple regions and languages.

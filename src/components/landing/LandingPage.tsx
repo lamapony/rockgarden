@@ -1,12 +1,16 @@
 /**
  * Landing Page - Rockgarden
  * First impression for new visitors
+ * Auto-detects browser language
  */
 
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Shield, Lock, Smartphone, Trash2, Globe, ArrowRight, ChevronDown } from 'lucide-react';
+import { Shield, Lock, Smartphone, Trash2, Globe, ArrowRight, ChevronDown, Languages } from 'lucide-react';
+import { LanguageSwitcher } from '../layout/LanguageSwitcher';
 import { StoneGardenDemo } from './StoneGardenDemo';
+import { detectBrowserLanguage } from '../../i18n/utils';
+import { setLanguage } from '../../i18n/config';
 import './LandingPage.css';
 
 interface LandingPageProps {
@@ -14,8 +18,28 @@ interface LandingPageProps {
 }
 
 export function LandingPage({ onEnter }: LandingPageProps) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [scrolled, setScrolled] = useState(false);
+    const [isLanguageLoaded, setIsLanguageLoaded] = useState(false);
+
+    // Auto-detect and set browser language on mount
+    useEffect(() => {
+        const setupLanguage = async () => {
+            // Check if user already has a saved preference
+            const savedLang = localStorage.getItem('i18nextLng');
+            
+            if (!savedLang) {
+                // No saved preference, detect browser language
+                const browserLang = detectBrowserLanguage();
+                if (browserLang !== i18n.language) {
+                    await setLanguage(browserLang);
+                }
+            }
+            setIsLanguageLoaded(true);
+        };
+        
+        setupLanguage();
+    }, [i18n]);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -48,6 +72,18 @@ export function LandingPage({ onEnter }: LandingPageProps) {
         },
     ];
 
+    // Show loading state while language is being set up
+    if (!isLanguageLoaded) {
+        return (
+            <div className="landing-page landing-loading">
+                <div className="landing-loading-content">
+                    <div className="landing-nav-icon"></div>
+                    <p>rockgarden</p>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="landing-page">
             {/* Navigation */}
@@ -56,9 +92,15 @@ export function LandingPage({ onEnter }: LandingPageProps) {
                     <div className="landing-nav-icon"></div>
                     <span>rockgarden</span>
                 </div>
-                <button className="landing-nav-cta" onClick={onEnter}>
-                    {t('landing.openApp')}
-                </button>
+                <div className="landing-nav-actions">
+                    <div className="landing-language-switcher">
+                        <Languages size={18} />
+                        <LanguageSwitcher />
+                    </div>
+                    <button className="landing-nav-cta" onClick={onEnter}>
+                        {t('landing.openApp')}
+                    </button>
+                </div>
             </nav>
 
             {/* Hero Section */}

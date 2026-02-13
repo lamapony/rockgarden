@@ -216,6 +216,7 @@ export const lvTranslations = {
         success: 'Veiksmīgi',
         settings: 'Iestatījumi',
         search: 'Meklēt',
+        help: 'Palīdzība',
     },
 
     // PWA Update
@@ -271,6 +272,34 @@ export const lvTranslations = {
         ctaSubtitle: 'Jūsu privātā vieta gaida. Nav reģistrācijas. Nav izsekošanas. Tikai privātums.',
         enterRockgarden: 'Ievadīt Rockgarden',
         footer: '© 2025 Rockgarden. Jūsu privātums ir mūsu vienīgā misija.',
+    },
+
+    // Onboarding Tutorial
+    onboarding: {
+        welcomeTitle: 'Laipni lūgti Rockgarden',
+        welcomeDesc: 'Jūsu privātā, šifrētā vieta domām un pieredzei. Viss paliek jūsu ierīcē — mēs nekad neredzam jūsu datus.',
+        welcomeTip: 'Padoms: Jūsu parole ir šifrēšanas atslēga. Neaizmirstiet to nekad!',
+        createTitle: 'Izveidojiet pirmo ierakstu',
+        createDesc: 'Pieskarieties + pogai, lai pievienotu jaunu "akmeni" savā dārzā. Rakstiet, kas notika, pievienojiet balss piezīmes un atzīmējiet intensitāti.',
+        createTip: 'Padoms: Esi godīgs par intensitāti — tas palīdz izsekot tendencēm laikā.',
+        visualizeTitle: 'Jūsu akmeņu dārzs',
+        visualizeDesc: 'Katrs baltais akmens ir moments. Lielāki akmeņi = spēcīgākas emocijas. Vecāki akmeņi maigi izbalē ar laiku. Pieskarieties jebkuram akmenim, lai skatītu detaļas.',
+        visualizeTip: 'Padoms: Izmēģiniet dažādus skatus — izkliedētu, laika joslu kaudzes vai torņu skatu.',
+        securityTitle: 'Palieciet drošībā',
+        securityDesc: 'Trīskāršs pieskāriens logotipam jebkur programmā tūlītējai bloķēšanai. Iestatījumos varat iestatīt "Burn PIN", kas uzreiz izdzēsīs visus datus, ja to ievadīs.',
+        securityTip: 'Drošība: Jūsu dati ir šifrēti ar AES-256. Pat mēs nevaram tiem piekļūt.',
+        analysisTitle: 'Izsekojiet tendences',
+        analysisDesc: 'Apmeklējiet Analīzes cilni, lai redzētu tendences, konstatētu eskalācijas modeļus un ģenerētu PDF ziņojumus dokumentācijai.',
+        analysisTip: 'Padoms: Regulāri ieraksti palīdz veidot skaidrāku priekšstatu laikā.',
+        completeTitle: 'Jūs esat gatavi!',
+        completeDesc: 'Jūsu dārzs gaida. Atcerieties: tas ir jūsu drošais laukums. Rakstiet brīvi, palieciet privāti un rūpējieties par sevi.',
+        next: 'Tālāk',
+        back: 'Atpakaļ',
+        skip: 'Izlaist pamācību',
+        finish: 'Sākt rakstīt',
+        restartTitle: 'Atsākt pamācību',
+        restartDesc: 'Skatiet ievadu vēlreiz, lai uzzinātu par visām funkcijām.',
+        restartButton: 'Sākt pamācību',
     },
 
     // Languages
