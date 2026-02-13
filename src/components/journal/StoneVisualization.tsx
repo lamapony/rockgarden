@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Grid3X3, Columns2, Layers } from 'lucide-react';
 import type { DecryptedEntry } from '../../types';
 import './StoneVisualization.css';
 
@@ -34,6 +35,13 @@ export function StoneVisualization({ entries, onEntryClick, onAddEntry }: StoneV
     const [hoveredStone, setHoveredStone] = useState<string | null>(null);
     const [tooltipPos, setTooltipPos] = useState<{ x: number; y: number; placement?: 'above' | 'below' }>({ x: 0, y: 0, placement: 'above' });
     const [, setDimensions] = useState({ width: 0, height: 0 });
+    
+    // Swipe handling refs
+    const touchStartX = useRef<number | null>(null);
+    const touchStartY = useRef<number | null>(null);
+    const minSwipeDistance = 50;
+    
+    const layoutModes: LayoutMode[] = ['layout-scatter', 'layout-piles', 'layout-cairn'];
 
     // Filter out archived entries
     const visibleEntries = useMemo(() => {
@@ -240,6 +248,62 @@ export function StoneVisualization({ entries, onEntryClick, onAddEntry }: StoneV
 
     const hoveredStoneData = hoveredStone ? stones.find(s => s.id === hoveredStone) : null;
 
+    // Swipe handlers
+    const onTouchStart = (e: React.TouchEvent) => {
+        touchStartX.current = e.targetTouches[0].clientX;
+        touchStartY.current = e.targetTouches[0].clientY;
+    };
+
+    const onTouchMove = (e: React.TouchEvent) => {
+        // Prevent default only for horizontal swipes
+        if (touchStartX.current !== null && touchStartY.current !== null) {
+            const diffX = Math.abs(e.targetTouches[0].clientX - touchStartX.current);
+            const diffY = Math.abs(e.targetTouches[0].clientY - touchStartY.current);
+            if (diffX > diffY && diffX > 10) {
+                e.preventDefault();
+            }
+        }
+    };
+
+    const onTouchEnd = (e: React.TouchEvent) => {
+        if (!touchStartX.current || !touchStartY.current) return;
+        
+        const touchEndX = e.changedTouches[0].clientX;
+        const touchEndY = e.changedTouches[0].clientY;
+        
+        const diffX = touchStartX.current - touchEndX;
+        const diffY = touchStartY.current - touchEndY;
+        
+        // Only handle horizontal swipes
+        if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > minSwipeDistance) {
+            const currentIndex = layoutModes.indexOf(layoutMode);
+            
+            if (diffX > 0) {
+                // Swipe left - next view
+                const nextIndex = (currentIndex + 1) % layoutModes.length;
+                setLayoutMode(layoutModes[nextIndex]);
+            } else {
+                // Swipe right - previous view
+                const prevIndex = (currentIndex - 1 + layoutModes.length) % layoutModes.length;
+                setLayoutMode(layoutModes[prevIndex]);
+            }
+        }
+        
+        touchStartX.current = null;
+        touchStartY.current = null;
+    };
+
+    const getLayoutIcon = (mode: LayoutMode) => {
+        switch (mode) {
+            case 'layout-scatter':
+                return <Grid3X3 size={14} />;
+            case 'layout-piles':
+                return <Columns2 size={14} />;
+            case 'layout-cairn':
+                return <Layers size={14} />;
+        }
+    };
+
     // Calculate visual saturation and brightness based on intensity and age
     // High intensity = more saturated, New = brighter (strong white)
     const getStoneFilters = (intensity: number, opacity: number): string => {
@@ -288,29 +352,41 @@ export function StoneVisualization({ entries, onEntryClick, onAddEntry }: StoneV
 
     return (
         <div className="stone-visualization">
-            {/* View switcher */}
+            {/* View switcher with labels */}
             <div className="view-switcher">
                 <button 
                     className={`view-btn ${layoutMode === 'layout-scatter' ? 'active' : ''}`}
                     onClick={() => setLayoutMode('layout-scatter')}
                     title={t('journal.viewScatter')}
-                />
+                >
+                    {getLayoutIcon('layout-scatter')}
+                    <span className="view-label">{t('journal.viewScatter')}</span>
+                </button>
                 <button 
                     className={`view-btn ${layoutMode === 'layout-piles' ? 'active' : ''}`}
                     onClick={() => setLayoutMode('layout-piles')}
                     title={t('journal.viewPiles')}
-                />
+                >
+                    {getLayoutIcon('layout-piles')}
+                    <span className="view-label">{t('journal.viewPiles')}</span>
+                </button>
                 <button 
                     className={`view-btn ${layoutMode === 'layout-cairn' ? 'active' : ''}`}
                     onClick={() => setLayoutMode('layout-cairn')}
                     title={t('journal.viewCairn')}
-                />
+                >
+                    {getLayoutIcon('layout-cairn')}
+                    <span className="view-label">{t('journal.viewCairn')}</span>
+                </button>
             </div>
 
-            {/* Stones container */}
+            {/* Stones container with swipe support */}
             <div 
                 ref={containerRef}
                 className={`stones-container ${layoutMode}`}
+                onTouchStart={onTouchStart}
+                onTouchMove={onTouchMove}
+                onTouchEnd={onTouchEnd}
             >
                 {stones.map((stone) => (
                     <div

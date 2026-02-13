@@ -70,31 +70,65 @@
     right: 0;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 4px;
     z-index: 20;
     padding: 0.5rem;
 }
 
 .view-btn {
-    width: 8px;
-    height: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 6px;
     border: 1px solid var(--color-text-muted);
-    background: transparent;
+    background: rgba(0, 0, 0, 0.5);
     cursor: pointer;
     opacity: 0.5;
     transition: all 0.3s ease;
-    padding: 0;
+    min-width: 60px;
+    border-radius: 4px;
+    color: var(--color-text-secondary);
 }
 
 .view-btn:hover {
-    opacity: 1;
+    opacity: 0.8;
     border-color: var(--color-text-secondary);
+    background: rgba(0, 0, 0, 0.7);
 }
 
 .view-btn.active {
-    background: var(--color-text-primary);
+    background: rgba(255, 255, 255, 0.1);
     border-color: var(--color-text-primary);
     opacity: 1;
+    color: var(--color-text-primary);
+}
+
+.view-btn svg {
+    stroke-width: 1.5;
+}
+
+.view-label {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    text-align: center;
+    line-height: 1;
+}
+
+/* Mobile: swipe hint */
+@media (hover: none) and (pointer: coarse) {
+    .view-switcher::after {
+        content: '← swipe →';
+        position: absolute;
+        bottom: -20px;
+        right: 0;
+        font-size: 0.6rem;
+        color: var(--color-text-muted);
+        white-space: nowrap;
+        opacity: 0.6;
+    }
 }
 
 /* Stones container */
