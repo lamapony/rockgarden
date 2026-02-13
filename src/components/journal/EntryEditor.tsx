@@ -5,7 +5,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ArrowLeft, Trash2, Mic } from 'lucide-react';
+import { ArrowLeft, Trash2, Mic, Archive, ArchiveRestore } from 'lucide-react';
 import { useEntries } from '../../hooks/useEntries';
 import { useVoiceRecorder } from '../../hooks/useVoiceRecorder';
 import { IntensitySlider } from './IntensitySlider';
@@ -15,12 +15,13 @@ export function EntryEditor() {
     const { id } = useParams();
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const { loadEntry, createEntry, updateEntry, deleteEntry } = useEntries();
+    const { loadEntry, createEntry, updateEntry, deleteEntry, toggleArchiveEntry } = useEntries();
     const { isRecording, audioBlob, startRecording, stopRecording, clearAudio } = useVoiceRecorder(id);
 
     const [title, setTitle] = useState('');
     const [text, setText] = useState('');
     const [intensity, setIntensity] = useState(5);
+    const [isArchived, setIsArchived] = useState(false);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
 
@@ -32,6 +33,7 @@ export function EntryEditor() {
                     setTitle(entry.content.title || '');
                     setText(entry.content.text || '');
                     setIntensity(entry.intensity);
+                    setIsArchived(entry.isArchived || false);
                 }
             }
             setLoading(false);
@@ -67,6 +69,16 @@ export function EntryEditor() {
         }
     };
 
+    const handleToggleArchive = async () => {
+        if (!id) return;
+        try {
+            const newState = await toggleArchiveEntry(id);
+            setIsArchived(newState);
+        } catch (e) {
+            console.error('Failed to toggle archive:', e);
+        }
+    };
+
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'Escape') {
             navigate('/');
@@ -92,9 +104,18 @@ export function EntryEditor() {
                 
                 <div className="editor-actions">
                     {id && (
-                        <button onClick={handleDelete} className="editor-delete">
-                            <Trash2 size={18} />
-                        </button>
+                        <>
+                            <button 
+                                onClick={handleToggleArchive} 
+                                className={`editor-archive ${isArchived ? 'archived' : ''}`}
+                                title={isArchived ? t('journal.unarchive') : t('journal.archive')}
+                            >
+                                {isArchived ? <ArchiveRestore size={18} /> : <Archive size={18} />}
+                            </button>
+                            <button onClick={handleDelete} className="editor-delete">
+                                <Trash2 size={18} />
+                            </button>
+                        </>
                     )}
                     <button 
                         onClick={handleSave} 

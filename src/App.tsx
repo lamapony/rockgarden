@@ -15,6 +15,7 @@ import './i18n/config';
 import './styles/themes.css';
 import './styles/global.css';
 import { AutoLockProvider } from './components/layout/AutoLockProvider';
+import { PWAUpdateNotification } from './components/layout/PWAUpdateNotification';
 import { initTheme } from './services/theme';
 
 function AppRoutes() {
@@ -59,6 +60,7 @@ function App() {
       <AuthProvider>
         <AutoLockProvider>
           <AppRoutes />
+          <PWAUpdateNotification />
         </AutoLockProvider>
       </AuthProvider>
     </BrowserRouter>

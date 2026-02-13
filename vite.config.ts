@@ -9,11 +9,11 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png'],
+      includeAssets: ['favicon.svg'],
       manifest: {
-        name: 'Safe Journal',
-        short_name: 'Safe Journal',
-        description: 'Your private, encrypted diary',
+        name: 'Rockgarden',
+        short_name: 'Rockgarden',
+        description: 'Your private, encrypted journal',
         theme_color: '#0f0f14',
         background_color: '#0f0f14',
         display: 'standalone',
@@ -22,15 +22,9 @@ export default defineConfig({
         start_url: '/',
         icons: [
           {
-            src: '/icon-192.png',
-            sizes: '192x192',
-            type: 'image/png'
-          },
-          {
-            src: '/icon-512.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'any maskable'
+            src: '/favicon.svg',
+            sizes: 'any',
+            type: 'image/svg+xml'
           }
         ]
       },

@@ -5,7 +5,9 @@
 
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { AlertTriangle } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
+import { deleteAllData } from '../../services/storage';
 import { LanguageSwitcher } from '../layout/LanguageSwitcher';
 import './AuthPage.css';
 
@@ -17,6 +19,7 @@ export function AuthPage() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [showResetConfirm, setShowResetConfirm] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -60,7 +63,7 @@ export function AuthPage() {
                 {/* Brand icon - white square with cut corner */}
                 <div className="auth-brand">
                     <div className="brand-icon-stone"></div>
-                    <h1 className="auth-brand-name">STONEWALL</h1>
+                    <h1 className="auth-brand-name">Rockgarden</h1>
                 </div>
 
                 <form className="auth-form" onSubmit={handleSubmit}>
@@ -89,7 +92,20 @@ export function AuthPage() {
                         </div>
                     )}
 
-                    {error && <p className="auth-error">{error}</p>}
+                    {error && (
+                    <div className="auth-error-container">
+                        <p className="auth-error">{error}</p>
+                        {!needsSetup && (
+                            <button 
+                                type="button"
+                                className="auth-reset-link"
+                                onClick={() => setShowResetConfirm(true)}
+                            >
+                                {t('auth.forgotPasswordReset')}
+                            </button>
+                        )}
+                    </div>
+                )}
 
                     <button
                         type="submit"
@@ -112,6 +128,36 @@ export function AuthPage() {
                     </p>
                 )}
             </div>
+
+            {/* Reset Data Confirmation Modal */}
+            {showResetConfirm && (
+                <div className="auth-modal-overlay" onClick={() => setShowResetConfirm(false)}>
+                    <div className="auth-modal" onClick={(e) => e.stopPropagation()}>
+                        <div className="auth-modal-icon">
+                            <AlertTriangle size={48} color="#eab308" />
+                        </div>
+                        <h2 className="auth-modal-title">{t('auth.resetDataTitle')}</h2>
+                        <p className="auth-modal-text">{t('auth.resetDataWarning')}</p>
+                        <div className="auth-modal-actions">
+                            <button 
+                                className="auth-btn-secondary"
+                                onClick={() => setShowResetConfirm(false)}
+                            >
+                                {t('common.cancel')}
+                            </button>
+                            <button 
+                                className="auth-btn-danger"
+                                onClick={async () => {
+                                    await deleteAllData();
+                                    window.location.reload();
+                                }}
+                            >
+                                {t('auth.resetDataConfirm')}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

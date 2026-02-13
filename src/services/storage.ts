@@ -29,6 +29,7 @@ export interface JournalEntry {
     hasAudio: boolean;
     createdAt: number;
     updatedAt: number;
+    isArchived?: boolean;
 }
 
 export interface AudioNote {
@@ -59,6 +60,20 @@ class SafeJournalDB extends Dexie {
             settings: 'id',
             entries: 'id, date, intensity, createdAt',
             audioNotes: 'id, entryId, createdAt',
+        });
+
+        // Migration to version 2: add isArchived index
+        this.version(2).stores({
+            settings: 'id',
+            entries: 'id, date, intensity, createdAt, isArchived',
+            audioNotes: 'id, entryId, createdAt',
+        }).upgrade(tx => {
+            // Initialize isArchived to false for existing entries
+            return tx.table('entries').toCollection().modify(entry => {
+                if (entry.isArchived === undefined) {
+                    entry.isArchived = false;
+                }
+            });
         });
     }
 }

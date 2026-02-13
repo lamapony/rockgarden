@@ -18,6 +18,7 @@ export interface DecryptedEntry {
     hasAudio: boolean;
     createdAt: number;
     updatedAt: number;
+    isArchived?: boolean;
 }
 
 // Audio note with decrypted blob

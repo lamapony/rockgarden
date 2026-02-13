@@ -4,16 +4,18 @@
  * Fully functional with backend integration
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import { ArchiveRestore, Trash2 } from 'lucide-react';
 import { useSettings } from '../../hooks/useSettings';
+import { useEntries } from '../../hooks/useEntries';
 import { deleteAllData } from '../../services/storage';
 import { setTheme, type Theme } from '../../services/theme';
 import { LanguageSwitcher } from '../layout/LanguageSwitcher';
 import { Navigation } from '../layout/Navigation';
 import './SettingsPage.css';
 
-type SettingsTab = 'general' | 'privacy' | 'emergency' | 'backup';
+type SettingsTab = 'general' | 'privacy' | 'emergency' | 'backup' | 'archive';
 
 const themes: { id: Theme; name: string; color: string }[] = [
     { id: 'monochrome', name: 'Monochrome', color: '#050505' },
@@ -49,12 +51,51 @@ export function SettingsPage() {
         downloadExport,
         updateSetting,
     } = useSettings();
+    const { entries, loadEntries, toggleArchiveEntry, deleteEntry } = useEntries();
 
     const [activeTab, setActiveTab] = useState<SettingsTab>('general');
     const [currentTheme, setCurrentTheme] = useState<Theme>('monochrome');
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+    const [showPanicConfirm, setShowPanicConfirm] = useState(false);
     const [deleting, setDeleting] = useState(false);
     const [exporting, setExporting] = useState(false);
+    
+    // Triple-click detection for panic button
+    const clickCountRef = useRef(0);
+    const clickTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    const handleBrandClick = useCallback(() => {
+        if (!settings.panicButtonEnabled) return;
+        
+        clickCountRef.current += 1;
+        
+        if (clickCountRef.current === 3) {
+            // Triple click detected
+            setShowPanicConfirm(true);
+            clickCountRef.current = 0;
+            if (clickTimerRef.current) {
+                clearTimeout(clickTimerRef.current);
+                clickTimerRef.current = null;
+            }
+        } else {
+            // Reset counter after 500ms
+            if (clickTimerRef.current) {
+                clearTimeout(clickTimerRef.current);
+            }
+            clickTimerRef.current = setTimeout(() => {
+                clickCountRef.current = 0;
+            }, 500);
+        }
+    }, [settings.panicButtonEnabled]);
+
+    // Load entries when archive tab is opened
+    useEffect(() => {
+        if (activeTab === 'archive') {
+            loadEntries();
+        }
+    }, [activeTab, loadEntries]);
+
+    const archivedEntries = entries.filter(e => e.isArchived);
 
     // Sync theme with settings on mount
     useEffect(() => {
@@ -109,8 +150,9 @@ export function SettingsPage() {
     const tabs: { id: SettingsTab; label: string }[] = [
         { id: 'general', label: t('settings.tabGeneral') },
         { id: 'privacy', label: t('settings.tabPrivacy') },
-        { id: 'emergency', label: t('settings.tabEmergency') },
         { id: 'backup', label: t('settings.tabBackup') },
+        { id: 'archive', label: t('journal.archived') },
+        { id: 'emergency', label: t('settings.tabEmergency') },
     ];
 
     // Toggle Switch Component
@@ -148,7 +190,11 @@ export function SettingsPage() {
     return (
         <div className="settings-page-v2">
             <header className="settings-v2-header">
-                <div className="settings-v2-brand">
+                <div 
+                    className={`settings-v2-brand ${settings.panicButtonEnabled ? 'panic-enabled' : ''}`}
+                    onClick={handleBrandClick}
+                    title={settings.panicButtonEnabled ? t('settings.panicButtonDesc') : ''}
+                >
                     <div className="settings-v2-brand-icon"></div>
                     <span>rockgarden</span>
                 </div>
@@ -357,6 +403,52 @@ export function SettingsPage() {
                             </div>
                         </div>
                     )}
+
+                    {activeTab === 'archive' && (
+                        <div className="setting-group">
+                            <div className="setting-section-label">{t('journal.archived')}</div>
+                            {archivedEntries.length === 0 ? (
+                                <div className="archive-empty">
+                                    <p>{t('journal.empty')}</p>
+                                </div>
+                            ) : (
+                                <div className="archive-list">
+                                    {archivedEntries.map((entry) => (
+                                        <div key={entry.id} className="archive-item">
+                                            <div className="archive-item-info">
+                                                <span className="archive-item-title">
+                                                    {entry.content.title || t('journal.untitled')}
+                                                </span>
+                                                <span className="archive-item-date">
+                                                    {new Date(entry.createdAt).toLocaleDateString()}
+                                                </span>
+                                            </div>
+                                            <div className="archive-item-actions">
+                                                <button
+                                                    className="archive-btn restore"
+                                                    onClick={() => toggleArchiveEntry(entry.id)}
+                                                    title={t('journal.unarchive')}
+                                                >
+                                                    <ArchiveRestore size={16} />
+                                                </button>
+                                                <button
+                                                    className="archive-btn delete"
+                                                    onClick={() => {
+                                                        if (confirm(t('journal.deleteConfirm'))) {
+                                                            deleteEntry(entry.id);
+                                                        }
+                                                    }}
+                                                    title={t('common.delete')}
+                                                >
+                                                    <Trash2 size={16} />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </div>
 
                 <aside className="settings-v2-sidebar">
@@ -403,6 +495,28 @@ export function SettingsPage() {
                         </p>
                         <div className="modal-actions">
                             <button className="btn-action" onClick={() => setShowDeleteConfirm(false)}>
+                                {t('common.cancel')}
+                            </button>
+                            <button className="btn-action btn-danger" onClick={handlePanic} disabled={deleting}>
+                                {deleting ? t('common.loading') : t('settings.panicConfirmButton')}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {showPanicConfirm && (
+                <div className="modal-overlay" onClick={() => setShowPanicConfirm(false)}>
+                    <div className="modal" onClick={(e) => e.stopPropagation()}>
+                        <div className="modal-icon">🚨</div>
+                        <h2 className="modal-title" style={{ color: 'var(--danger)' }}>
+                            {t('settings.panicButton')}
+                        </h2>
+                        <p className="modal-text">
+                            {t('settings.panicConfirm')}
+                        </p>
+                        <div className="modal-actions">
+                            <button className="btn-action" onClick={() => setShowPanicConfirm(false)}>
                                 {t('common.cancel')}
                             </button>
                             <button className="btn-action btn-danger" onClick={handlePanic} disabled={deleting}>

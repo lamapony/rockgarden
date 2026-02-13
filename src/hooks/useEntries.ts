@@ -45,6 +45,7 @@ export function useEntries() {
                             hasAudio: entry.hasAudio,
                             createdAt: entry.createdAt,
                             updatedAt: entry.updatedAt,
+                            isArchived: entry.isArchived,
                         };
                     } catch (e) {
                         console.error('Failed to decrypt entry:', entry.id, e);
@@ -53,7 +54,7 @@ export function useEntries() {
                 })
             );
 
-            setEntries(decrypted.filter((e): e is DecryptedEntry => e !== null));
+            setEntries(decrypted.filter((e) => e !== null) as DecryptedEntry[]);
         } catch (e) {
             setError('Failed to load entries');
             console.error(e);
@@ -81,6 +82,7 @@ export function useEntries() {
                 hasAudio: entry.hasAudio,
                 createdAt: entry.createdAt,
                 updatedAt: entry.updatedAt,
+                isArchived: entry.isArchived,
             };
         } catch (e) {
             console.error('Failed to load entry:', e);
@@ -162,6 +164,23 @@ export function useEntries() {
         });
     }, []);
 
+    // Archive/unarchive entry
+    const toggleArchiveEntry = useCallback(async (id: string): Promise<boolean> => {
+        const existing = await getEntry(id);
+        if (!existing) {
+            throw new Error('Entry not found');
+        }
+
+        const newArchiveState = !existing.isArchived;
+        await saveEntry({
+            ...existing,
+            isArchived: newArchiveState,
+            updatedAt: Date.now(),
+        });
+        await loadEntries();
+        return newArchiveState;
+    }, [loadEntries]);
+
     return {
         entries,
         loading,
@@ -172,5 +191,6 @@ export function useEntries() {
         updateEntry,
         deleteEntry,
         markHasAudio,
+        toggleArchiveEntry,
     };
 }

@@ -28,6 +28,10 @@ const resources = {
                 passwordTooShort: 'Password must be at least 6 characters',
                 wrongPassword: 'Wrong password',
                 forgotPassword: 'If you forget your password, your data cannot be recovered.',
+                forgotPasswordReset: 'Forgot password? Reset all data',
+                resetDataTitle: 'Reset All Data',
+                resetDataWarning: 'This will permanently delete ALL your data and start fresh. This cannot be undone. Only do this if you have forgotten your password.',
+                resetDataConfirm: 'Delete Everything',
             },
 
             // Journal
@@ -59,8 +63,13 @@ const resources = {
                 navAnalysis: 'Analysis',
                 navResources: 'Resources',
                 viewPiles: 'Timeline Piles',
-                viewScatter: 'Scatter View',
-                viewCairn: 'Cairn Stack',
+                viewCairn: 'Stone Stack',
+                archive: 'Archive',
+                unarchive: 'Unarchive',
+                archived: 'Archived',
+                active: 'Active',
+                showArchived: 'Show Archived',
+                showActive: 'Show Active',
             },
 
             // Voice
@@ -215,6 +224,15 @@ const resources = {
                 search: 'Search',
             },
 
+            // PWA Update
+            pwa: {
+                updateTitle: 'App Update Available',
+                updateWarning: 'A new version is ready. IMPORTANT: Export your data before updating to prevent data loss.',
+                backupFirst: 'Export Data First',
+                updateNow: 'Update Now',
+                remindLater: 'Remind Me Later',
+            },
+
             // Languages
             languages: {
                 en: 'English',
@@ -244,6 +262,10 @@ const resources = {
                 passwordTooShort: 'Пароль должен быть не менее 6 символов',
                 wrongPassword: 'Неверный пароль',
                 forgotPassword: 'Если вы забудете пароль, данные невозможно будет восстановить.',
+                forgotPasswordReset: 'Забыли пароль? Сбросить все данные',
+                resetDataTitle: 'Сброс всех данных',
+                resetDataWarning: 'Это навсегда удалит ВСЕ ваши данные и начнёт с чистого листа. Это действие нельзя отменить. Делайте это только если забыли пароль.',
+                resetDataConfirm: 'Удалить всё',
             },
 
             // Journal
@@ -274,9 +296,14 @@ const resources = {
                 navLog: 'Журнал',
                 navAnalysis: 'Анализ',
                 navResources: 'Ресурсы',
-                viewPiles: 'Стопки по времени',
-                viewScatter: 'Разбросанные',
-                viewCairn: 'Башня камней',
+                viewPiles: 'Стопки внизу',
+                viewCairn: 'Башня по центру',
+                archive: 'В архив',
+                unarchive: 'Из архива',
+                archived: 'Архив',
+                active: 'Активные',
+                showArchived: 'Показать архив',
+                showActive: 'Показать активные',
             },
 
             // Voice
@@ -430,6 +457,15 @@ const resources = {
                 search: 'Поиск',
             },
 
+            // PWA Update
+            pwa: {
+                updateTitle: 'Обновление приложения',
+                updateWarning: 'Новая версия готова. ВАЖНО: Экспортируйте данные перед обновлением, чтобы предотвратить их потерю.',
+                backupFirst: 'Сначала экспортировать',
+                updateNow: 'Обновить сейчас',
+                remindLater: 'Напомнить позже',
+            },
+
             // Languages
             languages: {
                 en: 'English',
@@ -459,6 +495,10 @@ const resources = {
                 passwordTooShort: 'Adgangskode skal være mindst 6 tegn',
                 wrongPassword: 'Forkert adgangskode',
                 forgotPassword: 'Hvis du glemmer din adgangskode, kan dine data ikke gendannes.',
+                forgotPasswordReset: 'Glemt adgangskode? Nulstil alle data',
+                resetDataTitle: 'Nulstil alle data',
+                resetDataWarning: 'Dette vil permanent slette ALLE dine data og starte forfra. Dette kan ikke fortrydes. Gør kun dette, hvis du har glemt din adgangskode.',
+                resetDataConfirm: 'Slet alt',
             },
 
             // Journal
@@ -489,9 +529,14 @@ const resources = {
                 navLog: 'Log',
                 navAnalysis: 'Analyse',
                 navResources: 'Ressourcer',
-                viewPiles: 'Tidslinje bunker',
-                viewScatter: 'Spredt visning',
-                viewCairn: 'Stenstabel',
+                viewPiles: 'Bunden stabler',
+                viewCairn: 'Midten stabel',
+                archive: 'Arkiver',
+                unarchive: 'Fjern fra arkiv',
+                archived: 'Arkiveret',
+                active: 'Aktive',
+                showArchived: 'Vis arkiverede',
+                showActive: 'Vis aktive',
             },
 
             // Voice
@@ -643,6 +688,15 @@ const resources = {
                 success: 'Succes',
                 settings: 'Indstillinger',
                 search: 'Søg',
+            },
+
+            // PWA Update
+            pwa: {
+                updateTitle: 'App-opdatering tilgængelig',
+                updateWarning: 'En ny version er klar. VIGTIGT: Eksporter dine data før opdatering for at forhindre datatab.',
+                backupFirst: 'Eksportér først',
+                updateNow: 'Opdater nu',
+                remindLater: 'Påmind mig senere',
             },
 
             // Languages

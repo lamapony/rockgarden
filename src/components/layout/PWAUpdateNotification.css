@@ -1,0 +1,121 @@
+/* PWA Update Notification */
+
+.pwa-update-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 2rem;
+    backdrop-filter: blur(4px);
+}
+
+.pwa-update-modal {
+    width: 100%;
+    max-width: 420px;
+    background: var(--color-bg-app, #0a0a0a);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2.5rem;
+    text-align: center;
+}
+
+.pwa-update-icon {
+    color: #eab308;
+    margin-bottom: 1.5rem;
+}
+
+.pwa-update-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-text-primary, #ffffff);
+    margin-bottom: 1rem;
+}
+
+.pwa-update-text {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary, #888888);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+.pwa-update-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.pwa-btn-backup,
+.pwa-btn-update {
+    width: 100%;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-family: inherit;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+}
+
+.pwa-btn-backup {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--color-text-primary, #ffffff);
+}
+
+.pwa-btn-backup:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.pwa-btn-backup:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pwa-btn-update {
+    background: var(--color-text-primary, #ffffff);
+    color: var(--color-bg-app, #0a0a0a);
+}
+
+.pwa-btn-update:hover {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.pwa-btn-dismiss {
+    background: none;
+    border: none;
+    color: var(--color-text-muted, #666666);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: color 0.2s;
+}
+
+.pwa-btn-dismiss:hover {
+    color: var(--color-text-secondary, #888888);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .pwa-update-overlay {
+        padding: 1.5rem;
+    }
+    
+    .pwa-update-modal {
+        padding: 1.75rem;
+    }
+}

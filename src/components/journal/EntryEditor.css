@@ -79,6 +79,36 @@
     gap: 1rem;
 }
 
+.editor-archive {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.editor-archive:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: var(--color-text-primary);
+}
+
+.editor-archive.archived {
+    background: rgba(234, 179, 8, 0.1);
+    border-color: rgba(234, 179, 8, 0.5);
+    color: #eab308;
+}
+
+.editor-archive.archived:hover {
+    background: rgba(234, 179, 8, 0.15);
+    border-color: #eab308;
+}
+
 .editor-delete {
     width: 40px;
     height: 40px;

@@ -43,6 +43,28 @@
     color: var(--fg-primary);
 }
 
+.settings-v2-brand.panic-enabled {
+    cursor: pointer;
+    position: relative;
+}
+
+.settings-v2-brand.panic-enabled::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 6px;
+    height: 6px;
+    background: var(--danger, #ef4444);
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.settings-v2-brand.panic-enabled:hover::after {
+    opacity: 0.5;
+}
+
 .settings-v2-brand-icon {
     width: 24px;
     height: 24px;
@@ -451,6 +473,90 @@
 .settings-v2-content::-webkit-scrollbar-thumb,
 .settings-v2-sidebar::-webkit-scrollbar-thumb {
     background: var(--fg-tertiary);
+}
+
+/* Archive section */
+.archive-empty {
+    padding: 3rem 1rem;
+    text-align: center;
+    color: var(--fg-tertiary);
+    font-size: 0.875rem;
+}
+
+.archive-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.archive-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border);
+    transition: background 0.2s;
+}
+
+.archive-item:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.archive-item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+}
+
+.archive-item-title {
+    font-size: 0.875rem;
+    color: var(--fg-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.archive-item-date {
+    font-size: 0.7rem;
+    color: var(--fg-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.archive-item-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.archive-btn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--fg-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.archive-btn:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.archive-btn.restore:hover {
+    background: rgba(234, 179, 8, 0.1);
+    border-color: rgba(234, 179, 8, 0.5);
+    color: #eab308;
+}
+
+.archive-btn.delete:hover {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.5);
+    color: var(--danger);
 }
 
 /* Responsive */
