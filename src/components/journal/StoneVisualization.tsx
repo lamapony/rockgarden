@@ -32,7 +32,7 @@ export function StoneVisualization({ entries, onEntryClick, onAddEntry }: StoneV
     const [layoutMode, setLayoutMode] = useState<LayoutMode>('layout-scatter');
     const [stones, setStones] = useState<StoneData[]>([]);
     const [hoveredStone, setHoveredStone] = useState<string | null>(null);
-    const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
+    const [tooltipPos, setTooltipPos] = useState<{ x: number; y: number; placement?: 'above' | 'below' }>({ x: 0, y: 0, placement: 'above' });
     const [, setDimensions] = useState({ width: 0, height: 0 });
 
     // Filter out archived entries
@@ -221,9 +221,19 @@ export function StoneVisualization({ entries, onEntryClick, onAddEntry }: StoneV
         const rect = (e.target as HTMLElement).getBoundingClientRect();
         const containerRect = containerRef.current?.getBoundingClientRect();
         if (containerRect) {
+            const stoneY = rect.top - containerRect.top;
+            const stoneHeight = rect.height;
+            const containerHeight = containerRect.height;
+            
+            // If stone is in top 30% of container, show tooltip below
+            const isTopPosition = stoneY < containerHeight * 0.3;
+            
             setTooltipPos({
                 x: rect.left - containerRect.left + rect.width / 2,
-                y: rect.top - containerRect.top - 10,
+                y: isTopPosition 
+                    ? stoneY + stoneHeight + 10  // Below stone
+                    : stoneY - 10,               // Above stone
+                placement: isTopPosition ? 'below' : 'above',
             });
         }
     };
@@ -327,7 +337,7 @@ export function StoneVisualization({ entries, onEntryClick, onAddEntry }: StoneV
             {/* Tooltip */}
             {hoveredStoneData && (
                 <div 
-                    className="stone-tooltip"
+                    className={`stone-tooltip ${tooltipPos.placement === 'below' ? 'tooltip-below' : 'tooltip-above'}`}
                     style={{
                         left: `${tooltipPos.x}px`,
                         top: `${tooltipPos.y}px`,

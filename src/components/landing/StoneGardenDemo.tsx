@@ -25,7 +25,7 @@ export function StoneGardenDemo() {
     const [viewMode, setViewMode] = useState<ViewMode>('scatter');
     const [stones, setStones] = useState<DemoStone[]>([]);
     const [hoveredStone, setHoveredStone] = useState<string | null>(null);
-    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+    const [mousePos, setMousePos] = useState<{ x: number; y: number; placement?: 'above' | 'below' }>({ x: 0, y: 0, placement: 'above' });
 
     // Generate demo stones based on current language and view mode
     useEffect(() => {
@@ -92,9 +92,16 @@ export function StoneGardenDemo() {
 
     const handleMouseMove = useCallback((e: React.MouseEvent) => {
         const rect = e.currentTarget.getBoundingClientRect();
+        const y = e.clientY - rect.top;
+        const containerHeight = rect.height;
+        
+        // If mouse is in top 25% of container, show tooltip below cursor
+        const isTopPosition = y < containerHeight * 0.25;
+        
         setMousePos({
             x: e.clientX - rect.left,
-            y: e.clientY - rect.top,
+            y: y,
+            placement: isTopPosition ? 'below' : 'above',
         });
     }, []);
 
@@ -143,10 +150,12 @@ export function StoneGardenDemo() {
             {/* Tooltip - identical to app */}
             {hoveredStoneData && (
                 <div 
-                    className="demo-stone-tooltip"
+                    className={`demo-stone-tooltip ${mousePos.placement === 'below' ? 'tooltip-below' : 'tooltip-above'}`}
                     style={{
                         left: `${mousePos.x}px`,
-                        top: `${mousePos.y - 10}px`,
+                        top: mousePos.placement === 'below' 
+                            ? `${mousePos.y + 20}px`  // Below cursor
+                            : `${mousePos.y - 10}px`, // Above cursor
                     }}
                 >
                     <h4>{hoveredStoneData.date}</h4>

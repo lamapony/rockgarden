@@ -69,6 +69,7 @@ function AppRoutes() {
       <Route path="/export" element={<ExportPage />} />
       <Route path="/analysis" element={<AnalysisPage />} />
       <Route path="/settings" element={<SettingsPage />} />
+      <Route path="/landing" element={<LandingPage onEnter={handleLandingEnter} />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
