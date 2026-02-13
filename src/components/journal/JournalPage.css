@@ -1,0 +1,179 @@
+/* Journal Page - Stonewall Design */
+
+.journal-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-bg-app);
+    position: relative;
+    padding-bottom: 64px; /* Space for bottom nav */
+}
+
+/* Noise overlay */
+.journal-page::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+/* Header */
+.journal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+    padding: 0 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+    z-index: 10;
+    flex-shrink: 0;
+}
+
+/* Brand */
+.journal-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.journal-brand-icon {
+    width: 24px;
+    height: 24px;
+    background: white;
+    position: relative;
+}
+
+.journal-brand-icon::after {
+    content: '';
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--color-bg-app);
+    border: 2px solid white;
+}
+
+.journal-brand-name {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    font-size: 1.1rem;
+    color: var(--color-text-primary);
+}
+
+/* Navigation */
+.journal-nav {
+    display: flex;
+    gap: 2rem;
+}
+
+.journal-nav-item {
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: color 0.3s;
+    padding: 0.5rem 0;
+    position: relative;
+}
+
+.journal-nav-item:hover,
+.journal-nav-item.active {
+    color: var(--color-text-primary);
+}
+
+.journal-nav-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: var(--color-text-primary);
+}
+
+/* Controls */
+.journal-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.journal-control-btn {
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    transition: all 0.2s;
+}
+
+.journal-control-btn:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    color: var(--color-text-primary);
+}
+
+/* Main Content */
+.journal-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 10;
+    overflow: hidden;
+    padding: 1.5rem;
+}
+
+/* Loading */
+.journal-loading {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.journal-spinner {
+    width: 32px;
+    height: 32px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-top-color: var(--color-text-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .journal-header {
+        padding: 0 1.5rem;
+        height: 64px;
+    }
+    
+    .journal-nav {
+        display: none;
+    }
+    
+    .journal-main {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .journal-brand-name {
+        font-size: 1rem;
+    }
+}

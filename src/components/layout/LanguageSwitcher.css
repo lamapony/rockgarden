@@ -1,0 +1,22 @@
+/* Language Switcher - Compact */
+
+.lang-select {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--fg-primary);
+    padding: 0.5rem;
+    font-family: inherit;
+    font-size: 0.8rem;
+    min-width: 140px;
+    cursor: pointer;
+}
+
+.lang-select:focus {
+    outline: none;
+    border-color: var(--fg-secondary);
+}
+
+.lang-select option {
+    background: var(--bg-surface);
+    color: var(--fg-primary);
+}

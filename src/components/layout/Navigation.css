@@ -1,0 +1,88 @@
+/* Navigation - Stonewall Design */
+
+.main-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: rgba(9, 9, 11, 0.95);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 100;
+}
+
+.nav-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: 80px;
+    height: 100%;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+    position: relative;
+}
+
+.nav-link:hover {
+    color: var(--color-text-secondary);
+}
+
+.nav-link.active {
+    color: var(--color-text-primary);
+}
+
+.nav-link.active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 2px;
+    background: var(--color-text-primary);
+}
+
+.nav-text {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* Responsive - desktop */
+@media (min-width: 768px) {
+    .main-nav {
+        position: fixed;
+        bottom: auto;
+        top: 0;
+        left: auto;
+        right: 2rem;
+        width: auto;
+        height: 80px;
+        gap: 2rem;
+        background: transparent;
+        border-top: none;
+        backdrop-filter: none;
+    }
+    
+    .nav-link {
+        flex-direction: row;
+        gap: 0.5rem;
+        width: auto;
+        padding: 0.5rem;
+    }
+    
+    .nav-link.active::before {
+        display: none;
+    }
+    
+    .nav-text {
+        font-size: 0.7rem;
+    }
+}

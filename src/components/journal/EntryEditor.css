@@ -1,0 +1,316 @@
+/* Entry Editor - Stonewall Design */
+
+.entry-editor {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-bg-app);
+    position: relative;
+}
+
+/* Noise overlay */
+.entry-editor::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+/* Loading */
+.editor-loading {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bg-app);
+}
+
+.editor-spinner {
+    width: 32px;
+    height: 32px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-top-color: var(--color-text-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Header */
+.editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+    padding: 0 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+    z-index: 10;
+}
+
+.editor-back {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.editor-back:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    color: var(--color-text-primary);
+}
+
+.editor-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.editor-delete {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: var(--color-danger);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.editor-delete:hover {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: var(--color-danger);
+}
+
+.editor-save {
+    height: 40px;
+    padding: 0 1.5rem;
+    background: var(--color-text-primary);
+    color: var(--color-bg-app);
+    border: none;
+    font-family: inherit;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.editor-save:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.editor-save:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Content */
+.editor-content {
+    flex: 1;
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    position: relative;
+    z-index: 10;
+}
+
+/* Title input */
+.editor-title-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.editor-title-input:focus {
+    border-bottom-color: rgba(255, 255, 255, 0.3);
+}
+
+.editor-title-input::placeholder {
+    color: var(--color-text-muted);
+}
+
+/* Intensity */
+.editor-intensity {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.editor-label {
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+}
+
+/* Textarea */
+.editor-text {
+    flex: 1;
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding: 1rem 0;
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: var(--color-text-primary);
+    font-family: inherit;
+    resize: none;
+    outline: none;
+}
+
+.editor-text::placeholder {
+    color: var(--color-text-muted);
+}
+
+/* Voice section */
+.editor-voice {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 1.5rem;
+}
+
+.voice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.voice-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+}
+
+.voice-btn {
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--color-text-secondary);
+    font-family: inherit;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.voice-btn:hover {
+    border-color: rgba(255, 255, 255, 0.4);
+    color: var(--color-text-primary);
+}
+
+.voice-btn.recording {
+    background: var(--color-danger);
+    border-color: var(--color-danger);
+    color: white;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+.voice-audio {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.voice-audio audio {
+    flex: 1;
+    height: 36px;
+    filter: invert(1) hue-rotate(180deg);
+    opacity: 0.8;
+}
+
+.voice-clear {
+    padding: 0.4rem 0.8rem;
+    background: transparent;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: var(--color-danger);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.voice-clear:hover {
+    background: rgba(239, 68, 68, 0.1);
+}
+
+/* Footer */
+.editor-footer {
+    padding: 1.5rem 2rem;
+    text-align: center;
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+    z-index: 10;
+}
+
+.editor-footer span {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-family: monospace;
+    margin: 0 0.25rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .editor-header {
+        padding: 0 1.5rem;
+        height: 64px;
+    }
+    
+    .editor-content {
+        padding: 1.5rem;
+    }
+    
+    .editor-title-input {
+        font-size: 1.25rem;
+    }
+    
+    .editor-text {
+        font-size: 1rem;
+    }
+}

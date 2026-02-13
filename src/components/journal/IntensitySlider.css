@@ -1,0 +1,54 @@
+/* Intensity Slider - Stonewall Design */
+
+.intensity-slider {
+    width: 100%;
+}
+
+.intensity-range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.2);
+    outline: none;
+    margin-bottom: 0.75rem;
+}
+
+.intensity-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: var(--color-text-primary);
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.intensity-range::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+.intensity-range::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: var(--color-text-primary);
+    cursor: pointer;
+    border: none;
+}
+
+.intensity-markers {
+    display: flex;
+    justify-content: space-between;
+    gap: 4px;
+}
+
+.intensity-marker {
+    flex: 1;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    transition: background 0.2s;
+}
+
+.intensity-marker.active {
+    background: var(--color-text-primary);
+}

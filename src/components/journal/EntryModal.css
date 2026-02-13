@@ -1,0 +1,31 @@
+/* EntryModal - Slider thumb styles only */
+/* (inline styles in component handle everything else) */
+
+.modal-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    background: #ffffff;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 3px solid #333333;
+    box-shadow: 0 0 0 2px #ffffff;
+    margin-top: -8px;
+}
+
+.modal-slider::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    background: #ffffff;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 3px solid #333333;
+    box-shadow: 0 0 0 2px #ffffff;
+}
+
+.modal-slider::-webkit-slider-runnable-track {
+    height: 8px;
+    background: #555555;
+    border-radius: 4px;
+}

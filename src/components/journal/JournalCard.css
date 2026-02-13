@@ -1,0 +1,107 @@
+.journal-card {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: var(--space-md);
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.journal-card:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.card-intensity-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--intensity-color, var(--color-accent));
+    box-shadow: 0 0 10px var(--intensity-color);
+}
+
+.card-content {
+    padding: var(--space-md);
+    padding-left: var(--space-lg);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: var(--space-sm);
+}
+
+.card-date {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+}
+
+.icon-muted {
+    color: var(--color-text-muted);
+    opacity: 0.7;
+}
+
+.ml-2 {
+    margin-left: 8px;
+}
+
+.card-intensity-badge {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-sm);
+    padding: 2px 8px;
+    font-weight: 700;
+    color: var(--intensity-color);
+    font-size: var(--font-size-sm);
+}
+
+.card-title {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-xs);
+    background: linear-gradient(to right, #fff, #cbd5e1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.card-preview {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-md);
+    line-height: 1.5;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-meta {
+    display: flex;
+    gap: var(--space-sm);
+}
+
+.meta-tag {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.7rem;
+    padding: 4px 8px;
+    border-radius: var(--radius-full);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.meta-tag.audio {
+    color: #38bdf8;
+    background: rgba(56, 189, 248, 0.1);
+}
+
+.meta-tag.danger {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+}

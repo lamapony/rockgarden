@@ -1,0 +1,313 @@
+/* Stonewall Themes */
+
+/* Default theme (Monochrome) - applied to :root */
+:root {
+  /* New naming */
+  --bg-deep: #050505;
+  --bg-surface: #0a0a0a;
+  --bg-elevated: #111111;
+  
+  --fg-primary: #ffffff;
+  --fg-secondary: #888888;
+  --fg-muted: #444444;
+  --fg-tertiary: #333333;
+  
+  --accent: #ffffff;
+  --accent-hover: #cccccc;
+  
+  --danger: #ff3333;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  
+  --border: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.2);
+  
+  /* Intensity scale - monochrome */
+  --intensity-1: #e5e5e5;
+  --intensity-2: #d4d4d4;
+  --intensity-3: #c4c4c4;
+  --intensity-4: #b3b3b3;
+  --intensity-5: #a3a3a3;
+  --intensity-6: #929292;
+  --intensity-7: #818181;
+  --intensity-8: #717171;
+  --intensity-9: #606060;
+  --intensity-10: #505050;
+  
+  /* Legacy mapping for compatibility */
+  --color-bg-app: var(--bg-deep);
+  --color-bg-secondary: var(--bg-surface);
+  --color-bg-tertiary: var(--bg-elevated);
+  --color-bg-elevated: var(--bg-elevated);
+  
+  --color-text-primary: var(--fg-primary);
+  --color-text-secondary: var(--fg-secondary);
+  --color-text-muted: var(--fg-muted);
+  
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-light: var(--accent);
+  --color-accent-dark: var(--accent-hover);
+  
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  
+  --glass-bg: var(--bg-surface);
+  --glass-border: var(--border);
+}
+
+/* Warm Theme - Amber & Sand */
+[data-theme="warm"] {
+  --bg-deep: #0c0907;
+  --bg-surface: #14100c;
+  --bg-elevated: #1e1812;
+  
+  --fg-primary: #faf6f1;
+  --fg-secondary: #a89080;
+  --fg-muted: #5c4d40;
+  --fg-tertiary: #3d3228;
+  
+  --accent: #d4a574;
+  --accent-hover: #c49464;
+  
+  --danger: #c45c4a;
+  --success: #7a9a6a;
+  --warning: #d4a03c;
+  
+  --border: rgba(212, 165, 116, 0.15);
+  --border-hover: rgba(212, 165, 116, 0.3);
+  
+  --intensity-1: #f5e6d3;
+  --intensity-2: #edd5b8;
+  --intensity-3: #e5c49d;
+  --intensity-4: #ddb382;
+  --intensity-5: #d4a574;
+  --intensity-6: #c99463;
+  --intensity-7: #be8352;
+  --intensity-8: #b37241;
+  --intensity-9: #a86130;
+  --intensity-10: #9d501f;
+  
+  /* Legacy mapping */
+  --color-bg-app: var(--bg-deep);
+  --color-bg-secondary: var(--bg-surface);
+  --color-bg-tertiary: var(--bg-elevated);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-text-primary: var(--fg-primary);
+  --color-text-secondary: var(--fg-secondary);
+  --color-text-muted: var(--fg-muted);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-light: var(--accent);
+  --color-accent-dark: var(--accent-hover);
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --glass-bg: var(--bg-surface);
+  --glass-border: var(--border);
+}
+
+/* Cool Theme - Ice & Slate */
+[data-theme="cool"] {
+  --bg-deep: #070a0c;
+  --bg-surface: #0d1215;
+  --bg-elevated: #141c21;
+  
+  --fg-primary: #f0f4f8;
+  --fg-secondary: #7a94a8;
+  --fg-muted: #4a5a68;
+  --fg-tertiary: #2d3a44;
+  
+  --accent: #7fb3d5;
+  --accent-hover: #6fa3c5;
+  
+  --danger: #d4576a;
+  --success: #5aa87a;
+  --warning: #d4a83c;
+  
+  --border: rgba(127, 179, 213, 0.15);
+  --border-hover: rgba(127, 179, 213, 0.3);
+  
+  --intensity-1: #e3f0f7;
+  --intensity-2: #c8e1ef;
+  --intensity-3: #add2e7;
+  --intensity-4: #92c3df;
+  --intensity-5: #7fb3d5;
+  --intensity-6: #6a9ec0;
+  --intensity-7: #5589ab;
+  --intensity-8: #407496;
+  --intensity-9: #2b5f81;
+  --intensity-10: #164a6c;
+  
+  /* Legacy mapping */
+  --color-bg-app: var(--bg-deep);
+  --color-bg-secondary: var(--bg-surface);
+  --color-bg-tertiary: var(--bg-elevated);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-text-primary: var(--fg-primary);
+  --color-text-secondary: var(--fg-secondary);
+  --color-text-muted: var(--fg-muted);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-light: var(--accent);
+  --color-accent-dark: var(--accent-hover);
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --glass-bg: var(--bg-surface);
+  --glass-border: var(--border);
+}
+
+/* Forest Theme - Moss & Earth */
+[data-theme="forest"] {
+  --bg-deep: #080a07;
+  --bg-surface: #0f120c;
+  --bg-elevated: #161b12;
+  
+  --fg-primary: #f1f5ee;
+  --fg-secondary: #8a9a7a;
+  --fg-muted: #4f5a45;
+  --fg-tertiary: #323b2d;
+  
+  --accent: #8fb070;
+  --accent-hover: #7fa060;
+  
+  --danger: #c45a5a;
+  --success: #6a9a5a;
+  --warning: #c4a04a;
+  
+  --border: rgba(143, 176, 112, 0.15);
+  --border-hover: rgba(143, 176, 112, 0.3);
+  
+  --intensity-1: #e8f0e0;
+  --intensity-2: #d1e1c1;
+  --intensity-3: #bad2a2;
+  --intensity-4: #a3c383;
+  --intensity-5: #8fb070;
+  --intensity-6: #7a9b5b;
+  --intensity-7: #658646;
+  --intensity-8: #507131;
+  --intensity-9: #3b5c1c;
+  --intensity-10: #264707;
+  
+  /* Legacy mapping */
+  --color-bg-app: var(--bg-deep);
+  --color-bg-secondary: var(--bg-surface);
+  --color-bg-tertiary: var(--bg-elevated);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-text-primary: var(--fg-primary);
+  --color-text-secondary: var(--fg-secondary);
+  --color-text-muted: var(--fg-muted);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-light: var(--accent);
+  --color-accent-dark: var(--accent-hover);
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --glass-bg: var(--bg-surface);
+  --glass-border: var(--border);
+}
+
+/* Midnight Theme - Deep Blue & Purple */
+[data-theme="midnight"] {
+  --bg-deep: #05070c;
+  --bg-surface: #0a0e18;
+  --bg-elevated: #111524;
+  
+  --fg-primary: #e8eaf0;
+  --fg-secondary: #8088a0;
+  --fg-muted: #484d60;
+  --fg-tertiary: #2c3040;
+  
+  --accent: #8b92c4;
+  --accent-hover: #7b82b4;
+  
+  --danger: #c45a7a;
+  --success: #5a9a8a;
+  --warning: #c4a05a;
+  
+  --border: rgba(139, 146, 196, 0.15);
+  --border-hover: rgba(139, 146, 196, 0.3);
+  
+  --intensity-1: #e5e7f0;
+  --intensity-2: #cacde1;
+  --intensity-3: #afb3d2;
+  --intensity-4: #9499c3;
+  --intensity-5: #8b92c4;
+  --intensity-6: #767db0;
+  --intensity-7: #61689c;
+  --intensity-8: #4c5388;
+  --intensity-9: #373e74;
+  --intensity-10: #222960;
+  
+  /* Legacy mapping */
+  --color-bg-app: var(--bg-deep);
+  --color-bg-secondary: var(--bg-surface);
+  --color-bg-tertiary: var(--bg-elevated);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-text-primary: var(--fg-primary);
+  --color-text-secondary: var(--fg-secondary);
+  --color-text-muted: var(--fg-muted);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-light: var(--accent);
+  --color-accent-dark: var(--accent-hover);
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --glass-bg: var(--bg-surface);
+  --glass-border: var(--border);
+}
+
+/* Sepia Theme - Old Paper & Ink */
+[data-theme="sepia"] {
+  --bg-deep: #0f0d0a;
+  --bg-surface: #1a1712;
+  --bg-elevated: #26221a;
+  
+  --fg-primary: #e8e0d0;
+  --fg-secondary: #9a8b75;
+  --fg-muted: #5c5245;
+  --fg-tertiary: #3d362c;
+  
+  --accent: #b8a080;
+  --accent-hover: #a89070;
+  
+  --danger: #b06050;
+  --success: #7a8a5a;
+  --warning: #b09040;
+  
+  --border: rgba(184, 160, 128, 0.15);
+  --border-hover: rgba(184, 160, 128, 0.3);
+  
+  --intensity-1: #f0e8d8;
+  --intensity-2: #e3d5c0;
+  --intensity-3: #d6c2a8;
+  --intensity-4: #c9af90;
+  --intensity-5: #b8a080;
+  --intensity-6: #a58d6d;
+  --intensity-7: #927a5a;
+  --intensity-8: #7f6747;
+  --intensity-9: #6c5434;
+  --intensity-10: #594121;
+  
+  /* Legacy mapping */
+  --color-bg-app: var(--bg-deep);
+  --color-bg-secondary: var(--bg-surface);
+  --color-bg-tertiary: var(--bg-elevated);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-text-primary: var(--fg-primary);
+  --color-text-secondary: var(--fg-secondary);
+  --color-text-muted: var(--fg-muted);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-light: var(--accent);
+  --color-accent-dark: var(--accent-hover);
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --glass-bg: var(--bg-surface);
+  --glass-border: var(--border);
+}

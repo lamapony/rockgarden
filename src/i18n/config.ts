@@ -1,0 +1,684 @@
+/**
+ * i18n Configuration for Safe Journal
+ * Supports Russian, English, and Danish
+ */
+
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+
+// Translations
+const resources = {
+    en: {
+        translation: {
+            // App
+            appName: 'Safe Journal',
+            appTagline: 'Your private, encrypted diary',
+
+            // Auth
+            auth: {
+                title: 'Safe Journal',
+                subtitle: 'Encrypted personal diary',
+                createPassword: 'Create Password',
+                enterPassword: 'Enter Password',
+                password: 'Password',
+                confirmPassword: 'Confirm Password',
+                unlock: 'Unlock',
+                create: 'Create',
+                passwordMismatch: 'Passwords do not match',
+                passwordTooShort: 'Password must be at least 6 characters',
+                wrongPassword: 'Wrong password',
+                forgotPassword: 'If you forget your password, your data cannot be recovered.',
+            },
+
+            // Journal
+            journal: {
+                title: 'My Journal',
+                empty: 'No entries yet',
+                emptyHint: 'Tap + to create your first entry',
+                newEntry: 'New Entry',
+                editEntry: 'Edit Entry',
+                deleteEntry: 'Delete Entry',
+                deleteConfirm: 'Are you sure you want to delete this entry?',
+                intensity: 'Intensity',
+                date: 'Date',
+                whatHappened: 'What happened?',
+                titlePlaceholder: 'Title (optional)',
+                textPlaceholder: 'Describe what happened...',
+                save: 'Save',
+                cancel: 'Cancel',
+                delete: 'Delete',
+                untitled: 'Untitled',
+                addEntry: 'Add Entry',
+                captureEntry: 'Capture New Entry',
+                description: 'Description',
+                describeEvent: 'Describe the event...',
+                mild: 'Mild',
+                severe: 'Severe',
+                logEntry: 'Log Entry',
+                navLog: 'Log',
+                navAnalysis: 'Analysis',
+                navResources: 'Resources',
+                viewPiles: 'Timeline Piles',
+                viewScatter: 'Scatter View',
+                viewCairn: 'Cairn Stack',
+            },
+
+            // Voice
+            voice: {
+                record: 'Record Voice Note',
+                recording: 'Recording...',
+                stop: 'Stop',
+                play: 'Play',
+                pause: 'Pause',
+                delete: 'Delete Recording',
+            },
+
+            // Export
+            export: {
+                title: 'Export',
+                subtitle: 'Generate PDF for your lawyer',
+                generate: 'Generate PDF',
+                generating: 'Generating...',
+                download: 'Download PDF',
+                timeline: 'Event Timeline',
+                statistics: 'Statistics',
+                totalEvents: 'Total Events',
+                averageIntensity: 'Average Intensity',
+                period: 'Period',
+                analysis: 'Pattern Analysis',
+                riskLevel: 'Risk Level',
+                escalation: 'Escalation Detected',
+                frequency: 'Avg. Frequency',
+                timeOfDay: 'Time of Day',
+            },
+
+            // Analysis
+            analysis: {
+                title: 'Analysis',
+                patternsTitle: 'Detected Patterns & Phrase Clusters',
+                last90Days: 'Last 90 Days',
+                riskAssessment: 'Risk Assessment Visualization',
+                escalationVelocity: 'Escalation Velocity',
+                isolationIndicator: 'Isolation Indicator',
+                low: 'Low',
+                moderate: 'Moderate',
+                high: 'High',
+                critical: 'Critical',
+                severe: 'Severe',
+                disclaimer: 'This visualization is based on narrative sentiment and event frequency. It is intended for personal reflection and decision support, not as a clinical diagnosis.',
+                milestonesTitle: 'Safety Planning Milestones',
+                decisionSupport: 'Decision Support',
+                recommendation: 'Recommendation',
+                archiveTitle: 'Archive & Report',
+                legalReport: 'Formal Legal Report',
+                narrativeReport: 'Personal Narrative',
+                exportNote: 'All exports are encrypted and local-only.',
+                noData: 'No data to analyze yet.',
+                noPatternsYet: 'No patterns detected yet (keep logging events)',
+                goToJournal: 'Go to Journal',
+                analyzing: 'Analyzing patterns...',
+                statusVerified: 'Verified',
+                statusActive: 'Active',
+            },
+
+            // Settings
+            settings: {
+                title: 'Settings',
+                language: 'Language',
+                theme: 'Color Theme',
+                dark: 'Dark',
+                light: 'Light',
+                changePassword: 'Change Password',
+                oldPassword: 'Current Password',
+                newPassword: 'New Password',
+                confirmNewPassword: 'Confirm New Password',
+                export: 'Export Data',
+                panicConfirm: 'This will permanently delete ALL your data. This cannot be undone!',
+                panicConfirmButton: 'Delete Everything',
+                logout: 'Lock',
+                // New settings tabs
+                tabGeneral: 'General & Security',
+                tabPrivacy: 'Privacy & Data',
+                tabDisguise: 'Disguise Mode',
+                tabEmergency: 'Emergency Protocol',
+                tabBackup: 'Backup',
+                // Interface
+                interfaceTitle: 'Interface Customization',
+                primaryLanguage: 'Primary Language',
+                languageDesc: 'Select the language for all interface elements and exports.',
+                colorTheme: 'Color Theme',
+                themeDesc: 'Visual stone metaphors for the UI aesthetic.',
+                // Security
+                securityTitle: 'Active Security',
+                appLock: 'App Lock',
+                appLockDesc: 'Require password upon every app launch.',
+                autoLock: 'Auto-Lock Timer',
+                autoLockDesc: 'Lock app after period of inactivity.',
+                // Privacy
+                privacyTitle: 'Encryption & Privacy',
+                encryptionStatus: 'Encryption Status',
+                encryptionDesc: 'Your data is encrypted with AES-256-GCM.',
+                offlineMode: 'Offline Mode',
+                offlineDesc: 'Disable all network requests. Strictly on-device.',
+                updatePassword: 'Update',
+                // Emergency
+                emergencyTitle: 'Emergency Protocol',
+                panicButton: 'Panic Button',
+                panicButtonDesc: 'Triple-tap the brand logo to trigger immediate lock.',
+                burnPin: 'Emergency Delete Trigger',
+                burnPinDesc: 'Inputting a specific Burn PIN will wipe all local data instantly.',
+                setBurnPin: 'Set Burn PIN',
+                emergencyDelete: 'Emergency Delete All',
+                emergencyDeleteDesc: 'Permanently delete ALL data immediately.',
+                deleteNow: 'Delete Now',
+                // Backup
+                backupTitle: 'Backup & Export',
+                exportData: 'Export Data',
+                exportDesc: 'Download encrypted backup of all entries.',
+                importData: 'Import Data',
+                importDesc: 'Restore from a previous backup file.',
+                autoDelete: 'Auto-Delete Old Entries',
+                autoDeleteDesc: 'Entries older than selected period are purged.',
+                // System status
+                systemStatus: 'System Status',
+                dataIntegrity: 'Data Integrity',
+                encryptionActive: 'Hardware-level encryption is active. Your private key is stored securely.',
+                backupLocation: 'Backup Location',
+                localOnly: 'Local Storage Only',
+                cloudDisabled: 'Cloud sync disabled for maximum security.',
+                backupNow: 'Backup Now',
+                // Toggle options
+                never: 'Never',
+                days30: '30 Days',
+                days90: '90 Days',
+                year1: '1 Year',
+                minute1: '1 minute',
+                minutes5: '5 minutes',
+                minutes15: '15 minutes',
+            },
+
+            // Common
+            common: {
+                back: 'Back',
+                save: 'Save',
+                saving: 'Saving...',
+                cancel: 'Cancel',
+                close: 'Close',
+                delete: 'Delete',
+                confirm: 'Confirm',
+                yes: 'Yes',
+                no: 'No',
+                loading: 'Loading...',
+                error: 'Error',
+                success: 'Success',
+                settings: 'Settings',
+                search: 'Search',
+            },
+
+            // Languages
+            languages: {
+                en: 'English',
+                ru: 'Русский',
+                da: 'Dansk',
+            },
+        },
+    },
+
+    ru: {
+        translation: {
+            // App
+            appName: 'Безопасный Дневник',
+            appTagline: 'Ваш личный зашифрованный дневник',
+
+            // Auth
+            auth: {
+                title: 'Безопасный Дневник',
+                subtitle: 'Зашифрованный личный дневник',
+                createPassword: 'Создать пароль',
+                enterPassword: 'Введите пароль',
+                password: 'Пароль',
+                confirmPassword: 'Подтвердите пароль',
+                unlock: 'Открыть',
+                create: 'Создать',
+                passwordMismatch: 'Пароли не совпадают',
+                passwordTooShort: 'Пароль должен быть не менее 6 символов',
+                wrongPassword: 'Неверный пароль',
+                forgotPassword: 'Если вы забудете пароль, данные невозможно будет восстановить.',
+            },
+
+            // Journal
+            journal: {
+                title: 'Мой дневник',
+                empty: 'Записей пока нет',
+                emptyHint: 'Нажмите + чтобы создать первую запись',
+                newEntry: 'Новая запись',
+                editEntry: 'Редактировать',
+                deleteEntry: 'Удалить запись',
+                deleteConfirm: 'Вы уверены, что хотите удалить эту запись?',
+                intensity: 'Интенсивность',
+                date: 'Дата',
+                whatHappened: 'Что произошло?',
+                titlePlaceholder: 'Заголовок (необязательно)',
+                textPlaceholder: 'Опишите, что произошло...',
+                save: 'Сохранить',
+                cancel: 'Отмена',
+                delete: 'Удалить',
+                untitled: 'Без названия',
+                addEntry: 'Добавить запись',
+                captureEntry: 'Зафиксировать событие',
+                description: 'Описание',
+                describeEvent: 'Опишите событие...',
+                mild: 'Слабая',
+                severe: 'Сильная',
+                logEntry: 'Записать',
+                navLog: 'Журнал',
+                navAnalysis: 'Анализ',
+                navResources: 'Ресурсы',
+                viewPiles: 'Стопки по времени',
+                viewScatter: 'Разбросанные',
+                viewCairn: 'Башня камней',
+            },
+
+            // Voice
+            voice: {
+                record: 'Записать голосовую заметку',
+                recording: 'Запись...',
+                stop: 'Стоп',
+                play: 'Воспроизвести',
+                pause: 'Пауза',
+                delete: 'Удалить запись',
+            },
+
+            // Export
+            export: {
+                title: 'Экспорт',
+                subtitle: 'Создать PDF для юриста',
+                generate: 'Создать PDF',
+                generating: 'Создание...',
+                download: 'Скачать PDF',
+                timeline: 'Хронология событий',
+                statistics: 'Статистика',
+                totalEvents: 'Всего событий',
+                averageIntensity: 'Средняя интенсивность',
+                period: 'Период',
+                analysis: 'Анализ паттернов',
+                riskLevel: 'Уровень риска',
+                escalation: 'Обнаружена эскалация',
+                frequency: 'Средняя частота',
+                timeOfDay: 'Время суток',
+            },
+
+            // Analysis
+            analysis: {
+                title: 'Анализ',
+                patternsTitle: 'Обнаруженные паттерны и фразы',
+                last90Days: 'Последние 90 дней',
+                riskAssessment: 'Визуализация рисков',
+                escalationVelocity: 'Скорость эскалации',
+                isolationIndicator: 'Индикатор изоляции',
+                low: 'Низкий',
+                moderate: 'Средний',
+                high: 'Высокий',
+                critical: 'Критический',
+                severe: 'Тяжёлый',
+                disclaimer: 'Эта визуализация основана на анализе текста и частоте событий. Она предназначена для личного размышления и поддержки решений, а не как клинический диагноз.',
+                milestonesTitle: 'Этапы планирования безопасности',
+                decisionSupport: 'Поддержка решений',
+                recommendation: 'Рекомендация',
+                archiveTitle: 'Архив и отчёты',
+                legalReport: 'Юридический отчёт',
+                narrativeReport: 'Личный отчёт',
+                exportNote: 'Все экспорты зашифрованы и хранятся локально.',
+                noData: 'Пока нет данных для анализа.',
+                goToJournal: 'Перейти к журналу',
+                analyzing: 'Анализ паттернов...',
+                statusVerified: 'Проверено',
+                statusActive: 'Активно',
+            },
+
+            // Settings
+            settings: {
+                title: 'Настройки',
+                language: 'Язык',
+                theme: 'Цветовая тема',
+                dark: 'Тёмная',
+                light: 'Светлая',
+                changePassword: 'Сменить пароль',
+                oldPassword: 'Текущий пароль',
+                newPassword: 'Новый пароль',
+                confirmNewPassword: 'Подтвердите новый пароль',
+                export: 'Экспорт данных',
+                panicConfirm: 'Это навсегда удалит ВСЕ ваши данные. Это действие нельзя отменить!',
+                panicConfirmButton: 'Удалить всё',
+                logout: 'Заблокировать',
+                // New settings tabs
+                tabGeneral: 'Общие и безопасность',
+                tabPrivacy: 'Приватность и данные',
+                tabDisguise: 'Режим маскировки',
+                tabEmergency: 'Протокол экстренной помощи',
+                tabBackup: 'Резервное копирование',
+                // Interface
+                interfaceTitle: 'Настройка интерфейса',
+                primaryLanguage: 'Язык интерфейса',
+                languageDesc: 'Выберите язык для всех элементов интерфейса и экспортов.',
+                colorTheme: 'Цветовая тема',
+                themeDesc: 'Визуальные метафоры камней для эстетики интерфейса.',
+                // Security
+                securityTitle: 'Активная безопасность',
+                appLock: 'Блокировка приложения',
+                appLockDesc: 'Требовать пароль при каждом запуске.',
+                autoLock: 'Таймер автоблокировки',
+                autoLockDesc: 'Блокировать приложение после периода бездействия.',
+                // Privacy
+                privacyTitle: 'Шифрование и приватность',
+                encryptionStatus: 'Статус шифрования',
+                encryptionDesc: 'Ваши данные зашифрованы с помощью AES-256-GCM.',
+                offlineMode: 'Офлайн-режим',
+                offlineDesc: 'Отключить все сетевые запросы. Только локальное хранение.',
+                updatePassword: 'Обновить',
+                // Emergency
+                emergencyTitle: 'Протокол экстренной помощи',
+                panicButton: 'Кнопка паники',
+                panicButtonDesc: 'Тройное нажатие на логотип для мгновенной блокировки.',
+                burnPin: 'Триггер экстренного удаления',
+                burnPinDesc: 'Ввод специального PIN-кода мгновенно удалит все локальные данные.',
+                setBurnPin: 'Установить Burn PIN',
+                emergencyDelete: 'Экстренное удаление всего',
+                emergencyDeleteDesc: 'Немедленно и безвозвратно удалить ВСЕ данные.',
+                deleteNow: 'Удалить сейчас',
+                // Backup
+                backupTitle: 'Резервное копирование',
+                exportData: 'Экспорт данных',
+                exportDesc: 'Скачать зашифрованную резервную копию всех записей.',
+                importData: 'Импорт данных',
+                importDesc: 'Восстановить из предыдущей резервной копии.',
+                autoDelete: 'Авто-удаление старых записей',
+                autoDeleteDesc: 'Записи старше выбранного периода будут удалены.',
+                // System status
+                systemStatus: 'Статус системы',
+                dataIntegrity: 'Целостность данных',
+                encryptionActive: 'Активно аппаратное шифрование. Ваш приватный ключ хранится безопасно.',
+                backupLocation: 'Место хранения',
+                localOnly: 'Только локальное хранение',
+                cloudDisabled: 'Облачная синхронизация отключена для максимальной безопасности.',
+                backupNow: 'Создать копию',
+                // Toggle options
+                never: 'Никогда',
+                days30: '30 дней',
+                days90: '90 дней',
+                year1: '1 год',
+                minute1: '1 минута',
+                minutes5: '5 минут',
+                minutes15: '15 минут',
+            },
+
+            // Common
+            common: {
+                back: 'Назад',
+                save: 'Сохранить',
+                saving: 'Сохранение...',
+                cancel: 'Отмена',
+                close: 'Закрыть',
+                delete: 'Удалить',
+                confirm: 'Подтвердить',
+                yes: 'Да',
+                no: 'Нет',
+                loading: 'Загрузка...',
+                error: 'Ошибка',
+                success: 'Успешно',
+                settings: 'Настройки',
+                search: 'Поиск',
+            },
+
+            // Languages
+            languages: {
+                en: 'English',
+                ru: 'Русский',
+                da: 'Dansk',
+            },
+        },
+    },
+
+    da: {
+        translation: {
+            // App
+            appName: 'Sikker Dagbog',
+            appTagline: 'Din private, krypterede dagbog',
+
+            // Auth
+            auth: {
+                title: 'Sikker Dagbog',
+                subtitle: 'Krypteret personlig dagbog',
+                createPassword: 'Opret adgangskode',
+                enterPassword: 'Indtast adgangskode',
+                password: 'Adgangskode',
+                confirmPassword: 'Bekræft adgangskode',
+                unlock: 'Lås op',
+                create: 'Opret',
+                passwordMismatch: 'Adgangskoderne matcher ikke',
+                passwordTooShort: 'Adgangskode skal være mindst 6 tegn',
+                wrongPassword: 'Forkert adgangskode',
+                forgotPassword: 'Hvis du glemmer din adgangskode, kan dine data ikke gendannes.',
+            },
+
+            // Journal
+            journal: {
+                title: 'Min dagbog',
+                empty: 'Ingen indlæg endnu',
+                emptyHint: 'Tryk på + for at oprette dit første indlæg',
+                newEntry: 'Nyt indlæg',
+                editEntry: 'Rediger indlæg',
+                deleteEntry: 'Slet indlæg',
+                deleteConfirm: 'Er du sikker på, at du vil slette dette indlæg?',
+                intensity: 'Intensitet',
+                date: 'Dato',
+                whatHappened: 'Hvad skete der?',
+                titlePlaceholder: 'Titel (valgfrit)',
+                textPlaceholder: 'Beskriv hvad der skete...',
+                save: 'Gem',
+                cancel: 'Annuller',
+                delete: 'Slet',
+                untitled: 'Uden titel',
+                addEntry: 'Tilføj indlæg',
+                captureEntry: 'Optag nyt indlæg',
+                description: 'Beskrivelse',
+                describeEvent: 'Beskriv hændelsen...',
+                mild: 'Mild',
+                severe: 'Alvorlig',
+                logEntry: 'Log indlæg',
+                navLog: 'Log',
+                navAnalysis: 'Analyse',
+                navResources: 'Ressourcer',
+                viewPiles: 'Tidslinje bunker',
+                viewScatter: 'Spredt visning',
+                viewCairn: 'Stenstabel',
+            },
+
+            // Voice
+            voice: {
+                record: 'Optag stemmenotat',
+                recording: 'Optager...',
+                stop: 'Stop',
+                play: 'Afspil',
+                pause: 'Pause',
+                delete: 'Slet optagelse',
+            },
+
+            // Export
+            export: {
+                title: 'Eksport',
+                subtitle: 'Generer PDF til din advokat',
+                generate: 'Generer PDF',
+                generating: 'Genererer...',
+                download: 'Download PDF',
+                timeline: 'Tidslinje',
+                statistics: 'Statistik',
+                totalEvents: 'Antal hændelser',
+                averageIntensity: 'Gennemsnitlig intensitet',
+                period: 'Periode',
+                analysis: 'Mønsteranalyse',
+                riskLevel: 'Risikoniveau',
+                escalation: 'Eskalering opdaget',
+                frequency: 'Gns. frekvens',
+                timeOfDay: 'Tidspunkt på dagen',
+            },
+
+            // Analysis
+            analysis: {
+                title: 'Analyse',
+                patternsTitle: 'Registrerede mønstre og fraser',
+                last90Days: 'Seneste 90 dage',
+                riskAssessment: 'Risikovurdering',
+                escalationVelocity: 'Eskaleringshastighed',
+                isolationIndicator: 'Isolationsindikator',
+                low: 'Lav',
+                moderate: 'Moderat',
+                high: 'Høj',
+                critical: 'Kritisk',
+                severe: 'Alvorlig',
+                disclaimer: 'Denne visualisering er baseret på tekstanalyse og hændelsesfrekvens. Den er beregnet til personlig refleksion og beslutningsstøtte, ikke som klinisk diagnose.',
+                milestonesTitle: 'Sikkerhedsplanlægningsmål',
+                decisionSupport: 'Beslutningsstøtte',
+                recommendation: 'Anbefaling',
+                archiveTitle: 'Arkiv og rapporter',
+                legalReport: 'Juridisk rapport',
+                narrativeReport: 'Personlig beretning',
+                exportNote: 'Alle eksporter er krypterede og lokale.',
+                noData: 'Ingen data at analysere endnu.',
+                goToJournal: 'Gå til journal',
+                analyzing: 'Analyserer mønstre...',
+                statusVerified: 'Verificeret',
+                statusActive: 'Aktiv',
+            },
+
+            // Settings
+            settings: {
+                title: 'Indstillinger',
+                language: 'Sprog',
+                theme: 'Farvetema',
+                dark: 'Mørk',
+                light: 'Lys',
+                changePassword: 'Skift adgangskode',
+                oldPassword: 'Nuværende adgangskode',
+                newPassword: 'Ny adgangskode',
+                confirmNewPassword: 'Bekræft ny adgangskode',
+                export: 'Eksporter data',
+                panicConfirm: 'Dette vil permanent slette ALLE dine data. Dette kan ikke fortrydes!',
+                panicConfirmButton: 'Slet alt',
+                logout: 'Lås',
+                // New settings tabs
+                tabGeneral: 'Generelt & Sikkerhed',
+                tabPrivacy: 'Privatliv & Data',
+                tabDisguise: 'Maskeringstilstand',
+                tabEmergency: 'Nødprotokol',
+                tabBackup: 'Backup',
+                // Interface
+                interfaceTitle: 'Brugerfladetilpasning',
+                primaryLanguage: 'Sprog',
+                languageDesc: 'Vælg sprog til alle grænsefladeelementer og eksporter.',
+                colorTheme: 'Farvetema',
+                themeDesc: 'Visuelle stenmetaforer for UI-æstetik.',
+                // Security
+                securityTitle: 'Aktiv sikkerhed',
+                appLock: 'App-lås',
+                appLockDesc: 'Kræv adgangskode ved hver app-start.',
+                autoLock: 'Auto-lås timer',
+                autoLockDesc: 'Lås appen efter inaktivitet.',
+                // Privacy
+                privacyTitle: 'Kryptering & Privatliv',
+                encryptionStatus: 'Krypteringsstatus',
+                encryptionDesc: 'Dine data er krypteret med AES-256-GCM.',
+                offlineMode: 'Offlinetilstand',
+                offlineDesc: 'Deaktiver alle netværksanmodninger. Kun lokal lagring.',
+                updatePassword: 'Opdater',
+                // Emergency
+                emergencyTitle: 'Nødprotokol',
+                panicButton: 'Panikknap',
+                panicButtonDesc: 'Tryk tre gange på logoet for øjeblikkelig låsning.',
+                burnPin: 'Nødsletning-udløser',
+                burnPinDesc: 'Indtastning af en specifik Burn PIN sletter alle lokale data øjeblikkeligt.',
+                setBurnPin: 'Indstil Burn PIN',
+                emergencyDelete: 'Nødsletning af alt',
+                emergencyDeleteDesc: 'Slet ALLE data permanent og øjeblikkeligt.',
+                deleteNow: 'Slet nu',
+                // Backup
+                backupTitle: 'Backup & Eksport',
+                exportData: 'Eksporter data',
+                exportDesc: 'Download krypteret backup af alle poster.',
+                importData: 'Importer data',
+                importDesc: 'Gendan fra en tidligere backup.',
+                autoDelete: 'Auto-slet gamle poster',
+                autoDeleteDesc: 'Poster ældre end valgt periode slettes.',
+                // System status
+                systemStatus: 'Systemstatus',
+                dataIntegrity: 'Dataintegritet',
+                encryptionActive: 'Hardware-kryptering er aktiv. Din private nøgle opbevares sikkert.',
+                backupLocation: 'Backup-placering',
+                localOnly: 'Kun lokal lagring',
+                cloudDisabled: 'Cloud-synkronisering er deaktiveret for maksimal sikkerhed.',
+                backupNow: 'Backup nu',
+                // Toggle options
+                never: 'Aldrig',
+                days30: '30 dage',
+                days90: '90 dage',
+                year1: '1 år',
+                minute1: '1 minut',
+                minutes5: '5 minutter',
+                minutes15: '15 minutter',
+            },
+
+            // Common
+            common: {
+                back: 'Tilbage',
+                save: 'Gem',
+                saving: 'Gemmer...',
+                cancel: 'Annuller',
+                close: 'Luk',
+                delete: 'Slet',
+                confirm: 'Bekræft',
+                yes: 'Ja',
+                no: 'Nej',
+                loading: 'Indlæser...',
+                error: 'Fejl',
+                success: 'Succes',
+                settings: 'Indstillinger',
+                search: 'Søg',
+            },
+
+            // Languages
+            languages: {
+                en: 'English',
+                ru: 'Русский',
+                da: 'Dansk',
+            },
+        },
+    },
+};
+
+import LanguageDetector from 'i18next-browser-languagedetector';
+
+i18n
+    .use(LanguageDetector)
+    .use(initReactI18next)
+    .init({
+        resources,
+        fallbackLng: 'en',
+        detection: {
+            order: ['localStorage', 'navigator'],
+            caches: ['localStorage'],
+        },
+        interpolation: {
+            escapeValue: false,
+        },
+    });
+
+export default i18n;
+
+// Helper to change language
+export function setLanguage(lang: string): void {
+    i18n.changeLanguage(lang);
+}
+
+export function getCurrentLanguage(): string {
+    return i18n.language;
+}
