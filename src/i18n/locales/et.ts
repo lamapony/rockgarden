@@ -273,6 +273,73 @@ export const etTranslations = {
         ctaSubtitle: 'Teie privaatne ruum ootab. Registreerumist pole. Jälgimist pole. Ainult privaatsus.',
         enterRockgarden: 'Sisene Rockgardeni',
         footer: '© 2025 Rockgarden. Teie privaatsus on meie ainus missioon.',
+
+        // Expandable Details Sections
+        detailsTitle: 'Tehnilised üksikasjad',
+        detailsSubtitle: 'Süvenemine sellesse, kuidas Rockgarden teie andmeid kaitseb',
+        
+        // For Everyone Section
+        forEveryoneTitle: 'Kuidas see töötab',
+        forEveryoneDesc: 'Rockgarden kasutab sama krüpteerimistehnoloogiat, millele usuvad pangad ja armeed üle kogu maailma. Teie mõtted on lukustatud parooliga, mida teate ainult teie.',
+        featureList: {
+            encryption: 'AES-256 krüpteerimine — kasutavad valitsused',
+            offline: 'Töötab täiesti võrguvabalt — internetti pole vaja',
+            nopasswords: 'Me ei säilita kunagi teie parooli',
+            nodata: 'Kui unustate parooli, ei saa isegi meie teie andmeid taastada',
+        },
+        
+        // Technical Section
+        technicalTitle: 'Arhitektuur ja turvalisus',
+        encryptionDetails: 'Krüpteerimise üksikasjad',
+        encryptionDetailsDesc: 'Teie andmeid kaitstakse tööstusharu standardalgoritmidega:',
+        technicalSpecs: {
+            aes: 'AES-256-GCM andmete krüpteerimiseks',
+            pbkdf2: 'PBKDF2 100 000 iteratsiooniga võtme tuletamiseks',
+            salt: 'Juhuslik 16-baidine sool iga kasutaja kohta',
+            iv: 'Unikaalne 12-baidine IV iga kirje kohta',
+            session: 'Seanssivõti säilitatakse ainult mälus',
+        },
+        zeroKnowledge: 'Nullteadmiste arhitektuur',
+        zeroKnowledgeDesc: 'Me sõna otseses mõttes ei pääse teie andmetele ligi:',
+        zeroKnowledgePoints: {
+            noStorage: 'Parooli ei säilitata kunagi kusagil',
+            noRecovery: 'Parooli taastamist pole — kui unustate, ei saa me aidata',
+            noCloud: 'Pilveservereid pole — kõik jääb teie seadmesse',
+            noAnalytics: 'Jälgimist pole, küpsiseid pole, analüüsi pole',
+        },
+        offlineFirst: 'Võrguvaba-eeskujuline disain',
+        offlineFirstDesc: 'Rockgarden on ehitatud töötama ilma igasuguse võrguühenduseta:',
+        offlineFeatures: {
+            storage: 'IndexedDB kohaliku salvestuse jaoks',
+            crypto: 'Web Crypto API krüpteerimiseks',
+            pwa: 'Service Worker võrguvaba funktsionaalsuse jaoks',
+            fonts: 'Fondid puhverdatud 1 aastaks',
+        },
+        
+        // Visualization Section
+        visualizationTitle: 'Kiviaia metafoor',
+        visualizationDesc: 'Iga kivi esindab päevikukirjet visuaalse kodeerimisega:',
+        stoneEncoding: {
+            size: 'Suurus = Intensiivsus (suurem = intensiivsem tunne)',
+            opacity: 'Läbipaistmatus = Vanus (vanem = läbipaistvam)',
+            color: 'Värviküllastus = Emotsionaalne tugevus',
+            shape: 'Orgaanilised kujud = Loomulik mälu tekstuur',
+        },
+        viewModes: {
+            scatter: 'Hajutatud: Juhuslik jaotus ajas',
+            piles: 'Virnad: Ajajoonte järgi grupeeritud veerud',
+            cairn: 'Kivihunnik: Virnastatud keskne mälestusmärk',
+        },
+        
+        // Emergency Features Section
+        emergencyTitle: 'Hädaolukorra kaitse',
+        emergencyDesc: 'Sisseehitatud ohutusfunktsioonid tundlikeks olukordadeks:',
+        emergencyFeatures: {
+            panic: 'Paanikanupp: Kolmekordne puudutus koheseks lukustamiseks',
+            burn: 'Burn PIN: Erisoodustusega PIN kustutab kõik andmed',
+            autolock: 'Automaatlukustus: Taimeri põhine turvalisus',
+            timing: 'Anti-bruteforce: ~1000ms viiv vale parooli korral',
+        },
     },
 
     // Onboarding Tutorial

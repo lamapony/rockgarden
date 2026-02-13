@@ -251,6 +251,73 @@ export const trTranslations = {
         ctaSubtitle: 'Özel alanın bekliyor. Kayıt yok. İzleme yok. Sadece gizlilik.',
         enterRockgarden: 'Rockgarden\'a gir',
         footer: '© 2025 Rockgarden. Gizliliğin bizim tek misyonumuz.',
+
+        // Expandable Details Sections
+        detailsTitle: 'Teknik detaylar',
+        detailsSubtitle: 'Rockgarden\'ın verilerinizi nasıl koruduğuna dair derinlemesine bakış',
+        
+        // For Everyone Section
+        forEveryoneTitle: 'Nasıl çalışır',
+        forEveryoneDesc: 'Rockgarden, dünya çapında bankaların ve orduların güvendiği aynı şifreleme teknolojisini kullanır. Düşünceleriniz sadece sizin bildiğiniz bir şifreyle kilitlidir.',
+        featureList: {
+            encryption: 'AES-256 şifreleme — hükümetler tarafından kullanılır',
+            offline: 'Tamamen çevrimdışı çalışır — internet gerekmez',
+            nopasswords: 'Şifreni asla saklamayız',
+            nodata: 'Şifreni unutursan, biz bile verilerini kurtaramayız',
+        },
+        
+        // Technical Section
+        technicalTitle: 'Mimari ve güvenlik',
+        encryptionDetails: 'Şifreleme detayları',
+        encryptionDetailsDesc: 'Verileriniz sektör standardı algoritmalar kullanılarak korunur:',
+        technicalSpecs: {
+            aes: 'Veri şifrelemesi için AES-256-GCM',
+            pbkdf2: 'Anahtar türetme için 100.000 yinelemeli PBKDF2',
+            salt: 'Kullanıcı başına rastgele 16 bayt tuz',
+            iv: 'Her kayıt için benzersiz 12 bayt IV',
+            session: 'Oturum anahtarı yalnızca bellekte saklanır',
+        },
+        zeroKnowledge: 'Sıfır bilgi mimarisi',
+        zeroKnowledgeDesc: 'Verilerine kelimenin tam anlamıyla erişemeyiz:',
+        zeroKnowledgePoints: {
+            noStorage: 'Şifre hiçbir yerde saklanmaz',
+            noRecovery: '"Şifre sıfırlama" yok — unutursan yardım edemeyiz',
+            noCloud: 'Bulut sunucusu yok — her şey cihazında kalır',
+            noAnalytics: 'İzleme yok, çerez yok, analitik yok',
+        },
+        offlineFirst: 'Çevrimdışı-öncelikli tasarım',
+        offlineFirstDesc: 'Rockgarden herhangi bir ağ bağlantısı olmadan çalışacak şekilde tasarlanmıştır:',
+        offlineFeatures: {
+            storage: 'Yerel depolama için IndexedDB',
+            crypto: 'Şifreleme için Web Crypto API',
+            pwa: 'Çevrimdışı işlevsellik için Service Worker',
+            fonts: 'Yazı tipleri 1 yıl önbelleğe alınır',
+        },
+        
+        // Visualization Section
+        visualizationTitle: 'Taş bahçesi metaforu',
+        visualizationDesc: 'Her taş görsel kodlamalı bir günlük kaydını temsil eder:',
+        stoneEncoding: {
+            size: 'Boyut = Yoğunluk (daha büyük = daha yoğun his)',
+            opacity: 'Opaklık = Yaş (daha eski = daha şeffaf)',
+            color: 'Renk doygunluğu = Duygusal güç',
+            shape: 'Organik şekiller = Doğal hafıza dokusu',
+        },
+        viewModes: {
+            scatter: 'Dağınık: Zamana göre rastgele dağılım',
+            piles: 'Yığınlar: Döneme göre gruplandırılmış sütunlar',
+            cairn: 'Taş yığını: Yığılmış merkezi anıt',
+        },
+        
+        // Emergency Features Section
+        emergencyTitle: 'Acil durum koruması',
+        emergencyDesc: 'Hassas durumlar için yerleşik güvenlik özellikleri:',
+        emergencyFeatures: {
+            panic: 'Panik butonu: Anında kilitleme için üç kez dokunma',
+            burn: 'Burn PIN: Özel PIN tüm verileri siler',
+            autolock: 'Oto-kilitleme: Zamanlayıcı tabanlı güvenlik',
+            timing: 'Anti-bruteforce: Yanlış şifrede ~1000ms gecikme',
+        },
     },
     // Onboarding Tutorial
     onboarding: {

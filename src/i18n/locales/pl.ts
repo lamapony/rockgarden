@@ -255,6 +255,73 @@ export const plTranslations = {
         ctaSubtitle: 'Twoja prywatna przestrzeń czeka. Bez rejestracji. Bez śledzenia. Tylko prywatność.',
         enterRockgarden: 'Wejdź do Rockgarden',
         footer: '© 2025 Rockgarden. Twoja prywatność jest naszą jedyną misją.',
+
+        // Expandable Details Sections
+        detailsTitle: 'Szczegóły techniczne',
+        detailsSubtitle: 'Dogłębne spojrzenie na to, jak Rockgarden chroni Twoje dane',
+        
+        // For Everyone Section
+        forEveryoneTitle: 'Jak to działa',
+        forEveryoneDesc: 'Rockgarden używa tej samej technologii szyfrowania, której ufają banki i wojska na całym świecie. Twoje myśli są zabezpieczone hasłem, które znasz tylko Ty.',
+        featureList: {
+            encryption: 'Szyfrowanie AES-256 — używane przez rządy',
+            offline: 'Działa całkowicie offline — internet nie jest potrzebny',
+            nopasswords: 'Nigdy nie przechowujemy Twojego hasła',
+            nodata: 'Jeśli zapomnisz hasła, nawet my nie możemy odzyskać Twoich danych',
+        },
+        
+        // Technical Section
+        technicalTitle: 'Architektura i bezpieczeństwo',
+        encryptionDetails: 'Szczegóły szyfrowania',
+        encryptionDetailsDesc: 'Twoje dane są chronione za pomocą algorytmów standardowych w branży:',
+        technicalSpecs: {
+            aes: 'AES-256-GCM do szyfrowania danych',
+            pbkdf2: 'PBKDF2 z 100 000 iteracjami do wyprowadzenia klucza',
+            salt: 'Losowa 16-bajtowa sól dla każdego użytkownika',
+            iv: 'Unikalny 12-bajtowy IV dla każdego wpisu',
+            session: 'Klucz sesji przechowywany tylko w pamięci',
+        },
+        zeroKnowledge: 'Architektura zero-knowledge',
+        zeroKnowledgeDesc: 'Dosłownie nie możemy uzyskać dostępu do Twoich danych:',
+        zeroKnowledgePoints: {
+            noStorage: 'Hasło nigdzie nie jest przechowywane',
+            noRecovery: 'Brak "resetowania hasła" — nie możemy pomóc, jeśli zapomnisz',
+            noCloud: 'Brak serwerów chmurowych — wszystko pozostaje na Twoim urządzeniu',
+            noAnalytics: 'Brak śledzenia, brak plików cookie, brak analiz',
+        },
+        offlineFirst: 'Projektowanie offline-first',
+        offlineFirstDesc: 'Rockgarden został zbudowany do pracy bez żadnego połączenia sieciowego:',
+        offlineFeatures: {
+            storage: 'IndexedDB do lokalnego przechowywania',
+            crypto: 'Web Crypto API do szyfrowania',
+            pwa: 'Service Worker do funkcjonalności offline',
+            fonts: 'Czcionki buforowane na 1 rok',
+        },
+        
+        // Visualization Section
+        visualizationTitle: 'Metafora ogrodu kamiennego',
+        visualizationDesc: 'Każdy kamień reprezentuje wpis w dzienniku z kodowaniem wizualnym:',
+        stoneEncoding: {
+            size: 'Rozmiar = Intensywność (większy = intensywniejsze uczucie)',
+            opacity: 'Nieprzezroczystość = Wiek (starszy = bardziej przezroczysty)',
+            color: 'Nasycenie koloru = Siła emocjonalna',
+            shape: 'Organiczne kształty = Naturalna tekstura pamięci',
+        },
+        viewModes: {
+            scatter: 'Rozproszony: Losowy rozkład w czasie',
+            piles: 'Stosy: Kolumny pogrupowane według okresu',
+            cairn: 'Wieża kamieni: Ułożony centralny pomnik',
+        },
+        
+        // Emergency Features Section
+        emergencyTitle: 'Ochrona awaryjna',
+        emergencyDesc: 'Wbudowane funkcje bezpieczeństwa dla wrażliwych sytuacji:',
+        emergencyFeatures: {
+            panic: 'Przycisk paniki: Potrójne dotknięcie dla natychmiastowego zablokowania',
+            burn: 'Burn PIN: Specjalny PIN usuwa wszystkie dane',
+            autolock: 'Autoblokada: Bezpieczeństwo oparte na czasie',
+            timing: 'Anti-bruteforce: ~1000ms opóźnienie przy błędnym haśle',
+        },
     },
     // Onboarding Tutorial
     onboarding: {

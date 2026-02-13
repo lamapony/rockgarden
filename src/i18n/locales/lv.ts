@@ -273,6 +273,73 @@ export const lvTranslations = {
         ctaSubtitle: 'Jūsu privātā vieta gaida. Nav reģistrācijas. Nav izsekošanas. Tikai privātums.',
         enterRockgarden: 'Ievadīt Rockgarden',
         footer: '© 2025 Rockgarden. Jūsu privātums ir mūsu vienīgā misija.',
+
+        // Expandable Details Sections
+        detailsTitle: 'Tehniskās detaļas',
+        detailsSubtitle: 'Dziļa iegremdēšanās tajā, kā Rockgarden aizsargā jūsu datus',
+        
+        // For Everyone Section
+        forEveryoneTitle: 'Kā tas darbojas',
+        forEveryoneDesc: 'Rockgarden izmanto to pašu šifrēšanas tehnoloģiju, kurai uzticas bankas un armijas visā pasaulē. Jūsu domas ir noslēgtas ar paroli, kuru zināt tikai jūs.',
+        featureList: {
+            encryption: 'AES-256 šifrēšana — izmanto valdības',
+            offline: 'Darbojas pilnīgi bezsaistē — internets nav nepieciešams',
+            nopasswords: 'Mēs nekad neuzglabājam jūsu paroli',
+            nodata: 'Ja aizmirsīsiet paroli, pat mēs nevaram atjaunot jūsu datus',
+        },
+        
+        // Technical Section
+        technicalTitle: 'Arhitektūra un drošība',
+        encryptionDetails: 'Šifrēšanas detaļas',
+        encryptionDetailsDesc: 'Jūsu dati ir aizsargāti, izmantojot nozares standarta algoritmus:',
+        technicalSpecs: {
+            aes: 'AES-256-GCM datu šifrēšanai',
+            pbkdf2: 'PBKDF2 ar 100 000 iterācijām atslēgas izveidei',
+            salt: 'Nejauši 16 baiti sāls katram lietotājam',
+            iv: 'Unikāls 12 baitu IV katram ierakstam',
+            session: 'Sesijas atslēga uzglabāta tikai atmiņā',
+        },
+        zeroKnowledge: 'Nulles zināšanu arhitektūra',
+        zeroKnowledgeDesc: 'Mēs burtiski nevaram piekļūt jūsu datiem:',
+        zeroKnowledgePoints: {
+            noStorage: 'Parole nekad netiek nekur uzglabāta',
+            noRecovery: 'Nav "paroles atiestatīšanas" — nevaram palīdzēt, ja aizmirsīsiet',
+            noCloud: 'Nav mākoņu serveru — viss paliek jūsu ierīcē',
+            noAnalytics: 'Nav izsekošanas, nav sīkfailu, nav analītikas',
+        },
+        offlineFirst: 'Bezsaistes-pirmkārt dizains',
+        offlineFirstDesc: 'Rockgarden ir veidots, lai darbotos bez jebkāda tīkla savienojuma:',
+        offlineFeatures: {
+            storage: 'IndexedDB vietējai krātuvei',
+            crypto: 'Web Crypto API šifrēšanai',
+            pwa: 'Service Worker bezsaistes funkcionalitātei',
+            fonts: 'Fonti kešēti 1 gadu',
+        },
+        
+        // Visualization Section
+        visualizationTitle: 'Akmeņu dārza metafora',
+        visualizationDesc: 'Katrs akmens attēlo žurnāla ierakstu ar vizuālo kodējumu:',
+        stoneEncoding: {
+            size: 'Izmērs = Intensitāte (lielāks = spēcīgāka jūta)',
+            opacity: 'Caurspīdīgums = Vecums (vecāks = caurspīdīgāks)',
+            color: 'Krāsu piesātinājums = Emocionālā stiprums',
+            shape: 'Organiskas formas = Dabiska atmiņas tekstūra',
+        },
+        viewModes: {
+            scatter: 'Izkliedēts: Nejauša izkārtojums pēc laika',
+            piles: 'Kaudzes: Kolonnas, grupētas pēc perioda',
+            cairn: 'Torņa skats: Saskaloti centrālais piemineklis',
+        },
+        
+        // Emergency Features Section
+        emergencyTitle: 'Ārkārtas aizsardzība',
+        emergencyDesc: 'Iebūvētas drošības funkcijas jutīgām situācijām:',
+        emergencyFeatures: {
+            panic: 'Panikas poga: Trīskāršs pieskāriens tūlītējai bloķēšanai',
+            burn: 'Burn PIN: Īpašs PIN izdzēš visus datus',
+            autolock: 'Automātiskā bloķēšana: Taimeru bāzēta drošība',
+            timing: 'Anti-bruteforce: ~1000ms aizkave nepareizai parolei',
+        },
     },
 
     // Onboarding Tutorial

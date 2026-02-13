@@ -6,9 +6,10 @@
 
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Shield, Lock, Smartphone, Trash2, Globe, ArrowRight, ChevronDown, Languages } from 'lucide-react';
+import { Shield, Lock, Smartphone, Trash2, Globe, ArrowRight, ChevronDown, Languages, Info, ShieldCheck, WifiOff, Eye, AlertTriangle } from 'lucide-react';
 import { LanguageSwitcher } from '../layout/LanguageSwitcher';
 import { StoneGardenDemo } from './StoneGardenDemo';
+import { ExpandableSection } from './ExpandableSection';
 import { detectBrowserLanguage } from '../../i18n/utils';
 import { setLanguage } from '../../i18n/config';
 import './LandingPage.css';
@@ -212,6 +213,127 @@ export function LandingPage({ onEnter }: LandingPageProps) {
                         <h3>{t('landing.step3Title')}</h3>
                         <p>{t('landing.step3Desc')}</p>
                     </div>
+                </div>
+            </section>
+
+            {/* Technical Details Section */}
+            <section className="landing-details">
+                <div className="landing-section-header">
+                    <h2>{t('landing.detailsTitle')}</h2>
+                    <p>{t('landing.detailsSubtitle')}</p>
+                </div>
+
+                <div className="landing-details-content">
+                    {/* For Everyone - Simple Explanation */}
+                    <ExpandableSection 
+                        title={t('landing.forEveryoneTitle')} 
+                        defaultExpanded={true}
+                    >
+                        <p>{t('landing.forEveryoneDesc')}</p>
+                        <div className="detail-cards">
+                            <div className="detail-card">
+                                <ShieldCheck size={24} color="#c0a080" />
+                                <h4>{t('landing.featureList.encryption')}</h4>
+                            </div>
+                            <div className="detail-card">
+                                <WifiOff size={24} color="#4ade80" />
+                                <h4>{t('landing.featureList.offline')}</h4>
+                            </div>
+                            <div className="detail-card">
+                                <Lock size={24} color="#60a5fa" />
+                                <h4>{t('landing.featureList.nopasswords')}</h4>
+                            </div>
+                            <div className="detail-card">
+                                <Info size={24} color="#f87171" />
+                                <h4>{t('landing.featureList.nodata')}</h4>
+                            </div>
+                        </div>
+                    </ExpandableSection>
+
+                    {/* Technical Specs */}
+                    <ExpandableSection title={t('landing.technicalTitle')}>
+                        <h4 style={{ color: '#c0a080', marginBottom: '0.5rem' }}>
+                            {t('landing.encryptionDetails')}
+                        </h4>
+                        <p>{t('landing.encryptionDetailsDesc')}</p>
+                        <ul>
+                            <li><code>AES-256-GCM</code> — {t('landing.technicalSpecs.aes')}</li>
+                            <li><code>PBKDF2</code> — {t('landing.technicalSpecs.pbkdf2')}</li>
+                            <li>{t('landing.technicalSpecs.salt')}</li>
+                            <li>{t('landing.technicalSpecs.iv')}</li>
+                            <li>{t('landing.technicalSpecs.session')}</li>
+                        </ul>
+
+                        <h4 style={{ color: '#c0a080', margin: '1.5rem 0 0.5rem' }}>
+                            {t('landing.zeroKnowledge')}
+                        </h4>
+                        <p>{t('landing.zeroKnowledgeDesc')}</p>
+                        <ul>
+                            <li>{t('landing.zeroKnowledgePoints.noStorage')}</li>
+                            <li>{t('landing.zeroKnowledgePoints.noRecovery')}</li>
+                            <li>{t('landing.zeroKnowledgePoints.noCloud')}</li>
+                            <li>{t('landing.zeroKnowledgePoints.noAnalytics')}</li>
+                        </ul>
+
+                        <h4 style={{ color: '#c0a080', margin: '1.5rem 0 0.5rem' }}>
+                            {t('landing.offlineFirst')}
+                        </h4>
+                        <p>{t('landing.offlineFirstDesc')}</p>
+                        <ul>
+                            <li><code>IndexedDB</code> — {t('landing.offlineFeatures.storage')}</li>
+                            <li><code>Web Crypto API</code> — {t('landing.offlineFeatures.crypto')}</li>
+                            <li><code>Service Worker</code> — {t('landing.offlineFeatures.pwa')}</li>
+                            <li>{t('landing.offlineFeatures.fonts')}</li>
+                        </ul>
+                    </ExpandableSection>
+
+                    {/* Visualization Details */}
+                    <ExpandableSection title={t('landing.visualizationTitle')}>
+                        <p>{t('landing.visualizationDesc')}</p>
+                        <div className="detail-cards" style={{ marginTop: '1rem' }}>
+                            <div className="detail-card">
+                                <Eye size={24} color="#c0a080" />
+                                <h4>{t('landing.stoneEncoding.size')}</h4>
+                            </div>
+                            <div className="detail-card">
+                                <Eye size={24} color="#60a5fa" style={{ opacity: 0.5 }} />
+                                <h4>{t('landing.stoneEncoding.opacity')}</h4>
+                            </div>
+                            <div className="detail-card">
+                                <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'linear-gradient(135deg, #c0a080, #fff)' }} />
+                                <h4>{t('landing.stoneEncoding.color')}</h4>
+                            </div>
+                        </div>
+                        <h4 style={{ color: '#c0a080', margin: '1.5rem 0 0.5rem' }}>View Modes</h4>
+                        <ul>
+                            <li><strong>{t('landing.viewModes.scatter')}</strong></li>
+                            <li><strong>{t('landing.viewModes.piles')}</strong></li>
+                            <li><strong>{t('landing.viewModes.cairn')}</strong></li>
+                        </ul>
+                    </ExpandableSection>
+
+                    {/* Emergency Features */}
+                    <ExpandableSection title={t('landing.emergencyTitle')}>
+                        <p>{t('landing.emergencyDesc')}</p>
+                        <div className="detail-cards" style={{ marginTop: '1rem' }}>
+                            <div className="detail-card" style={{ borderColor: 'rgba(248, 113, 113, 0.3)' }}>
+                                <AlertTriangle size={24} color="#f87171" />
+                                <h4 style={{ color: '#f87171' }}>{t('landing.emergencyFeatures.panic')}</h4>
+                            </div>
+                            <div className="detail-card" style={{ borderColor: 'rgba(239, 68, 68, 0.3)' }}>
+                                <Trash2 size={24} color="#ef4444" />
+                                <h4 style={{ color: '#ef4444' }}>{t('landing.emergencyFeatures.burn')}</h4>
+                            </div>
+                            <div className="detail-card">
+                                <Lock size={24} color="#c0a080" />
+                                <h4>{t('landing.emergencyFeatures.autolock')}</h4>
+                            </div>
+                            <div className="detail-card">
+                                <Shield size={24} color="#4ade80" />
+                                <h4>{t('landing.emergencyFeatures.timing')}</h4>
+                            </div>
+                        </div>
+                    </ExpandableSection>
                 </div>
             </section>
 

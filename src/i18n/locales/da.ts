@@ -272,6 +272,73 @@ export const daTranslations = {
         ctaSubtitle: 'Dit private rum venter. Ingen tilmelding. Ingen sporing. Bare privatliv.',
         enterRockgarden: 'Gå ind i Rockgarden',
         footer: '© 2025 Rockgarden. Dit privatliv er vores eneste mission.',
+        
+        // Expandable Details Sections
+        detailsTitle: 'Tekniske detaljer',
+        detailsSubtitle: 'Dybdegående forklaring af hvordan Rockgarden beskytter dine data',
+        
+        // For Everyone Section
+        forEveryoneTitle: 'Sådan fungerer det',
+        forEveryoneDesc: 'Rockgarden bruger den samme krypteringsteknologi, som banker og militærer stoler på verden over. Dine tanker er låst med en adgangskode, som kun du kender.',
+        featureList: {
+            encryption: 'AES-256 kryptering — brugt af regeringer',
+            offline: 'Fungerer helt offline — intet internet behøves',
+            nopasswords: 'Vi gemmer aldrig din adgangskode',
+            nodata: 'Hvis du glemmer din adgangskode, kan selv vi ikke gendanne dine data',
+        },
+        
+        // Technical Section
+        technicalTitle: 'Arkitektur & Sikkerhed',
+        encryptionDetails: 'Krypteringsdetaljer',
+        encryptionDetailsDesc: 'Dine data er beskyttet med industristandard algoritmer:',
+        technicalSpecs: {
+            aes: 'AES-256-GCM til datakryptering',
+            pbkdf2: 'PBKDF2 med 100.000 iterationer til nøgleafledning',
+            salt: 'Tilfældig 16-byte salt pr. bruger',
+            iv: 'Unik 12-byte IV for hver post',
+            session: 'Sessionsnøgle gemmes kun i hukommelsen',
+        },
+        zeroKnowledge: 'Zero-Knowledge Arkitektur',
+        zeroKnowledgeDesc: 'Vi kan bogstaveligt talt ikke få adgang til dine data:',
+        zeroKnowledgePoints: {
+            noStorage: 'Adgangskode gemmes aldrig nogen steder',
+            noRecovery: 'Ingen "nulstilling af adgangskode" — vi kan ikke hjælpe hvis du glemmer',
+            noCloud: 'Ingen cloud-servere — alt forbliver på din enhed',
+            noAnalytics: 'Ingen sporing, ingen cookies, ingen analyse',
+        },
+        offlineFirst: 'Offline-First Design',
+        offlineFirstDesc: 'Rockgarden er bygget til at fungere uden netværksforbindelse:',
+        offlineFeatures: {
+            storage: 'IndexedDB til lokal lagring',
+            crypto: 'Web Crypto API til kryptering',
+            pwa: 'Service Worker til offline-funktionalitet',
+            fonts: 'Skrifttyper cachelagret i 1 år',
+        },
+        
+        // Visualization Section
+        visualizationTitle: 'Stenhaven Metaforen',
+        visualizationDesc: 'Hver sten repræsenterer en journalpost med visuel kodning:',
+        stoneEncoding: {
+            size: 'Størrelse = Intensitet (større = mere intens følelse)',
+            opacity: 'Gennemsigtighed = Alder (ældre = mere gennemsigtig)',
+            color: 'Farvemætning = Følelsesmæssig styrke',
+            shape: 'Organiske former = Naturlig hukommelsestekstur',
+        },
+        viewModes: {
+            scatter: 'Spredt: Tilfældig fordeling efter tid',
+            piles: 'Stabler: Kolonner grupperet efter periode',
+            cairn: 'Stabel: Central monument-stabel',
+        },
+        
+        // Emergency Features Section
+        emergencyTitle: 'Nødbeskyttelse',
+        emergencyDesc: 'Indbyggede sikkerhedsfunktioner til følsomme situationer:',
+        emergencyFeatures: {
+            panic: 'Panikknap: Tryk tre gange for øjeblikkelig låsning',
+            burn: 'Burn PIN: Særlig PIN sletter alle data',
+            autolock: 'Auto-lås: Sikkerhed med timer',
+            timing: 'Anti-bruteforce: ~1000ms forsinkelse ved forkert adgangskode',
+        },
     },
 
     // Onboarding Tutorial

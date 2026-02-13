@@ -251,6 +251,73 @@ export const frTranslations = {
         ctaSubtitle: 'Votre espace privé attend. Pas d\'inscription. Pas de suivi. Juste confidentialité.',
         enterRockgarden: 'Entrer dans Rockgarden',
         footer: '© 2025 Rockgarden. Votre confidentialité est notre seule mission.',
+
+        // Expandable Details Sections
+        detailsTitle: 'Détails techniques',
+        detailsSubtitle: 'Plongée profonde dans la façon dont Rockgarden protège vos données',
+        
+        // For Everyone Section
+        forEveryoneTitle: 'Comment ça marche',
+        forEveryoneDesc: 'Rockgarden utilise la même technologie de chiffrement dont se fient les banques et les militaires dans le monde entier. Vos pensées sont verrouillées avec un mot de passe que vous seul connaissez.',
+        featureList: {
+            encryption: 'Chiffrement AES-256 — utilisé par les gouvernements',
+            offline: 'Fonctionne entièrement hors ligne — pas besoin d\'internet',
+            nopasswords: 'Nous ne stockons jamais votre mot de passe',
+            nodata: 'Si vous oubliez votre mot de passe, même nous ne pouvons pas récupérer vos données',
+        },
+        
+        // Technical Section
+        technicalTitle: 'Architecture et sécurité',
+        encryptionDetails: 'Détails du chiffrement',
+        encryptionDetailsDesc: 'Vos données sont protégées à l\'aide d\'algorithmes standard de l\'industrie:',
+        technicalSpecs: {
+            aes: 'AES-256-GCM pour le chiffrement des données',
+            pbkdf2: 'PBKDF2 avec 100 000 itérations pour la dérivation de clé',
+            salt: 'Sel aléatoire de 16 octets par utilisateur',
+            iv: 'IV unique de 12 octets pour chaque entrée',
+            session: 'Clé de session stockée uniquement en mémoire',
+        },
+        zeroKnowledge: 'Architecture à connaissance nulle',
+        zeroKnowledgeDesc: 'Nous ne pouvons littéralement pas accéder à vos données:',
+        zeroKnowledgePoints: {
+            noStorage: 'Le mot de passe n\'est jamais stocké nulle part',
+            noRecovery: 'Pas de "réinitialisation du mot de passe" — nous ne pouvons pas aider si vous oubliez',
+            noCloud: 'Pas de serveurs cloud — tout reste sur votre appareil',
+            noAnalytics: 'Pas de suivi, pas de cookies, pas d\'analyses',
+        },
+        offlineFirst: 'Conception offline-first',
+        offlineFirstDesc: 'Rockgarden est conçu pour fonctionner sans aucune connexion réseau:',
+        offlineFeatures: {
+            storage: 'IndexedDB pour le stockage local',
+            crypto: 'Web Crypto API pour le chiffrement',
+            pwa: 'Service Worker pour la fonctionnalité hors ligne',
+            fonts: 'Polices mises en cache pendant 1 an',
+        },
+        
+        // Visualization Section
+        visualizationTitle: 'La métaphore du jardin de pierres',
+        visualizationDesc: 'Chaque pierre représente une entrée de journal avec un encodage visuel:',
+        stoneEncoding: {
+            size: 'Taille = Intensité (plus grand = sentiment plus intense)',
+            opacity: 'Opacité = Âge (plus ancien = plus transparent)',
+            color: 'Saturation des couleurs = Force émotionnelle',
+            shape: 'Formes organiques = Texture naturelle de la mémoire',
+        },
+        viewModes: {
+            scatter: 'Dispersé: Distribution aléatoire dans le temps',
+            piles: 'Piles: Colonnes regroupées par période',
+            cairn: 'Cairn: Monument central empilé',
+        },
+        
+        // Emergency Features Section
+        emergencyTitle: 'Protection d\'urgence',
+        emergencyDesc: 'Fonctionnalités de sécurité intégrées pour les situations sensibles:',
+        emergencyFeatures: {
+            panic: 'Bouton de panique: Triple tapotement pour verrouillage instantané',
+            burn: 'Burn PIN: Un PIN spécial efface toutes les données',
+            autolock: 'Verrouillage auto: Sécurité basée sur une minuterie',
+            timing: 'Anti-bruteforce: ~1000ms de délai sur mot de passe incorrect',
+        },
     },
     // Onboarding Tutorial
     onboarding: {

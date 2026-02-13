@@ -276,6 +276,73 @@ export const ltTranslations = {
         ctaSubtitle: 'Jūsų privati erdvė laukia. Jokios registracijos. Jokio stebėjimo. Tik privatumas.',
         enterRockgarden: 'Įeiti į Rockgarden',
         footer: '© 2025 Rockgarden. Jūsų privatumas yra mūsų vienintelė misija.',
+
+        // Expandable Details Sections
+        detailsTitle: 'Techninės detalės',
+        detailsSubtitle: 'Gilus nardymas į tai, kaip Rockgarden saugo jūsų duomenis',
+        
+        // For Everyone Section
+        forEveryoneTitle: 'Kaip tai veikia',
+        forEveryoneDesc: 'Rockgarden naudoja tą pačią šifravimo technologiją, kuria pasitiki bankai ir kariuomenės visame pasaulyje. Jūsų mintys užrakintos slaptažodžiu, kurį žinote tik jūs.',
+        featureList: {
+            encryption: 'AES-256 šifravimas — naudojamas vyriausybių',
+            offline: 'Veikia visiškai neprisijungus — nereikia interneto',
+            nopasswords: 'Mes niekada nesaugome jūsų slaptažodžio',
+            nodata: 'Jei pamiršite slaptažodį, net mes negalime atkurti jūsų duomenų',
+        },
+        
+        // Technical Section
+        technicalTitle: 'Architektūra ir saugumas',
+        encryptionDetails: 'Šifravimo detalės',
+        encryptionDetailsDesc: 'Jūsų duomenys apsaugoti naudojant pramonės standarto algoritmus:',
+        technicalSpecs: {
+            aes: 'AES-256-GCM duomenų šifravimui',
+            pbkdf2: 'PBKDF2 su 100 000 iteracijų rakto išvedimui',
+            salt: 'Atsitiktinė 16 baitų druska kiekvienam vartotojui',
+            iv: 'Unikalus 12 baitų IV kiekvienam įrašui',
+            session: 'Seanso raktas saugomas tik atmintyje',
+        },
+        zeroKnowledge: 'Nulinio žinojimo architektūra',
+        zeroKnowledgeDesc: 'Mes tiesiog negalime pasiekti jūsų duomenų:',
+        zeroKnowledgePoints: {
+            noStorage: 'Slaptažodis niekada niekur nesaugomas',
+            noRecovery: 'Jokio „slaptažodžio atstatymo“ — negalime padėti, jei pamiršite',
+            noCloud: 'Debesų serverių nėra — viskas lieka jūsų įrenginyje',
+            noAnalytics: 'Jokio stebėjimo, jokių slapukų, jokios analitikos',
+        },
+        offlineFirst: 'Pirmiausia neprisijungęs dizainas',
+        offlineFirstDesc: 'Rockgarden sukurtas veikti be jokio tinklo ryšio:',
+        offlineFeatures: {
+            storage: 'IndexedDB vietiniam saugojimui',
+            crypto: 'Web Crypto API šifravimui',
+            pwa: 'Service Worker neprisijungusiai funkcijai',
+            fonts: 'Šriftai kešuojami 1 metams',
+        },
+        
+        // Visualization Section
+        visualizationTitle: 'Akmens sodo metafora',
+        visualizationDesc: 'Kiekvienas akmuo vaizduoja žurnalo įrašą su vizualiniu kodavimu:',
+        stoneEncoding: {
+            size: 'Dydis = Intensyvumas (didesnis = intensyvesnis jausmas)',
+            opacity: 'Nepermatomumas = Amžius (senesnis = permatomesnis)',
+            color: 'Spalvų sodrumas = Emocinė stiprybė',
+            shape: 'Organinės formos = Natūrali atminties tekstūra',
+        },
+        viewModes: {
+            scatter: 'Išsklaidyta: Atsitiktinis pasiskirstymas pagal laiką',
+            piles: 'Krūvos: Stulpeliai, sugrupuoti pagal laikotarpį',
+            cairn: 'Bokštas: Sudėtas centrinis paminklas',
+        },
+        
+        // Emergency Features Section
+        emergencyTitle: 'Avarinė apsauga',
+        emergencyDesc: 'Įmontuotos saugos funkcijos jautrioms situacijoms:',
+        emergencyFeatures: {
+            panic: 'Panikos mygtukas: Trigubas bakstelėjimas akimirksniui užrakinti',
+            burn: 'Burn PIN: Specialus PIN ištrina visus duomenis',
+            autolock: 'Automatinis užraktas: Laikmačio pagrindu saugumas',
+            timing: 'Anti-bruteforce: ~1000ms vėlavimas neteisingam slaptažodžiui',
+        },
     },
 
     // Onboarding Tutorial
