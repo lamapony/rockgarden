@@ -17,7 +17,7 @@ export function LanguageSwitcher() {
     const { i18n } = useTranslation();
 
     const handleLanguageChange = async (lang: string) => {
-        setLanguage(lang);
+        await setLanguage(lang);
         try {
             await updateLanguage(lang as 'en' | 'ru' | 'da');
         } catch {

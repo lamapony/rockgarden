@@ -27,7 +27,7 @@ interface StoneData {
 }
 
 export function StoneVisualization({ entries, onEntryClick, onAddEntry }: StoneVisualizationProps) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const containerRef = useRef<HTMLDivElement>(null);
     const [layoutMode, setLayoutMode] = useState<LayoutMode>('layout-scatter');
     const [stones, setStones] = useState<StoneData[]>([]);
@@ -302,7 +302,7 @@ export function StoneVisualization({ entries, onEntryClick, onAddEntry }: StoneV
                         top: `${tooltipPos.y}px`,
                     }}
                 >
-                    <h4>{hoveredStoneData.date.toLocaleDateString()}</h4>
+                    <h4>{hoveredStoneData.date.toLocaleDateString(i18n.language, { year: 'numeric', month: 'short', day: 'numeric' })}</h4>
                     <p className="stone-tooltip-title">{hoveredStoneData.title}</p>
                     <p className="stone-tooltip-intensity">
                         {t('journal.intensity')}: {hoveredStoneData.intensity}/10
