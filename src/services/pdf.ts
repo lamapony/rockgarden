@@ -83,7 +83,7 @@ async function generateIntensityChart(report: AnalyticsReport): Promise<string> 
 }
 
 export async function generatePDF(options: ExportOptions): Promise<Blob> {
-    const { title, entries, translations } = options;
+    const { entries, translations } = options;
     const report = analyzeEntries(entries);
 
     // Setup A4 Document

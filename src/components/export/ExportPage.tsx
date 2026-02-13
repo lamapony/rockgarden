@@ -48,6 +48,8 @@ export function ExportPage() {
                     escalation: t('export.escalation'),
                     frequency: t('export.frequency'),
                     timeOfDay: t('export.timeOfDay'),
+                    generated: t('export.generated'),
+                    page: t('export.page'),
                 },
             });
 
@@ -107,8 +109,8 @@ export function ExportPage() {
                     </div>
                     <h2 className="export-subtitle">{t('export.subtitle')}</h2>
                     <p className="export-description">
-                        {entries.length === 0 
-                            ? t('journal.empty') 
+                        {entries.length === 0
+                            ? t('journal.empty')
                             : `${entries.length} ${t('export.totalEvents').toLowerCase()}`}
                     </p>
                 </div>

@@ -11,8 +11,7 @@ import {
     login,
     changePassword,
 } from './auth';
-import { deleteAllData, getSettings, saveSettings } from './storage';
-import { generateSalt } from './crypto';
+import { deleteAllData, getSettings } from './storage';
 
 describe('Authentication Service', () => {
     beforeEach(async () => {
