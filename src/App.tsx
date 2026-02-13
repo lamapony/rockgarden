@@ -2,10 +2,11 @@
  * Main App Component
  */
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './hooks/useAuth';
 import { AuthPage } from './components/auth/AuthPage';
+import { LandingPage } from './components/landing/LandingPage';
 import { JournalPage } from './components/journal/JournalPage';
 import { EntryEditor } from './components/journal/EntryEditor';
 import { ExportPage } from './components/export/ExportPage';
@@ -18,13 +19,29 @@ import { AutoLockProvider } from './components/layout/AutoLockProvider';
 import { PWAUpdateNotification } from './components/layout/PWAUpdateNotification';
 import { initTheme } from './services/theme';
 
+const LANDING_SEEN_KEY = 'rockgarden_landing_seen';
+
 function AppRoutes() {
   const { isAuthenticated, isLoading, needsSetup } = useAuth();
+  const [showLanding, setShowLanding] = useState(false);
 
   // Initialize theme on app load
   useEffect(() => {
     initTheme();
   }, []);
+
+  // Check if landing page was seen
+  useEffect(() => {
+    const landingSeen = localStorage.getItem(LANDING_SEEN_KEY);
+    if (!landingSeen && !isAuthenticated && !needsSetup) {
+      setShowLanding(true);
+    }
+  }, [isAuthenticated, needsSetup]);
+
+  const handleLandingEnter = () => {
+    localStorage.setItem(LANDING_SEEN_KEY, 'true');
+    setShowLanding(false);
+  };
 
   if (isLoading) {
     return (
@@ -32,6 +49,11 @@ function AppRoutes() {
         <div className="spinner" />
       </div>
     );
+  }
+
+  // Show landing page for first-time visitors
+  if (showLanding) {
+    return <LandingPage onEnter={handleLandingEnter} />;
   }
 
   // Show auth page if not authenticated or needs setup
