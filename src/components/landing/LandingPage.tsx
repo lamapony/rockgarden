@@ -116,35 +116,24 @@ export function LandingPage({ onEnter }: LandingPageProps) {
                     <p>{t('landing.stonesSubtitle')}</p>
                 </div>
 
+                {/* Static visualization of metaphor */}
                 <div className="landing-stones-demo">
                     <div className="stones-demo-container">
-                        {/* Large stone - intense conflict */}
                         <div className="demo-stone-wrapper">
-                            <div className="demo-stone large"></div>
+                            <div className="demo-stone-visual large"></div>
                             <span className="demo-stone-label">{t('landing.stoneLarge')}</span>
+                            <span className="demo-stone-sublabel">{t('landing.legendSize')}</span>
                         </div>
                         
-                        {/* Medium stone */}
                         <div className="demo-stone-wrapper">
-                            <div className="demo-stone medium"></div>
+                            <div className="demo-stone-visual medium"></div>
                             <span className="demo-stone-label">{t('landing.stoneMedium')}</span>
                         </div>
                         
-                        {/* Small stone - fading */}
                         <div className="demo-stone-wrapper">
-                            <div className="demo-stone small"></div>
+                            <div className="demo-stone-visual small"></div>
                             <span className="demo-stone-label">{t('landing.stoneSmall')}</span>
-                        </div>
-                    </div>
-                    
-                    <div className="stones-demo-legend">
-                        <div className="legend-item">
-                            <span className="legend-dot size"></span>
-                            <span>{t('landing.legendSize')}</span>
-                        </div>
-                        <div className="legend-item">
-                            <span className="legend-dot fade"></span>
-                            <span>{t('landing.legendFade')}</span>
+                            <span className="demo-stone-sublabel">{t('landing.legendFade')}</span>
                         </div>
                     </div>
                 </div>
