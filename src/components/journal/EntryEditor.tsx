@@ -1,13 +1,15 @@
 /**
  * Entry Editor - Stonewall Design
+ * Mobile-friendly with keyboard handling
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, Trash2, Mic, Archive, ArchiveRestore } from 'lucide-react';
 import { useEntries } from '../../hooks/useEntries';
 import { useVoiceRecorder } from '../../hooks/useVoiceRecorder';
+import { useIsMobile } from '../../hooks/useIsMobile';
 import { IntensitySlider } from './IntensitySlider';
 import './EntryEditor.css';
 
@@ -17,6 +19,8 @@ export function EntryEditor() {
     const { t } = useTranslation();
     const { loadEntry, createEntry, updateEntry, deleteEntry, toggleArchiveEntry } = useEntries();
     const { isRecording, audioBlob, startRecording, stopRecording, clearAudio } = useVoiceRecorder(id);
+    const isMobile = useIsMobile();
+    const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
     const [title, setTitle] = useState('');
     const [text, setText] = useState('');
@@ -88,6 +92,19 @@ export function EntryEditor() {
         }
     };
 
+    // Handle textarea focus for mobile keyboard
+    const handleTextareaFocus = () => {
+        if (isMobile && textAreaRef.current) {
+            // Small delay to let keyboard open
+            setTimeout(() => {
+                textAreaRef.current?.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'center' 
+                });
+            }, 300);
+        }
+    };
+
     if (loading) return (
         <div className="editor-loading">
             <div className="editor-spinner" />
@@ -146,12 +163,16 @@ export function EntryEditor() {
 
                 {/* Text */}
                 <textarea
+                    ref={textAreaRef}
                     placeholder={t('journal.textPlaceholder')}
                     value={text}
                     onChange={e => setText(e.target.value)}
                     onKeyDown={handleKeyDown}
+                    onFocus={handleTextareaFocus}
                     className="editor-text"
                     autoFocus={!id}
+                    enterKeyHint="done"
+                    inputMode="text"
                 />
 
                 {/* Voice Recorder */}
@@ -178,10 +199,12 @@ export function EntryEditor() {
                 </div>
             </div>
 
-            {/* Footer hint */}
-            <div className="editor-footer">
-                <span>Ctrl + Enter</span> {t('common.save')} · <span>Esc</span> {t('common.cancel')}
-            </div>
+            {/* Footer hint - hidden on mobile */}
+            {!isMobile && (
+                <div className="editor-footer keyboard-hint">
+                    <span>Ctrl + Enter</span> {t('common.save')} · <span>Esc</span> {t('common.cancel')}
+                </div>
+            )}
         </div>
     );
 }

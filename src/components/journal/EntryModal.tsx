@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { X, AlertCircle } from 'lucide-react';
 import { useEntries } from '../../hooks/useEntries';
+import { useIsMobile } from '../../hooks/useIsMobile';
 
 interface EntryModalProps {
     isOpen: boolean;
@@ -223,6 +224,7 @@ const styles = {
 export function EntryModal({ isOpen, onClose, onSaved }: EntryModalProps) {
     const { t } = useTranslation();
     const { createEntry } = useEntries();
+    const isMobile = useIsMobile();
     
     const [text, setText] = useState('');
     const [intensity, setIntensity] = useState(5);
@@ -363,10 +365,12 @@ export function EntryModal({ isOpen, onClose, onSaved }: EntryModalProps) {
                         </div>
                     </div>
 
-                    {/* Hint */}
-                    <div style={styles.hint}>
-                        <kbd style={styles.kbd}>Ctrl</kbd> + <kbd style={styles.kbd}>Enter</kbd> {t('common.save')}
-                    </div>
+                    {/* Hint - hidden on mobile */}
+                    {!isMobile && (
+                        <div style={styles.hint}>
+                            <kbd style={styles.kbd}>Ctrl</kbd> + <kbd style={styles.kbd}>Enter</kbd> {t('common.save')}
+                        </div>
+                    )}
 
                     {/* Actions */}
                     <div style={styles.actions}>
