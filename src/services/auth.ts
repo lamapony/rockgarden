@@ -51,9 +51,10 @@ export async function needsSetup(): Promise<boolean> {
 /**
  * Setup new password (first time setup)
  */
+// Supported languages: en, ru, da, lt, lv, et, uk, pl, pt, es, fr, de, it, tr
 export async function setupPassword(
     password: string,
-    language: 'en' | 'ru' | 'da' = 'ru'
+    language: 'en' | 'ru' | 'da' | 'lt' | 'lv' | 'et' | 'uk' | 'pl' | 'pt' | 'es' | 'fr' | 'de' | 'it' | 'tr' = 'en'
 ): Promise<void> {
     // Generate salt
     const salt = generateSalt();

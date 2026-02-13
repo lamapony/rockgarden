@@ -65,6 +65,14 @@ describe('i18n Lazy Loading', () => {
         expect(bundle.entryCount_many).toBe('{{count}} записей');
     });
 
+    it('should handle Lithuanian pluralization (one/few/many)', async () => {
+        await loadLanguage('lt');
+        const bundle = i18n.getResourceBundle('lt', 'translation');
+        expect(bundle.entryCount_one).toBe('{{count}} įrašas');
+        expect(bundle.entryCount_few).toBe('{{count}} įrašai');
+        expect(bundle.entryCount_many).toBe('{{count}} įrašų');
+    });
+
     it('should not reload already loaded language', async () => {
         await loadLanguage('ru');
         const before = i18n.hasResourceBundle('ru', 'translation');
@@ -78,6 +86,74 @@ describe('i18n Lazy Loading', () => {
     it('should handle unknown language gracefully', async () => {
         // Should not throw
         await expect(loadLanguage('unknown')).resolves.not.toThrow();
+    });
+
+    // Baltic states languages (high domestic violence rates in Europe)
+    it('should lazy load Lithuanian (LT)', async () => {
+        await loadLanguage('lt');
+        expect(i18n.hasResourceBundle('lt', 'translation')).toBe(true);
+        expect(i18n.getResourceBundle('lt', 'translation').appName).toBe('Saugus Dienoraštis');
+    });
+
+    it('should lazy load Latvian (LV)', async () => {
+        await loadLanguage('lv');
+        expect(i18n.hasResourceBundle('lv', 'translation')).toBe(true);
+        expect(i18n.getResourceBundle('lv', 'translation').appName).toBe('Drošā Dienasgrāmata');
+    });
+
+    it('should lazy load Estonian (ET)', async () => {
+        await loadLanguage('et');
+        expect(i18n.hasResourceBundle('et', 'translation')).toBe(true);
+        expect(i18n.getResourceBundle('et', 'translation').appName).toBe('Turvaline Päevik');
+    });
+
+    // Other high-violence region languages
+    it('should lazy load Ukrainian (UK)', async () => {
+        await loadLanguage('uk');
+        expect(i18n.hasResourceBundle('uk', 'translation')).toBe(true);
+        expect(i18n.getResourceBundle('uk', 'translation').appName).toBe('Безпечний Щоденник');
+    });
+
+    it('should lazy load Polish (PL)', async () => {
+        await loadLanguage('pl');
+        expect(i18n.hasResourceBundle('pl', 'translation')).toBe(true);
+        expect(i18n.getResourceBundle('pl', 'translation').appName).toBe('Bezpieczny Dziennik');
+    });
+
+    it('should lazy load Portuguese (PT)', async () => {
+        await loadLanguage('pt');
+        expect(i18n.hasResourceBundle('pt', 'translation')).toBe(true);
+        expect(i18n.getResourceBundle('pt', 'translation').appName).toBe('Diário Seguro');
+    });
+
+    it('should lazy load Spanish (ES)', async () => {
+        await loadLanguage('es');
+        expect(i18n.hasResourceBundle('es', 'translation')).toBe(true);
+        expect(i18n.getResourceBundle('es', 'translation').appName).toBe('Diario Seguro');
+    });
+
+    it('should lazy load French (FR)', async () => {
+        await loadLanguage('fr');
+        expect(i18n.hasResourceBundle('fr', 'translation')).toBe(true);
+        expect(i18n.getResourceBundle('fr', 'translation').appName).toBe('Journal Sécurisé');
+    });
+
+    it('should lazy load German (DE)', async () => {
+        await loadLanguage('de');
+        expect(i18n.hasResourceBundle('de', 'translation')).toBe(true);
+        expect(i18n.getResourceBundle('de', 'translation').appName).toBe('Sicheres Tagebuch');
+    });
+
+    it('should lazy load Italian (IT)', async () => {
+        await loadLanguage('it');
+        expect(i18n.hasResourceBundle('it', 'translation')).toBe(true);
+        expect(i18n.getResourceBundle('it', 'translation').appName).toBe('Diario Sicuro');
+    });
+
+    it('should lazy load Turkish (TR)', async () => {
+        await loadLanguage('tr');
+        expect(i18n.hasResourceBundle('tr', 'translation')).toBe(true);
+        expect(i18n.getResourceBundle('tr', 'translation').appName).toBe('Güvenli Günlük');
     });
 });
 

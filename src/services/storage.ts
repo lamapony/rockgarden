@@ -6,15 +6,15 @@
 import Dexie, { type EntityTable } from 'dexie';
 import { z } from 'zod';
 
-// Supported languages
-type Language = 'en' | 'ru' | 'da';
+// Supported languages (14 languages including Baltic states and high-violence regions)
+type Language = 'en' | 'ru' | 'da' | 'lt' | 'lv' | 'et' | 'uk' | 'pl' | 'pt' | 'es' | 'fr' | 'de' | 'it' | 'tr';
 
 // Zod schema for runtime validation of AppSettings
 export const AppSettingsSchema = z.object({
     id: z.string(),
     salt: z.string().regex(/^[a-f0-9]{32}$/i, 'Salt must be 16 bytes hex encoded'),
     verificationBlock: z.string().min(1, 'Verification block is required'),
-    language: z.enum(['en', 'ru', 'da']).default('en'),
+    language: z.enum(['en', 'ru', 'da', 'lt', 'lv', 'et', 'uk', 'pl', 'pt', 'es', 'fr', 'de', 'it', 'tr']).default('en'),
     theme: z.enum(['monochrome', 'warm', 'cool', 'forest', 'midnight', 'sepia', 'light', 'dark', 'system']).optional(),
     createdAt: z.number().int().positive(),
     appLock: z.boolean().optional(),

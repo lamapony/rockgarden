@@ -7,10 +7,24 @@ import { setLanguage } from '../../i18n/config';
 import { updateLanguage } from '../../services/storage';
 import './LanguageSwitcher.css';
 
+// 14 languages: existing + Baltic states (LT, LV, ET) + high-violence regions
 const languages = [
     { code: 'en', label: 'English' },
     { code: 'ru', label: 'Русский' },
     { code: 'da', label: 'Dansk' },
+    // Baltic states (highest domestic violence rates in Europe)
+    { code: 'lt', label: 'Lietuvių' },
+    { code: 'lv', label: 'Latviešu' },
+    { code: 'et', label: 'Eesti' },
+    // Other high-violence regions
+    { code: 'uk', label: 'Українська' },
+    { code: 'pl', label: 'Polski' },
+    { code: 'pt', label: 'Português' },
+    { code: 'es', label: 'Español' },
+    { code: 'fr', label: 'Français' },
+    { code: 'de', label: 'Deutsch' },
+    { code: 'it', label: 'Italiano' },
+    { code: 'tr', label: 'Türkçe' },
 ];
 
 export function LanguageSwitcher() {
