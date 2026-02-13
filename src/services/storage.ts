@@ -4,21 +4,37 @@
  */
 
 import Dexie, { type EntityTable } from 'dexie';
+import { z } from 'zod';
 
-// Database schema types
-export interface AppSettings {
-    id: string;
-    salt: string; // hex encoded
-    verificationBlock: string;
-    language: string;
-    theme?: string;
-    createdAt: number;
-    // Extended settings
-    appLock?: boolean;
-    autoLockMinutes?: number | null;
-    offlineMode?: boolean;
-    autoDeleteDays?: number | null;
-    panicButtonEnabled?: boolean;
+// Zod schema for runtime validation of AppSettings
+export const AppSettingsSchema = z.object({
+    id: z.string(),
+    salt: z.string().regex(/^[a-f0-9]{32}$/i, 'Salt must be 16 bytes hex encoded'),
+    verificationBlock: z.string().min(1, 'Verification block is required'),
+    language: z.enum(['en', 'ru', 'da']).default('en'),
+    theme: z.enum(['monochrome', 'warm', 'cool', 'forest', 'midnight', 'sepia', 'light', 'dark', 'system']).optional(),
+    createdAt: z.number().int().positive(),
+    appLock: z.boolean().optional(),
+    autoLockMinutes: z.union([z.number().int().positive().nullable(), z.literal(null)]).optional(),
+    offlineMode: z.boolean().optional(),
+    autoDeleteDays: z.union([z.number().int().positive().nullable(), z.literal(null)]).optional(),
+    panicButtonEnabled: z.boolean().optional(),
+});
+
+// Type inferred from Zod schema
+export type AppSettings = z.infer<typeof AppSettingsSchema>;
+
+// Validation helpers
+export function validateSettings(data: unknown): AppSettings {
+    return AppSettingsSchema.parse(data);
+}
+
+export function validateSettingsSafe(data: unknown): { success: true; data: AppSettings } | { success: false; error: z.ZodError } {
+    const result = AppSettingsSchema.safeParse(data);
+    if (result.success) {
+        return { success: true, data: result.data };
+    }
+    return { success: false, error: result.error };
 }
 
 export interface JournalEntry {
@@ -83,11 +99,30 @@ export const db = new SafeJournalDB();
 
 // Settings operations
 export async function getSettings(): Promise<AppSettings | undefined> {
-    return db.settings.get('main');
+    const raw = await db.settings.get('main');
+    if (!raw) return undefined;
+    
+    // Validate on read to catch corrupted data
+    const result = validateSettingsSafe(raw);
+    if (!result.success) {
+        console.error('[Storage] Corrupted settings detected:', result.error.format());
+        throw new Error('Settings validation failed: data may be corrupted');
+    }
+    return result.data;
 }
 
 export async function saveSettings(settings: Omit<AppSettings, 'id'>): Promise<void> {
-    await db.settings.put({ ...settings, id: 'main' });
+    const validated = validateSettings({ ...settings, id: 'main' });
+    await db.settings.put(validated);
+}
+
+// Partial update without full validation (for individual field updates)
+export async function updateSettings(updates: Partial<Omit<AppSettings, 'id'>>): Promise<void> {
+    const existing = await db.settings.get('main');
+    if (!existing) {
+        throw new Error('Cannot update settings: no existing settings found');
+    }
+    await db.settings.update('main', updates);
 }
 
 export async function updateLanguage(language: string): Promise<void> {

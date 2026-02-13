@@ -16,6 +16,9 @@ import {
     getStatistics,
     deleteAllData,
     isInitialized,
+    validateSettings,
+    validateSettingsSafe,
+    AppSettingsSchema,
     type AppSettings,
     type JournalEntry,
     type AudioNote,
@@ -35,7 +38,7 @@ describe('Storage Service', () => {
 
         it('should save and retrieve settings', async () => {
             const settings: Omit<AppSettings, 'id'> = {
-                salt: 'abcdef1234567890',
+                salt: 'abcd1234abcd1234abcd1234abcd1234',
                 verificationBlock: 'encrypted-block-here',
                 language: 'en',
                 createdAt: Date.now(),
@@ -54,7 +57,7 @@ describe('Storage Service', () => {
 
         it('should update settings', async () => {
             const settings: Omit<AppSettings, 'id'> = {
-                salt: 'abcdef1234567890',
+                salt: 'abcd1234abcd1234abcd1234abcd1234',
                 verificationBlock: 'encrypted-block-here',
                 language: 'en',
                 createdAt: Date.now(),
@@ -69,7 +72,7 @@ describe('Storage Service', () => {
 
         it('should update language only', async () => {
             const settings: Omit<AppSettings, 'id'> = {
-                salt: 'abcdef1234567890',
+                salt: 'abcd1234abcd1234abcd1234abcd1234',
                 verificationBlock: 'encrypted-block-here',
                 language: 'en',
                 createdAt: Date.now(),
@@ -306,7 +309,7 @@ describe('Storage Service', () => {
 
         it('should return true after settings are saved', async () => {
             const settings: Omit<AppSettings, 'id'> = {
-                salt: 'abcdef1234567890',
+                salt: 'abcd1234abcd1234abcd1234abcd1234',
                 verificationBlock: 'encrypted-block',
                 language: 'en',
                 createdAt: Date.now(),
@@ -315,6 +318,143 @@ describe('Storage Service', () => {
             await saveSettings(settings);
             const initialized = await isInitialized();
             expect(initialized).toBe(true);
+        });
+    });
+
+    describe('Settings Schema Validation', () => {
+        it('should validate correct settings', () => {
+            const validSettings = {
+                id: 'main',
+                salt: 'abcd1234abcd1234abcd1234abcd1234',
+                verificationBlock: 'valid-block',
+                language: 'en',
+                createdAt: Date.now(),
+            };
+
+            const result = validateSettingsSafe(validSettings);
+            expect(result.success).toBe(true);
+            if (result.success) {
+                expect(result.data.id).toBe('main');
+            }
+        });
+
+        it('should reject invalid salt format', () => {
+            const invalidSettings = {
+                id: 'main',
+                salt: 'invalid-salt',
+                verificationBlock: 'block',
+                language: 'en',
+                createdAt: Date.now(),
+            };
+
+            const result = validateSettingsSafe(invalidSettings);
+            expect(result.success).toBe(false);
+        });
+
+        it('should reject invalid language', () => {
+            const invalidSettings = {
+                id: 'main',
+                salt: 'abcd1234abcd1234abcd1234abcd1234',
+                verificationBlock: 'block',
+                language: 'invalid-lang',
+                createdAt: Date.now(),
+            };
+
+            const result = validateSettingsSafe(invalidSettings);
+            expect(result.success).toBe(false);
+        });
+
+        it('should reject missing required fields', () => {
+            const incompleteSettings = {
+                id: 'main',
+                language: 'en',
+            };
+
+            expect(() => validateSettings(incompleteSettings)).toThrow();
+        });
+
+        it('should accept valid theme values', () => {
+            const themes = ['light', 'dark', 'system'];
+            
+            for (const theme of themes) {
+                const settings = {
+                    id: 'main',
+                    salt: 'abcd1234abcd1234abcd1234abcd1234',
+                    verificationBlock: 'block',
+                    language: 'en',
+                    theme,
+                    createdAt: Date.now(),
+                };
+
+                const result = validateSettingsSafe(settings);
+                expect(result.success).toBe(true);
+            }
+        });
+
+        it('should reject invalid theme values', () => {
+            const settings = {
+                id: 'main',
+                salt: 'abcd1234abcd1234abcd1234abcd1234',
+                verificationBlock: 'block',
+                language: 'en',
+                theme: 'invalid-theme',
+                createdAt: Date.now(),
+            };
+
+            const result = validateSettingsSafe(settings);
+            expect(result.success).toBe(false);
+        });
+
+        it('should validate autoLockMinutes constraints', () => {
+            const validSettings = {
+                id: 'main',
+                salt: 'abcd1234abcd1234abcd1234abcd1234',
+                verificationBlock: 'block',
+                language: 'en',
+                autoLockMinutes: 15,
+                createdAt: Date.now(),
+            };
+
+            expect(validateSettingsSafe(validSettings).success).toBe(true);
+
+            const invalidSettings = {
+                ...validSettings,
+                autoLockMinutes: -5,
+            };
+
+            expect(validateSettingsSafe(invalidSettings).success).toBe(false);
+        });
+
+        it('should validate autoDeleteDays constraints', () => {
+            const validSettings = {
+                id: 'main',
+                salt: 'abcd1234abcd1234abcd1234abcd1234',
+                verificationBlock: 'block',
+                language: 'en',
+                autoDeleteDays: 90,
+                createdAt: Date.now(),
+            };
+
+            expect(validateSettingsSafe(validSettings).success).toBe(true);
+
+            const invalidSettings = {
+                ...validSettings,
+                autoDeleteDays: -1,
+            };
+
+            expect(validateSettingsSafe(invalidSettings).success).toBe(false);
+        });
+
+        it('should throw on validateSettings with invalid data', () => {
+            const invalidSettings = {
+                id: 'main',
+                salt: 'short',
+                verificationBlock: 'block',
+                language: 'en',
+                createdAt: Date.now(),
+            };
+
+            expect(() => validateSettings(invalidSettings)).toThrow();
         });
     });
 
@@ -355,7 +495,7 @@ describe('Storage Service', () => {
 
         it('should delete all settings', async () => {
             const settings: Omit<AppSettings, 'id'> = {
-                salt: 'abcdef',
+                salt: 'abcd1234abcd1234abcd1234abcd1234',
                 verificationBlock: 'block',
                 language: 'en',
                 createdAt: Date.now(),
@@ -372,7 +512,7 @@ describe('Storage Service', () => {
     describe('Extended Settings', () => {
         it('should save and retrieve appLock setting', async () => {
             const settings: Omit<AppSettings, 'id'> = {
-                salt: 'abcdef',
+                salt: 'abcd1234abcd1234abcd1234abcd1234',
                 verificationBlock: 'block',
                 language: 'en',
                 createdAt: Date.now(),
@@ -387,7 +527,7 @@ describe('Storage Service', () => {
 
         it('should save and retrieve autoLockMinutes setting', async () => {
             const settings: Omit<AppSettings, 'id'> = {
-                salt: 'abcdef',
+                salt: 'abcd1234abcd1234abcd1234abcd1234',
                 verificationBlock: 'block',
                 language: 'en',
                 createdAt: Date.now(),
@@ -402,7 +542,7 @@ describe('Storage Service', () => {
 
         it('should save autoLockMinutes as null', async () => {
             const settings: Omit<AppSettings, 'id'> = {
-                salt: 'abcdef',
+                salt: 'abcd1234abcd1234abcd1234abcd1234',
                 verificationBlock: 'block',
                 language: 'en',
                 createdAt: Date.now(),
@@ -417,7 +557,7 @@ describe('Storage Service', () => {
 
         it('should save and retrieve offlineMode setting', async () => {
             const settings: Omit<AppSettings, 'id'> = {
-                salt: 'abcdef',
+                salt: 'abcd1234abcd1234abcd1234abcd1234',
                 verificationBlock: 'block',
                 language: 'en',
                 createdAt: Date.now(),
@@ -432,7 +572,7 @@ describe('Storage Service', () => {
 
         it('should save and retrieve autoDeleteDays setting', async () => {
             const settings: Omit<AppSettings, 'id'> = {
-                salt: 'abcdef',
+                salt: 'abcd1234abcd1234abcd1234abcd1234',
                 verificationBlock: 'block',
                 language: 'en',
                 createdAt: Date.now(),
@@ -447,7 +587,7 @@ describe('Storage Service', () => {
 
         it('should save autoDeleteDays as null', async () => {
             const settings: Omit<AppSettings, 'id'> = {
-                salt: 'abcdef',
+                salt: 'abcd1234abcd1234abcd1234abcd1234',
                 verificationBlock: 'block',
                 language: 'en',
                 createdAt: Date.now(),
@@ -462,7 +602,7 @@ describe('Storage Service', () => {
 
         it('should save and retrieve panicButtonEnabled setting', async () => {
             const settings: Omit<AppSettings, 'id'> = {
-                salt: 'abcdef',
+                salt: 'abcd1234abcd1234abcd1234abcd1234',
                 verificationBlock: 'block',
                 language: 'en',
                 createdAt: Date.now(),
@@ -477,10 +617,10 @@ describe('Storage Service', () => {
 
         it('should save all extended settings together', async () => {
             const settings: Omit<AppSettings, 'id'> = {
-                salt: 'abcdef',
+                salt: 'abcd1234abcd1234abcd1234abcd1234',
                 verificationBlock: 'block',
                 language: 'ru',
-                theme: 'warm',
+                theme: 'dark',
                 createdAt: Date.now(),
                 appLock: false,
                 autoLockMinutes: 1,
@@ -497,7 +637,7 @@ describe('Storage Service', () => {
 
         it('should update individual extended settings', async () => {
             const settings: Omit<AppSettings, 'id'> = {
-                salt: 'abcdef',
+                salt: 'abcd1234abcd1234abcd1234abcd1234',
                 verificationBlock: 'block',
                 language: 'en',
                 createdAt: Date.now(),

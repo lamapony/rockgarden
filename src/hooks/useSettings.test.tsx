@@ -10,11 +10,25 @@ vi.mock('../services/theme', () => ({
     applyTheme: vi.fn(),
 }));
 
+// Helper to create valid initial settings
+const createInitialSettings = (overrides?: Partial<Parameters<typeof saveSettings>[0]>) => ({
+    salt: 'abcd1234abcd1234abcd1234abcd1234',
+    verificationBlock: 'test-verification-block',
+    language: 'en',
+    createdAt: Date.now(),
+    ...overrides,
+});
+
 describe('useSettings hook', () => {
     beforeEach(async () => {
         // Clear database before each test
         await db.settings.clear();
     });
+
+    // Helper to initialize settings for tests that need them
+    const initializeSettings = async (overrides?: Partial<Parameters<typeof saveSettings>[0]>) => {
+        await saveSettings(createInitialSettings(overrides));
+    };
 
     it('should load default settings when no settings stored', async () => {
         const { result } = renderHook(() => useSettings());
@@ -39,12 +53,9 @@ describe('useSettings hook', () => {
 
     it('should load stored settings from database', async () => {
         // Pre-populate database
-        await saveSettings({
-            salt: 'test-salt',
-            verificationBlock: 'test-block',
+        await initializeSettings({
             language: 'ru',
-            theme: 'warm',
-            createdAt: Date.now(),
+            theme: 'light',
             appLock: false,
             autoLockMinutes: 15,
             offlineMode: false,
@@ -58,7 +69,7 @@ describe('useSettings hook', () => {
 
         // Check loaded values
         expect(result.current.settings.language).toBe('ru');
-        expect(result.current.settings.theme).toBe('warm');
+        expect(result.current.settings.theme).toBe('light');
         expect(result.current.settings.appLock).toBe(false);
         expect(result.current.settings.autoLockMinutes).toBe(15);
         expect(result.current.settings.offlineMode).toBe(false);
@@ -67,6 +78,7 @@ describe('useSettings hook', () => {
     });
 
     it('should toggle appLock setting', async () => {
+        await initializeSettings();
         const { result } = renderHook(() => useSettings());
 
         await waitFor(() => expect(result.current.loading).toBe(false));
@@ -88,6 +100,7 @@ describe('useSettings hook', () => {
     });
 
     it('should toggle offlineMode setting', async () => {
+        await initializeSettings();
         const { result } = renderHook(() => useSettings());
 
         await waitFor(() => expect(result.current.loading).toBe(false));
@@ -104,6 +117,7 @@ describe('useSettings hook', () => {
     });
 
     it('should toggle panicButtonEnabled setting', async () => {
+        await initializeSettings();
         const { result } = renderHook(() => useSettings());
 
         await waitFor(() => expect(result.current.loading).toBe(false));
@@ -120,6 +134,7 @@ describe('useSettings hook', () => {
     });
 
     it('should update autoLockMinutes', async () => {
+        await initializeSettings();
         const { result } = renderHook(() => useSettings());
 
         await waitFor(() => expect(result.current.loading).toBe(false));
@@ -136,6 +151,7 @@ describe('useSettings hook', () => {
     });
 
     it('should set autoLockMinutes to null (never)', async () => {
+        await initializeSettings();
         const { result } = renderHook(() => useSettings());
 
         await waitFor(() => expect(result.current.loading).toBe(false));
@@ -152,6 +168,7 @@ describe('useSettings hook', () => {
     });
 
     it('should update autoDeleteDays', async () => {
+        await initializeSettings();
         const { result } = renderHook(() => useSettings());
 
         await waitFor(() => expect(result.current.loading).toBe(false));
@@ -168,6 +185,7 @@ describe('useSettings hook', () => {
     });
 
     it('should set autoDeleteDays to null (never)', async () => {
+        await initializeSettings();
         const { result } = renderHook(() => useSettings());
 
         await waitFor(() => expect(result.current.loading).toBe(false));
@@ -181,6 +199,7 @@ describe('useSettings hook', () => {
     });
 
     it('should save individual setting updates', async () => {
+        await initializeSettings();
         const { result } = renderHook(() => useSettings());
 
         await waitFor(() => expect(result.current.loading).toBe(false));
@@ -197,6 +216,7 @@ describe('useSettings hook', () => {
     });
 
     it('should export data with entries', async () => {
+        await initializeSettings();
         // Add a test entry to database
         const { saveEntry } = await import('../services/storage');
         await saveEntry({
@@ -232,6 +252,7 @@ describe('useSettings hook', () => {
     });
 
     it('should maintain settings consistency across multiple updates', async () => {
+        await initializeSettings();
         const { result } = renderHook(() => useSettings());
 
         await waitFor(() => expect(result.current.loading).toBe(false));
@@ -256,6 +277,7 @@ describe('useSettings hook', () => {
     });
 
     it('should handle errors gracefully', async () => {
+        await initializeSettings();
         const { result } = renderHook(() => useSettings());
 
         await waitFor(() => expect(result.current.loading).toBe(false));
@@ -273,12 +295,9 @@ describe('useSettings hook', () => {
         await waitFor(() => expect(result.current.loading).toBe(false));
 
         // Modify settings directly in DB
-        await saveSettings({
-            salt: 'test',
-            verificationBlock: 'block',
+        await saveSettings(createInitialSettings({
             language: 'ru',
-            createdAt: Date.now(),
-        });
+        }));
 
         // Reload
         await act(async () => {

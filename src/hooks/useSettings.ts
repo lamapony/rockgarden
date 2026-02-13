@@ -3,7 +3,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
-import { getSettings, saveSettings, type AppSettings } from '../services/storage';
+import { getSettings, updateSettings, type AppSettings } from '../services/storage';
 import type { Theme } from '../services/theme';
 
 export interface UserSettings {
@@ -71,13 +71,7 @@ export function useSettings() {
         value: UserSettings[K]
     ) => {
         try {
-            const stored = await getSettings();
-            const newSettings = { 
-                ...stored, 
-                [key]: value,
-                id: 'main'
-            } as AppSettings;
-            await saveSettings(newSettings);
+            await updateSettings({ [key]: value });
             updateSetting(key, value);
             return true;
         } catch (err) {
