@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Background -->
+  <rect width="100" height="100" rx="16" fill="#0a0a0a"/>
+  
+  <!-- Stone shape - organic form -->
+  <path d="M30 65 
+           C25 55, 28 40, 35 30
+           C40 22, 50 18, 60 20
+           C72 23, 78 32, 75 45
+           C73 55, 68 68, 55 75
+           C45 80, 35 75, 30 65Z" 
+        fill="#e8e4dc"/>
+  
+  <!-- Subtle shadow/highlight for depth -->
+  <path d="M35 32
+           C42 28, 52 25, 62 28
+           C58 26, 48 26, 42 30
+           C38 34, 35 38, 35 32Z"
+        fill="#f5f2ed" opacity="0.5"/>
+</svg>
