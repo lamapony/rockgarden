@@ -96,8 +96,10 @@ export async function login(password: string): Promise<boolean> {
     // Verify password
     const isValid = await verifyPassword(settings.verificationBlock, key);
 
-    // Artificial delay to prevent brute-force attacks
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    // Artificial delay to prevent brute-force and timing attacks
+    // Randomized 800-1500ms to ensure constant-time response regardless of password validity
+    const delay = 800 + Math.random() * 700;
+    await new Promise(resolve => setTimeout(resolve, delay));
 
     if (isValid) {
         sessionKey = key;

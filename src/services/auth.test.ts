@@ -111,8 +111,30 @@ describe('Authentication Service', () => {
             await login('correct-password');
             const endTime = Date.now();
 
-            // Should take at least 1000ms due to artificial delay
-            expect(endTime - startTime).toBeGreaterThanOrEqual(900);
+            // Should take at least 800ms due to randomized artificial delay (800-1500ms)
+            expect(endTime - startTime).toBeGreaterThanOrEqual(800);
+        });
+
+        it('should have similar timing for correct and incorrect passwords', async () => {
+            await setupPassword('test-password');
+            clearSession();
+
+            // Measure correct password timing
+            const startCorrect = Date.now();
+            await login('test-password');
+            const correctDuration = Date.now() - startCorrect;
+            clearSession();
+
+            // Measure incorrect password timing
+            const startIncorrect = Date.now();
+            await login('wrong-password');
+            const incorrectDuration = Date.now() - startIncorrect;
+
+            // Both should be in the 800-1500ms range (with some tolerance)
+            expect(correctDuration).toBeGreaterThanOrEqual(800);
+            expect(incorrectDuration).toBeGreaterThanOrEqual(800);
+            expect(correctDuration).toBeLessThan(2000);
+            expect(incorrectDuration).toBeLessThan(2000);
         });
     });
 
