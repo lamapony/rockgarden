@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import type { DecryptedEntry } from '../../types';
 import './StoneVisualization.css';
 
-type LayoutMode = 'layout-piles' | 'layout-cairn';
+type LayoutMode = 'layout-scatter' | 'layout-piles' | 'layout-cairn';
 
 interface StoneVisualizationProps {
     entries: DecryptedEntry[];
@@ -29,7 +29,7 @@ interface StoneData {
 export function StoneVisualization({ entries, onEntryClick, onAddEntry }: StoneVisualizationProps) {
     const { t } = useTranslation();
     const containerRef = useRef<HTMLDivElement>(null);
-    const [layoutMode, setLayoutMode] = useState<LayoutMode>('layout-piles');
+    const [layoutMode, setLayoutMode] = useState<LayoutMode>('layout-scatter');
     const [stones, setStones] = useState<StoneData[]>([]);
     const [hoveredStone, setHoveredStone] = useState<string | null>(null);
     const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
@@ -78,7 +78,12 @@ export function StoneVisualization({ entries, onEntryClick, onAddEntry }: StoneV
     const calculateSize = useCallback((intensity: number, layoutMode: LayoutMode): number => {
         const intensityFactor = intensity / 10;
         
-        if (layoutMode === 'layout-piles') {
+        if (layoutMode === 'layout-scatter') {
+            // Scatter: small 35px to large 100px based on intensity
+            const minSize = 35;
+            const maxSize = 100;
+            return minSize + (intensityFactor * (maxSize - minSize));
+        } else if (layoutMode === 'layout-piles') {
             // Piles: smaller range for stacking
             const minSize = 30;
             const maxSize = 70;
@@ -117,7 +122,18 @@ export function StoneVisualization({ entries, onEntryClick, onAddEntry }: StoneV
 
             let x = 0, y = 0, size = 0, zIndex = 0, blur = 0;
 
-            if (layoutMode === 'layout-piles') {
+            if (layoutMode === 'layout-scatter') {
+                // Scatter view: size based on intensity, position with some randomness
+                size = calculateSize(entry.intensity, layoutMode);
+                x = Math.random() * (width - size - 20) + 10;
+                const yBase = (1 - recency) * (height - size - 20);
+                const yNoise = (Math.random() - 0.5) * 100;
+                y = Math.max(10, Math.min(height - size - 10, yBase + yNoise));
+                zIndex = Math.floor(recency * 100);
+                // Slight blur for very old entries
+                const ageDays = (Date.now() - entry.createdAt) / (1000 * 60 * 60 * 24);
+                blur = ageDays > 30 ? Math.min((ageDays - 30) / 30, 3) : 0;
+            } else if (layoutMode === 'layout-piles') {
                 // Piles view: columns by time period
                 const colCount = Math.min(10, Math.max(3, Math.floor(width / 80)));
                 const colIndex = Math.floor(recency * colCount);
@@ -234,6 +250,11 @@ export function StoneVisualization({ entries, onEntryClick, onAddEntry }: StoneV
         <div className="stone-visualization">
             {/* View switcher */}
             <div className="view-switcher">
+                <button 
+                    className={`view-btn ${layoutMode === 'layout-scatter' ? 'active' : ''}`}
+                    onClick={() => setLayoutMode('layout-scatter')}
+                    title={t('journal.viewScatter')}
+                />
                 <button 
                     className={`view-btn ${layoutMode === 'layout-piles' ? 'active' : ''}`}
                     onClick={() => setLayoutMode('layout-piles')}
