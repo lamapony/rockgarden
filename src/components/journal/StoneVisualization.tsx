@@ -74,25 +74,27 @@ export function StoneVisualization({ entries, onEntryClick, onAddEntry }: StoneV
     }, []);
 
     // Calculate stone size based on intensity
-    // Higher intensity = significantly larger stone
+    // INVERTED: Lower intensity (calm) = larger stone, Higher intensity (strong) = smaller stone
+    // This creates a visual metaphor: calm moments are 'bigger' in memory
     const calculateSize = useCallback((intensity: number, layoutMode: LayoutMode): number => {
-        const intensityFactor = intensity / 10;
+        // Invert intensity: 1 becomes 1.0, 10 becomes 0.0
+        const invertedFactor = (11 - intensity) / 10;
         
         if (layoutMode === 'layout-scatter') {
-            // Scatter: small 35px to large 100px based on intensity
-            const minSize = 35;
-            const maxSize = 100;
-            return minSize + (intensityFactor * (maxSize - minSize));
+            // Scatter: small 40px (strong) to large 110px (calm)
+            const minSize = 40;
+            const maxSize = 110;
+            return minSize + (invertedFactor * (maxSize - minSize));
         } else if (layoutMode === 'layout-piles') {
             // Piles: smaller range for stacking
-            const minSize = 30;
-            const maxSize = 70;
-            return minSize + (intensityFactor * (maxSize - minSize));
+            const minSize = 35;
+            const maxSize = 75;
+            return minSize + (invertedFactor * (maxSize - minSize));
         } else {
             // Cairn: larger stones
-            const minSize = 60;
-            const maxSize = 150;
-            return minSize + (intensityFactor * (maxSize - minSize));
+            const minSize = 50;
+            const maxSize = 140;
+            return minSize + (invertedFactor * (maxSize - minSize));
         }
     }, []);
 
@@ -228,6 +230,34 @@ export function StoneVisualization({ entries, onEntryClick, onAddEntry }: StoneV
 
     const hoveredStoneData = hoveredStone ? stones.find(s => s.id === hoveredStone) : null;
 
+    // Calculate visual saturation and brightness based on intensity and age
+    // High intensity = more saturated, New = brighter (strong white)
+    const getStoneFilters = (intensity: number, opacity: number): string => {
+        // Saturation: 1 (low intensity) to 2.2 (high intensity) - much more saturated
+        const saturation = 1 + ((intensity - 1) / 10) * 1.5;
+        
+        // Brightness: newer stones (higher opacity) are brighter
+        // Base brightness 1.0 to 1.5 for very fresh stones
+        const brightness = 1 + (opacity - 0.4) * 0.8;
+        
+        // Contrast: slightly increase for vividness
+        const contrast = 1 + ((intensity - 1) / 10) * 0.4;
+        
+        return `saturate(${saturation.toFixed(2)}) brightness(${brightness.toFixed(2)}) contrast(${contrast.toFixed(2)})`;
+    };
+
+    // Calculate box shadow for glow effect on bright/new stones
+    const getStoneGlow = (intensity: number, opacity: number): string => {
+        // Only bright stones get glow
+        if (opacity < 0.6) return '0 4px 30px rgba(0, 0, 0, 0.5)';
+        
+        // Higher intensity = stronger glow (even for dark colors, the glow is more pronounced)
+        const glowIntensity = 0.1 + (intensity / 10) * 0.4;
+        const glowSize = 10 + (intensity / 10) * 30;
+        
+        return `0 4px 30px rgba(0, 0, 0, 0.5), 0 0 ${glowSize}px rgba(255, 255, 255, ${glowIntensity})`;
+    };
+
     if (entries.length === 0) {
         return (
             <div className="stone-visualization-empty">
@@ -283,7 +313,8 @@ export function StoneVisualization({ entries, onEntryClick, onAddEntry }: StoneV
                             height: `${stone.size}px`,
                             opacity: stone.opacity,
                             borderRadius: stone.borderRadius,
-                            filter: stone.blur > 0 ? `blur(${stone.blur}px)` : undefined,
+                            filter: `${getStoneFilters(stone.intensity, stone.opacity)}${stone.blur > 0 ? ` blur(${stone.blur}px)` : ''}`,
+                            boxShadow: getStoneGlow(stone.intensity, stone.opacity),
                             zIndex: stone.zIndex,
                         }}
                         onClick={() => onEntryClick(stone.id)}

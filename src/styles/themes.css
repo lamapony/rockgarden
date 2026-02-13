@@ -22,17 +22,18 @@
   --border: rgba(255, 255, 255, 0.08);
   --border-hover: rgba(255, 255, 255, 0.2);
   
-  /* Intensity scale - monochrome */
-  --intensity-1: #e5e5e5;
-  --intensity-2: #d4d4d4;
-  --intensity-3: #c4c4c4;
-  --intensity-4: #b3b3b3;
-  --intensity-5: #a3a3a3;
-  --intensity-6: #929292;
-  --intensity-7: #818181;
-  --intensity-8: #717171;
-  --intensity-9: #606060;
-  --intensity-10: #505050;
+  /* Intensity scale - monochrome with high contrast */
+  /* Intensity 1 (calm) = bright white, Intensity 10 (strong) = dark */
+  --intensity-1: #ffffff;
+  --intensity-2: #f0f0f0;
+  --intensity-3: #e0e0e0;
+  --intensity-4: #d0d0d0;
+  --intensity-5: #b8b8b8;
+  --intensity-6: #a0a0a0;
+  --intensity-7: #808080;
+  --intensity-8: #606060;
+  --intensity-9: #404040;
+  --intensity-10: #2a2a2a;
   
   /* Legacy mapping for compatibility */
   --color-bg-app: var(--bg-deep);
