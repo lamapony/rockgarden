@@ -1,11 +1,13 @@
 /**
  * Stone Garden Demo - Interactive preview for landing page
- * Matches the actual app design exactly
+ * Matches the actual app design exactly with working view switcher
  */
 
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import './StoneGardenDemo.css';
+
+type ViewMode = 'scatter' | 'piles' | 'cairn';
 
 interface DemoStone {
     id: string;
@@ -20,11 +22,12 @@ interface DemoStone {
 
 export function StoneGardenDemo() {
     const { t, i18n } = useTranslation();
+    const [viewMode, setViewMode] = useState<ViewMode>('scatter');
     const [stones, setStones] = useState<DemoStone[]>([]);
     const [hoveredStone, setHoveredStone] = useState<string | null>(null);
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-    // Generate demo stones based on current language
+    // Generate demo stones based on current language and view mode
     useEffect(() => {
         const generateStones = (): DemoStone[] => {
             const lang = i18n.language;
@@ -37,62 +40,55 @@ export function StoneGardenDemo() {
             
             const currentTitles = titles[lang] || titles.en;
             
-            return [
-                {
-                    id: '1',
-                    x: 20,
-                    y: 30,
-                    size: 90,
-                    opacity: 1,
-                    intensity: 9,
-                    title: currentTitles[0],
-                    date: new Date(Date.now() - 86400000).toLocaleDateString(),
-                },
-                {
-                    id: '2',
-                    x: 65,
-                    y: 45,
-                    size: 65,
-                    opacity: 0.8,
-                    intensity: 6,
-                    title: currentTitles[1],
-                    date: new Date(Date.now() - 172800000).toLocaleDateString(),
-                },
-                {
-                    id: '3',
-                    x: 40,
-                    y: 70,
-                    size: 50,
-                    opacity: 0.6,
-                    intensity: 4,
-                    title: currentTitles[2],
-                    date: new Date(Date.now() - 259200000).toLocaleDateString(),
-                },
-                {
-                    id: '4',
-                    x: 75,
-                    y: 20,
-                    size: 75,
-                    opacity: 0.9,
-                    intensity: 7,
-                    title: currentTitles[3],
-                    date: new Date(Date.now() - 43200000).toLocaleDateString(),
-                },
-                {
-                    id: '5',
-                    x: 50,
-                    y: 15,
-                    size: 40,
-                    opacity: 0.4,
-                    intensity: 3,
-                    title: currentTitles[4],
-                    date: new Date(Date.now() - 604800000).toLocaleDateString(),
-                },
+            const baseStones = [
+                { id: '1', intensity: 9, title: currentTitles[0], dateOffset: 86400000 },
+                { id: '2', intensity: 6, title: currentTitles[1], dateOffset: 172800000 },
+                { id: '3', intensity: 4, title: currentTitles[2], dateOffset: 259200000 },
+                { id: '4', intensity: 7, title: currentTitles[3], dateOffset: 43200000 },
+                { id: '5', intensity: 3, title: currentTitles[4], dateOffset: 604800000 },
             ];
+
+            return baseStones.map((stone, index) => {
+                let x = 0, y = 0, size = 0, opacity = 0;
+                
+                // Calculate opacity based on time (same for all modes)
+                const ageDays = stone.dateOffset / (1000 * 60 * 60 * 24);
+                opacity = Math.max(0.3, 1 - (ageDays / 30));
+                
+                // Calculate size based on intensity
+                const intensityFactor = stone.intensity / 10;
+                
+                if (viewMode === 'scatter') {
+                    // Scatter: random positions, size based on intensity
+                    size = 35 + (intensityFactor * 65); // 35-100px
+                    x = 10 + (index * 18) + Math.random() * 10;
+                    y = 20 + Math.random() * 50;
+                } else if (viewMode === 'piles') {
+                    // Piles: columns from bottom
+                    size = 30 + (intensityFactor * 40); // 30-70px
+                    const col = index % 3;
+                    x = 20 + (col * 30);
+                    y = 75 - (Math.floor(index / 3) * 25) - (index % 3) * 5;
+                } else {
+                    // Cairn: stacked center
+                    size = 50 + (intensityFactor * 60); // 50-110px
+                    x = 50 + (Math.random() - 0.5) * 15;
+                    y = 75 - (index * 15);
+                }
+                
+                return {
+                    ...stone,
+                    x,
+                    y,
+                    size,
+                    opacity,
+                    date: new Date(Date.now() - stone.dateOffset).toLocaleDateString(),
+                };
+            });
         };
 
         setStones(generateStones());
-    }, [i18n.language]);
+    }, [i18n.language, viewMode]);
 
     const handleMouseMove = useCallback((e: React.MouseEvent) => {
         const rect = e.currentTarget.getBoundingClientRect();
@@ -108,12 +104,24 @@ export function StoneGardenDemo() {
         <div className="stone-garden-demo" onMouseMove={handleMouseMove}>
             {/* View switcher - matches app */}
             <div className="demo-view-switcher">
-                <div className="demo-view-btn active" title="Scatter View"></div>
-                <div className="demo-view-btn" title="Piles View"></div>
-                <div className="demo-view-btn" title="Cairn View"></div>
+                <button 
+                    className={`demo-view-btn ${viewMode === 'scatter' ? 'active' : ''}`}
+                    onClick={() => setViewMode('scatter')}
+                    title={t('landing.viewScatter')}
+                />
+                <button 
+                    className={`demo-view-btn ${viewMode === 'piles' ? 'active' : ''}`}
+                    onClick={() => setViewMode('piles')}
+                    title={t('landing.viewPiles')}
+                />
+                <button 
+                    className={`demo-view-btn ${viewMode === 'cairn' ? 'active' : ''}`}
+                    onClick={() => setViewMode('cairn')}
+                    title={t('landing.viewCairn')}
+                />
             </div>
 
-            <div className="demo-garden-container">
+            <div className={`demo-garden-container layout-${viewMode}`}>
                 {stones.map((stone) => (
                     <div
                         key={stone.id}
@@ -124,7 +132,7 @@ export function StoneGardenDemo() {
                             width: `${stone.size}px`,
                             height: `${stone.size}px`,
                             opacity: stone.opacity,
-                            zIndex: Math.floor(stone.opacity * 100),
+                            zIndex: viewMode === 'cairn' ? 100 - parseInt(stone.id) : Math.floor(stone.opacity * 100),
                         }}
                         onMouseEnter={() => setHoveredStone(stone.id)}
                         onMouseLeave={() => setHoveredStone(null)}

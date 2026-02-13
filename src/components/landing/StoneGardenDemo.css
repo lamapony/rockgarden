@@ -51,23 +51,44 @@
 /* Demo stones - EXACT match to app */
 .demo-stone-item {
     position: absolute;
-    background: #ffffff; /* White stones like in app */
-    border-radius: 50%; /* Perfect circles */
+    background: #ffffff;
+    border-radius: 50%;
     cursor: pointer;
     pointer-events: auto;
     transition: 
         transform 0.6s cubic-bezier(0.19, 1, 0.22, 1),
         filter 0.6s ease,
-        box-shadow 0.6s ease;
+        box-shadow 0.6s ease,
+        left 0.8s cubic-bezier(0.19, 1, 0.22, 1),
+        top 0.8s cubic-bezier(0.19, 1, 0.22, 1);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-    will-change: transform, filter;
+    will-change: transform, filter, left, top;
 }
 
 .demo-stone-item:hover,
 .demo-stone-item.hovered {
-    z-index: 100 !important;
     filter: brightness(1.2) !important;
     transform: scale(1.1);
+}
+
+/* Layout specific styles */
+.layout-scatter .demo-stone-item {
+    /* Random scatter positions handled inline */
+}
+
+.layout-piles .demo-stone-item {
+    /* Bottom-aligned columns */
+    transform-origin: bottom center;
+}
+
+.layout-cairn .demo-stone-item {
+    /* Stacked center */
+    transform: translate(-50%, -50%);
+}
+
+.layout-cairn .demo-stone-item:hover,
+.layout-cairn .demo-stone-item.hovered {
+    transform: translate(-50%, -50%) scale(1.1);
 }
 
 /* Tooltip - EXACT match to StoneVisualization.css */
