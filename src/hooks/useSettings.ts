@@ -3,7 +3,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
-import { getSettings, updateSettings, type AppSettings } from '../services/storage';
+import { getSettings, updateSettings } from '../services/storage';
 import type { Theme } from '../services/theme';
 
 export interface UserSettings {

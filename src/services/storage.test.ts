@@ -405,6 +405,22 @@ describe('Storage Service', () => {
             expect(result.success).toBe(false);
         });
 
+        it('should parse with AppSettingsSchema directly', () => {
+            const validSettings = {
+                id: 'main',
+                salt: 'abcd1234abcd1234abcd1234abcd1234',
+                verificationBlock: 'block',
+                language: 'en' as const,
+                createdAt: Date.now(),
+            };
+
+            const result = AppSettingsSchema.safeParse(validSettings);
+            expect(result.success).toBe(true);
+            if (result.success) {
+                expect(result.data.language).toBe('en');
+            }
+        });
+
         it('should validate autoLockMinutes constraints', () => {
             const validSettings = {
                 id: 'main',

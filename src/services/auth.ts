@@ -53,7 +53,7 @@ export async function needsSetup(): Promise<boolean> {
  */
 export async function setupPassword(
     password: string,
-    language: string = 'ru'
+    language: 'en' | 'ru' | 'da' = 'ru'
 ): Promise<void> {
     // Generate salt
     const salt = generateSalt();

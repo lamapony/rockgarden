@@ -19,7 +19,7 @@ export function LanguageSwitcher() {
     const handleLanguageChange = async (lang: string) => {
         setLanguage(lang);
         try {
-            await updateLanguage(lang);
+            await updateLanguage(lang as 'en' | 'ru' | 'da');
         } catch {
             // Settings might not exist yet during setup
         }

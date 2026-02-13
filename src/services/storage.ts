@@ -6,6 +6,9 @@
 import Dexie, { type EntityTable } from 'dexie';
 import { z } from 'zod';
 
+// Supported languages
+type Language = 'en' | 'ru' | 'da';
+
 // Zod schema for runtime validation of AppSettings
 export const AppSettingsSchema = z.object({
     id: z.string(),
@@ -125,7 +128,7 @@ export async function updateSettings(updates: Partial<Omit<AppSettings, 'id'>>):
     await db.settings.update('main', updates);
 }
 
-export async function updateLanguage(language: string): Promise<void> {
+export async function updateLanguage(language: Language): Promise<void> {
     await db.settings.update('main', { language });
 }
 

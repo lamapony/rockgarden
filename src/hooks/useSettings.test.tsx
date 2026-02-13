@@ -11,7 +11,7 @@ vi.mock('../services/theme', () => ({
 }));
 
 // Helper to create valid initial settings
-const createInitialSettings = (overrides?: Partial<Parameters<typeof saveSettings>[0]>) => ({
+const createInitialSettings = (overrides?: Partial<Parameters<typeof saveSettings>[0]>): Parameters<typeof saveSettings>[0] => ({
     salt: 'abcd1234abcd1234abcd1234abcd1234',
     verificationBlock: 'test-verification-block',
     language: 'en',
