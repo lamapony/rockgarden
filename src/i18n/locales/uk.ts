@@ -271,6 +271,7 @@ export const ukTranslations = {
         viewScatter: 'Розкидані',
         viewPiles: 'Купи внизу',
         viewCairn: 'Вежа в центрі',
+        tapOrHold: 'Натисніть або утримуйте камені для деталей',
         ctaTitle: 'Готові почати свій сад?',
         ctaSubtitle: 'Ваш особистий простір чекає. Жодної реєстрації. Жодного стеження. Тільки приватність.',
         enterRockgarden: 'Увійти в Rockgarden',

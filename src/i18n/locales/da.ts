@@ -267,6 +267,7 @@ export const daTranslations = {
         viewScatter: 'Spredt visning',
         viewPiles: 'Bunden stabler',
         viewCairn: 'Midten stabel',
+        tapOrHold: 'Tryk eller hold på sten for detaljer',
         ctaTitle: 'Klar til at starte din have?',
         ctaSubtitle: 'Dit private rum venter. Ingen tilmelding. Ingen sporing. Bare privatliv.',
         enterRockgarden: 'Gå ind i Rockgarden',

@@ -250,6 +250,7 @@ export const plTranslations = {
         viewScatter: 'Rozproszony',
         viewPiles: 'Stosy u dołu',
         viewCairn: 'Wieża kamieni',
+        tapOrHold: 'Dotknij lub przytrzymaj kamienie, aby zobaczyć szczegóły',
         ctaTitle: 'Gotowy rozpocząć swój ogród?',
         ctaSubtitle: 'Twoja prywatna przestrzeń czeka. Bez rejestracji. Bez śledzenia. Tylko prywatność.',
         enterRockgarden: 'Wejdź do Rockgarden',

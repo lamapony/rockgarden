@@ -268,6 +268,7 @@ export const etTranslations = {
         viewScatter: 'Hajutatud vaade',
         viewPiles: 'Ajajoonte virnad',
         viewCairn: 'Kivihunnik',
+        tapOrHold: 'Puuduta või hoia kividel üksikasjade nägemiseks',
         ctaTitle: 'Valmis oma aeda alustama?',
         ctaSubtitle: 'Teie privaatne ruum ootab. Registreerumist pole. Jälgimist pole. Ainult privaatsus.',
         enterRockgarden: 'Sisene Rockgardeni',

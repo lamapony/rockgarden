@@ -246,6 +246,7 @@ export const trTranslations = {
         viewScatter: 'Dağınık',
         viewPiles: 'Altta yığınlar',
         viewCairn: 'Taş yığını',
+        tapOrHold: 'Ayrıntılar için taşlara dokun veya basılı tut',
         ctaTitle: 'Bahçeni başlatmaya hazır mısın?',
         ctaSubtitle: 'Özel alanın bekliyor. Kayıt yok. İzleme yok. Sadece gizlilik.',
         enterRockgarden: 'Rockgarden\'a gir',

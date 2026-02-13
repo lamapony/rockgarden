@@ -246,6 +246,7 @@ export const deTranslations = {
         viewScatter: 'Verstreut',
         viewPiles: 'Stapel unten',
         viewCairn: 'Steinturm',
+        tapOrHold: 'Tippen oder halten Sie Steine für Details',
         ctaTitle: 'Bereit, Ihren Garten zu starten?',
         ctaSubtitle: 'Ihr privater Raum wartet. Keine Anmeldung. Kein Tracking. Nur Privatsphäre.',
         enterRockgarden: 'Rockgarden betreten',

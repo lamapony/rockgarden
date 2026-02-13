@@ -1,9 +1,10 @@
 /**
  * Stone Garden Demo - Interactive preview for landing page
  * Matches the actual app design exactly with working view switcher
+ * Supports both hover (desktop) and touch (mobile) interactions
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import './StoneGardenDemo.css';
 
@@ -20,12 +21,21 @@ interface DemoStone {
     date: string;
 }
 
+// Long press duration in ms
+const LONG_PRESS_DURATION = 400;
+
 export function StoneGardenDemo() {
     const { t, i18n } = useTranslation();
     const [viewMode, setViewMode] = useState<ViewMode>('scatter');
     const [stones, setStones] = useState<DemoStone[]>([]);
     const [hoveredStone, setHoveredStone] = useState<string | null>(null);
+    const [tappedStone, setTappedStone] = useState<string | null>(null);
     const [mousePos, setMousePos] = useState<{ x: number; y: number; placement?: 'above' | 'below' }>({ x: 0, y: 0, placement: 'above' });
+    
+    // Refs for touch handling
+    const touchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const touchStartPosRef = useRef<{ x: number; y: number } | null>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
 
     // Generate demo stones based on current language and view mode
     useEffect(() => {
@@ -36,6 +46,17 @@ export function StoneGardenDemo() {
                 en: ['Difficult conversation', 'Feeling anxious', 'Small win today', 'Overwhelmed at work', 'Peaceful morning'],
                 ru: ['Трудный разговор', 'Тревожность', 'Маленькая победа', 'Перегруз на работе', 'Спокойное утро'],
                 da: ['Svær samtale', 'Føler mig ængstelig', 'Lille sejr i dag', 'Overvældet på arbejde', 'Fredelig morgen'],
+                lt: ['Sunkus pokalbis', 'Jauciu nerima', 'Maza pergale', 'Permetimas darbe', 'Ramus rytas'],
+                lv: ['Grūta saruna', 'Jūtu trauksmi', 'Maza uzvara', 'Pārslodze darbā', 'Mierīgs rīts'],
+                et: ['Raske vestlus', 'Ärevustunne', 'Väike võit', 'Ülekoormus tööl', 'Rahulik hommik'],
+                uk: ['Важка розмова', 'Тривожність', 'Маленька перемога', 'Перевантаження', 'Спокійний ранок'],
+                pl: ['Trudna rozmowa', 'Niepokój', 'Małe zwycięstwo', 'Przeładowanie', 'Spokojny poranek'],
+                pt: ['Conversa difícil', 'Ansiedade', 'Pequena vitória', 'Sobrecarga', 'Manhã tranquila'],
+                es: ['Conversación difícil', 'Ansiedad', 'Pequeña victoria', 'Sobrecarga', 'Mañana tranquila'],
+                fr: ['Conversation difficile', 'Anxiété', 'Petite victoire', 'Surcharge', 'Matin paisible'],
+                de: ['Schwieriges Gespräch', 'Angst', 'Kleiner Sieg', 'Überlastung', 'Ruhiger Morgen'],
+                it: ['Conversazione difficile', 'Ansia', 'Piccola vittoria', 'Sovraccarico', 'Mattina tranquilla'],
+                tr: ['Zor konuşma', 'Kaygı', 'Küçük zafer', 'Aşırı yük', 'Huzurlu sabah'],
             };
             
             const currentTitles = titles[lang] || titles.en;
@@ -90,6 +111,11 @@ export function StoneGardenDemo() {
         setStones(generateStones());
     }, [i18n.language, viewMode]);
 
+    // Clear tapped stone when changing view mode
+    useEffect(() => {
+        setTappedStone(null);
+    }, [viewMode]);
+
     const handleMouseMove = useCallback((e: React.MouseEvent) => {
         const rect = e.currentTarget.getBoundingClientRect();
         const y = e.clientY - rect.top;
@@ -105,10 +131,103 @@ export function StoneGardenDemo() {
         });
     }, []);
 
-    const hoveredStoneData = hoveredStone ? stones.find(s => s.id === hoveredStone) : null;
+    // Touch event handlers for mobile
+    const handleTouchStart = useCallback((e: React.TouchEvent, stoneId: string) => {
+        const touch = e.touches[0];
+        touchStartPosRef.current = { x: touch.clientX, y: touch.clientY };
+        
+        // Start long press timer
+        touchTimerRef.current = setTimeout(() => {
+            // Long press detected
+            const stone = stones.find(s => s.id === stoneId);
+            if (stone && containerRef.current) {
+                const rect = containerRef.current.getBoundingClientRect();
+                const isTopPosition = (stone.y / 100) * rect.height < rect.height * 0.35;
+                
+                setMousePos({
+                    x: (stone.x / 100) * rect.width + (stone.size / 2),
+                    y: (stone.y / 100) * rect.height + (stone.size / 2),
+                    placement: isTopPosition ? 'below' : 'above',
+                });
+                setTappedStone(stoneId);
+            }
+            touchTimerRef.current = null;
+        }, LONG_PRESS_DURATION);
+    }, [stones]);
+
+    const handleTouchMove = useCallback((e: React.TouchEvent) => {
+        if (!touchStartPosRef.current) return;
+        
+        const touch = e.touches[0];
+        const deltaX = Math.abs(touch.clientX - touchStartPosRef.current.x);
+        const deltaY = Math.abs(touch.clientY - touchStartPosRef.current.y);
+        
+        // If moved more than 10px, cancel long press
+        if (deltaX > 10 || deltaY > 10) {
+            if (touchTimerRef.current) {
+                clearTimeout(touchTimerRef.current);
+                touchTimerRef.current = null;
+            }
+        }
+    }, []);
+
+    const handleTouchEnd = useCallback((stoneId: string) => {
+        // If timer still exists, it was a tap (not long press)
+        if (touchTimerRef.current) {
+            clearTimeout(touchTimerRef.current);
+            touchTimerRef.current = null;
+            
+            // Toggle tapped stone on tap
+            if (tappedStone === stoneId) {
+                setTappedStone(null);
+            } else {
+                const stone = stones.find(s => s.id === stoneId);
+                if (stone && containerRef.current) {
+                    const rect = containerRef.current.getBoundingClientRect();
+                    const isTopPosition = (stone.y / 100) * rect.height < rect.height * 0.35;
+                    
+                    setMousePos({
+                        x: (stone.x / 100) * rect.width + (stone.size / 2),
+                        y: (stone.y / 100) * rect.height + (stone.size / 2),
+                        placement: isTopPosition ? 'below' : 'above',
+                    });
+                    setTappedStone(stoneId);
+                }
+            }
+        }
+        touchStartPosRef.current = null;
+    }, [tappedStone, stones]);
+
+    // Handle tap outside to close tooltip
+    const handleContainerTap = useCallback((e: React.MouseEvent | React.TouchEvent) => {
+        // Check if tap was on a stone
+        const target = e.target as HTMLElement;
+        if (!target.closest('.demo-stone-item')) {
+            setTappedStone(null);
+        }
+    }, []);
+
+    // Cleanup timer on unmount
+    useEffect(() => {
+        return () => {
+            if (touchTimerRef.current) {
+                clearTimeout(touchTimerRef.current);
+            }
+        };
+    }, []);
+
+    // Determine which stone to show tooltip for (hover on desktop, tap on mobile)
+    const activeStoneId = hoveredStone || tappedStone;
+    const activeStoneData = activeStoneId ? stones.find(s => s.id === activeStoneId) : null;
 
     return (
-        <div className="stone-garden-demo" onMouseMove={handleMouseMove}>
+        <div 
+            ref={containerRef}
+            className="stone-garden-demo" 
+            onMouseMove={handleMouseMove}
+            onClick={handleContainerTap}
+            onTouchStart={handleContainerTap}
+        >
             {/* View switcher - matches app */}
             <div className="demo-view-switcher">
                 <button 
@@ -132,7 +251,7 @@ export function StoneGardenDemo() {
                 {stones.map((stone) => (
                     <div
                         key={stone.id}
-                        className={`demo-stone-item ${hoveredStone === stone.id ? 'hovered' : ''}`}
+                        className={`demo-stone-item ${activeStoneId === stone.id ? 'active' : ''}`}
                         style={{
                             left: `${stone.x}%`,
                             top: `${stone.y}%`,
@@ -143,14 +262,17 @@ export function StoneGardenDemo() {
                         }}
                         onMouseEnter={() => setHoveredStone(stone.id)}
                         onMouseLeave={() => setHoveredStone(null)}
+                        onTouchStart={(e) => handleTouchStart(e, stone.id)}
+                        onTouchMove={handleTouchMove}
+                        onTouchEnd={() => handleTouchEnd(stone.id)}
                     />
                 ))}
             </div>
 
             {/* Tooltip - identical to app */}
-            {hoveredStoneData && (
+            {activeStoneData && (
                 <div 
-                    className={`demo-stone-tooltip ${mousePos.placement === 'below' ? 'tooltip-below' : 'tooltip-above'}`}
+                    className={`demo-stone-tooltip ${mousePos.placement === 'below' ? 'tooltip-below' : 'tooltip-above'} ${tappedStone ? 'touch-visible' : ''}`}
                     style={{
                         left: `${mousePos.x}px`,
                         top: mousePos.placement === 'below' 
@@ -158,13 +280,18 @@ export function StoneGardenDemo() {
                             : `${mousePos.y - 10}px`, // Above cursor
                     }}
                 >
-                    <h4>{hoveredStoneData.date}</h4>
-                    <p className="demo-tooltip-title">{hoveredStoneData.title}</p>
+                    <h4>{activeStoneData.date}</h4>
+                    <p className="demo-tooltip-title">{activeStoneData.title}</p>
                     <p className="demo-tooltip-intensity">
-                        {t('journal.intensity')}: {hoveredStoneData.intensity}/10
+                        {t('journal.intensity')}: {activeStoneData.intensity}/10
                     </p>
                 </div>
             )}
+
+            {/* Mobile hint */}
+            <div className="demo-mobile-hint">
+                {t('landing.tapOrHold')}
+            </div>
         </div>
     );
 }

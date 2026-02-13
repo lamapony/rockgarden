@@ -268,6 +268,7 @@ export const lvTranslations = {
         viewScatter: 'Izkliedēts',
         viewPiles: 'Kaudzes apakšā',
         viewCairn: 'Torņa skats',
+        tapOrHold: 'Pieskarieties vai turiet akmeņus, lai redzētu detaļas',
         ctaTitle: 'Gatavi sākt savu dārzu?',
         ctaSubtitle: 'Jūsu privātā vieta gaida. Nav reģistrācijas. Nav izsekošanas. Tikai privātums.',
         enterRockgarden: 'Ievadīt Rockgarden',

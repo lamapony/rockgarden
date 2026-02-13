@@ -267,6 +267,7 @@ export const enTranslations = {
         viewScatter: 'Scatter View',
         viewPiles: 'Timeline Piles',
         viewCairn: 'Stone Stack',
+        tapOrHold: 'Tap or hold stones for details',
         ctaTitle: 'Ready to start your garden?',
         ctaSubtitle: 'Your private space awaits. No signup. No tracking. Just privacy.',
         enterRockgarden: 'Enter Rockgarden',

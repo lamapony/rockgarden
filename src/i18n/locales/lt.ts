@@ -271,6 +271,7 @@ export const ltTranslations = {
         viewScatter: 'Išsklaidyta',
         viewPiles: 'Krūvos apačioje',
         viewCairn: 'Bokštas viduryje',
+        tapOrHold: 'Bakstelėkite arba laikykite akmenis, kad pamatytumėte detales',
         ctaTitle: 'Pasirengę pradėti savo sodą?',
         ctaSubtitle: 'Jūsų privati erdvė laukia. Jokios registracijos. Jokio stebėjimo. Tik privatumas.',
         enterRockgarden: 'Įeiti į Rockgarden',

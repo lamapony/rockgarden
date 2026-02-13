@@ -246,6 +246,7 @@ export const itTranslations = {
         viewScatter: 'Disperso',
         viewPiles: 'Pile in fondo',
         viewCairn: 'Torre di pietre',
+        tapOrHold: 'Tocca o tieni premuto le pietre per i dettagli',
         ctaTitle: 'Pronto a iniziare il tuo giardino?',
         ctaSubtitle: 'Il tuo spazio privato ti aspetta. Nessuna registrazione. Nessun tracciamento. Solo privacy.',
         enterRockgarden: 'Entra in Rockgarden',

@@ -270,6 +270,7 @@ export const ruTranslations = {
         viewScatter: 'Разбросанные',
         viewPiles: 'Стопки внизу',
         viewCairn: 'Башня по центру',
+        tapOrHold: 'Нажмите или удерживайте камни для деталей',
         ctaTitle: 'Готовы начать свой сад?',
         ctaSubtitle: 'Ваше личное пространство ждёт. Никакой регистрации. Никакого отслеживания. Только приватность.',
         enterRockgarden: 'Войти в Rockgarden',
