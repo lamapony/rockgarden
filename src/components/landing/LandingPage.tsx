@@ -6,6 +6,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Shield, Lock, Smartphone, Trash2, Globe, ArrowRight, ChevronDown } from 'lucide-react';
+import { StoneGardenDemo } from './StoneGardenDemo';
 import './LandingPage.css';
 
 interface LandingPageProps {
@@ -146,6 +147,13 @@ export function LandingPage({ onEnter }: LandingPageProps) {
                             <span>{t('landing.legendFade')}</span>
                         </div>
                     </div>
+                </div>
+
+                {/* Interactive Garden Preview */}
+                <div className="landing-garden-preview">
+                    <h3 className="garden-preview-title">{t('landing.gardenPreviewTitle')}</h3>
+                    <p className="garden-preview-subtitle">{t('landing.gardenPreviewSubtitle')}</p>
+                    <StoneGardenDemo />
                 </div>
             </section>
 

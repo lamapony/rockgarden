@@ -402,6 +402,26 @@
     opacity: 0.4;
 }
 
+/* Garden Preview Section */
+.landing-garden-preview {
+    max-width: 900px;
+    margin: 4rem auto 0;
+    text-align: center;
+}
+
+.garden-preview-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--color-text-primary, #ffffff);
+}
+
+.garden-preview-subtitle {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary, #888888);
+    margin-bottom: 1.5rem;
+}
+
 @media (max-width: 600px) {
     .stones-demo-container {
         gap: 2rem;
@@ -427,6 +447,10 @@
         flex-direction: column;
         gap: 1rem;
         align-items: center;
+    }
+    
+    .landing-garden-preview {
+        margin-top: 3rem;
     }
 }
 
