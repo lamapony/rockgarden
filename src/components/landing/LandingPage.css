@@ -300,6 +300,136 @@
     line-height: 1.6;
 }
 
+/* Stones Metaphor Section */
+.landing-stones {
+    padding: 8rem 2rem;
+    background: rgba(255, 255, 255, 0.01);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.landing-stones-demo {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.stones-demo-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 4rem;
+    padding: 3rem;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    margin-bottom: 2rem;
+}
+
+.demo-stone-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.demo-stone {
+    background: #e8e4dc;
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    transition: all 0.3s ease;
+}
+
+.demo-stone.large {
+    width: 120px;
+    height: 120px;
+    box-shadow: 0 10px 40px rgba(232, 228, 220, 0.3);
+    animation: stonePulse 4s ease-in-out infinite;
+}
+
+.demo-stone.medium {
+    width: 80px;
+    height: 80px;
+    opacity: 0.7;
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+}
+
+.demo-stone.small {
+    width: 50px;
+    height: 50px;
+    opacity: 0.4;
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+}
+
+@keyframes stonePulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.demo-stone-label {
+    font-size: 0.75rem;
+    color: var(--color-text-muted, #666666);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.stones-demo-legend {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary, #888888);
+}
+
+.legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.legend-dot.size {
+    background: #e8e4dc;
+}
+
+.legend-dot.fade {
+    background: #e8e4dc;
+    opacity: 0.4;
+}
+
+@media (max-width: 600px) {
+    .stones-demo-container {
+        gap: 2rem;
+        padding: 2rem;
+    }
+    
+    .demo-stone.large {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .demo-stone.medium {
+        width: 55px;
+        height: 55px;
+    }
+    
+    .demo-stone.small {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .stones-demo-legend {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+    }
+}
+
 /* How it Works */
 .landing-how {
     padding: 8rem 2rem;

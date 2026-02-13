@@ -108,6 +108,47 @@ export function LandingPage({ onEnter }: LandingPageProps) {
                 </div>
             </section>
 
+            {/* Stones Metaphor Section */}
+            <section className="landing-stones">
+                <div className="landing-section-header">
+                    <h2>{t('landing.stonesTitle')}</h2>
+                    <p>{t('landing.stonesSubtitle')}</p>
+                </div>
+
+                <div className="landing-stones-demo">
+                    <div className="stones-demo-container">
+                        {/* Large stone - intense conflict */}
+                        <div className="demo-stone-wrapper">
+                            <div className="demo-stone large"></div>
+                            <span className="demo-stone-label">{t('landing.stoneLarge')}</span>
+                        </div>
+                        
+                        {/* Medium stone */}
+                        <div className="demo-stone-wrapper">
+                            <div className="demo-stone medium"></div>
+                            <span className="demo-stone-label">{t('landing.stoneMedium')}</span>
+                        </div>
+                        
+                        {/* Small stone - fading */}
+                        <div className="demo-stone-wrapper">
+                            <div className="demo-stone small"></div>
+                            <span className="demo-stone-label">{t('landing.stoneSmall')}</span>
+                        </div>
+                    </div>
+                    
+                    <div className="stones-demo-legend">
+                        <div className="legend-item">
+                            <span className="legend-dot size"></span>
+                            <span>{t('landing.legendSize')}</span>
+                        </div>
+                        <div className="legend-item">
+                            <span className="legend-dot fade"></span>
+                            <span>{t('landing.legendFade')}</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* How it Works */}
             <section className="landing-how">
                 <div className="landing-section-header">
