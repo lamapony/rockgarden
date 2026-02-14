@@ -287,6 +287,7 @@ export const daTranslations = {
         ctaSubtitle: 'Dit private rum venter. Ingen tilmelding. Ingen sporing. Bare privatliv.',
         enterRockgarden: 'Gå ind i Rockgarden',
         footer: '© 2025 Rockgarden. Dit privatliv er vores eneste mission.',
+        createdBy: 'Skabt med omsorg af',
         
         // Expandable Details Sections
         detailsTitle: 'Tekniske detaljer',

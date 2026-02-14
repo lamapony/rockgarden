@@ -288,6 +288,7 @@ export const etTranslations = {
         ctaSubtitle: 'Teie privaatne ruum ootab. Registreerumist pole. Jälgimist pole. Ainult privaatsus.',
         enterRockgarden: 'Sisene Rockgardeni',
         footer: '© 2025 Rockgarden. Teie privaatsus on meie ainus missioon.',
+        createdBy: 'Loodud hoolikalt',
 
         // Expandable Details Sections
         detailsTitle: 'Tehnilised üksikasjad',

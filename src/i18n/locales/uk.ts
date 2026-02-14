@@ -291,6 +291,7 @@ export const ukTranslations = {
         ctaSubtitle: 'Ваш особистий простір чекає. Жодної реєстрації. Жодного стеження. Тільки приватність.',
         enterRockgarden: 'Увійти в Rockgarden',
         footer: '© 2025 Rockgarden. Ваша приватність — наша єдина місія.',
+        createdBy: 'Створено з турботою',
 
         // Expandable Details Sections
         detailsTitle: 'Технічні деталі',

@@ -288,6 +288,7 @@ export const enTranslations = {
         ctaSubtitle: 'Your private space awaits. No signup. No tracking. Just privacy.',
         enterRockgarden: 'Enter Rockgarden',
         footer: '© 2025 Rockgarden. Your privacy is our only mission.',
+        createdBy: 'Created with care by',
         
         // Expandable Details Sections
         detailsTitle: 'Technical Details',

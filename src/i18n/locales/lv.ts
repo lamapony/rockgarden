@@ -288,6 +288,7 @@ export const lvTranslations = {
         ctaSubtitle: 'Jūsu privātā vieta gaida. Nav reģistrācijas. Nav izsekošanas. Tikai privātums.',
         enterRockgarden: 'Ievadīt Rockgarden',
         footer: '© 2025 Rockgarden. Jūsu privātums ir mūsu vienīgā misija.',
+        createdBy: 'Izveidots ar rūpēm',
 
         // Expandable Details Sections
         detailsTitle: 'Tehniskās detaļas',

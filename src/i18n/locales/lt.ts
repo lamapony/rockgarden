@@ -291,6 +291,7 @@ export const ltTranslations = {
         ctaSubtitle: 'Jūsų privati erdvė laukia. Jokios registracijos. Jokio stebėjimo. Tik privatumas.',
         enterRockgarden: 'Įeiti į Rockgarden',
         footer: '© 2025 Rockgarden. Jūsų privatumas yra mūsų vienintelė misija.',
+        createdBy: 'Sukurta su rūpesčiu',
 
         // Expandable Details Sections
         detailsTitle: 'Techninės detalės',

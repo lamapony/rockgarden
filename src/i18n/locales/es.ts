@@ -266,6 +266,7 @@ export const esTranslations = {
         ctaSubtitle: 'Tu espacio privado espera. Sin registro. Sin seguimiento. Solo privacidad.',
         enterRockgarden: 'Entrar a Rockgarden',
         footer: '© 2025 Rockgarden. Tu privacidad es nuestra única misión.',
+        createdBy: 'Creado con cuidado por',
 
         // Expandable Details Sections
         detailsTitle: 'Detalles técnicos',

@@ -290,6 +290,7 @@ export const ruTranslations = {
         ctaSubtitle: 'Ваше личное пространство ждёт. Никакой регистрации. Никакого отслеживания. Только приватность.',
         enterRockgarden: 'Войти в Rockgarden',
         footer: '© 2025 Rockgarden. Ваша приватность — наша единственная миссия.',
+        createdBy: 'Создано с заботой',
         
         // Expandable Details Sections
         detailsTitle: 'Технические детали',

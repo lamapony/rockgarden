@@ -266,6 +266,7 @@ export const trTranslations = {
         ctaSubtitle: 'Özel alanın bekliyor. Kayıt yok. İzleme yok. Sadece gizlilik.',
         enterRockgarden: 'Rockgarden\'a gir',
         footer: '© 2025 Rockgarden. Gizliliğin bizim tek misyonumuz.',
+        createdBy: 'Özenle oluşturuldu',
 
         // Expandable Details Sections
         detailsTitle: 'Teknik detaylar',

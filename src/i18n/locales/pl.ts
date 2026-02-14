@@ -270,6 +270,7 @@ export const plTranslations = {
         ctaSubtitle: 'Twoja prywatna przestrzeń czeka. Bez rejestracji. Bez śledzenia. Tylko prywatność.',
         enterRockgarden: 'Wejdź do Rockgarden',
         footer: '© 2025 Rockgarden. Twoja prywatność jest naszą jedyną misją.',
+        createdBy: 'Stworzono z troską',
 
         // Expandable Details Sections
         detailsTitle: 'Szczegóły techniczne',
