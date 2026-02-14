@@ -1,0 +1,109 @@
+/* Stone Preview - Simple animated stone for entry creation */
+.stone-preview-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 0;
+    margin-bottom: 1rem;
+}
+
+/* The preview stone */
+.stone-preview {
+    width: 80px;
+    height: 80px;
+    border-radius: 45% 55% 40% 60% / 55% 45% 60% 40%;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.3),
+        inset 0 -5px 20px rgba(0, 0, 0, 0.2),
+        inset 0 5px 20px rgba(255, 255, 255, 0.1);
+    animation: stoneFloat 4s ease-in-out infinite;
+}
+
+@keyframes stoneFloat {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-10px) rotate(5deg);
+    }
+}
+
+/* Intensity-based colors - from calm (blue) to intense (red) */
+.stone-preview.intensity-1 {
+    background: linear-gradient(135deg, #a8d8ea 0%, #7fcdbb 100%);
+}
+
+.stone-preview.intensity-2 {
+    background: linear-gradient(135deg, #7fcdbb 0%, #5bc0be 100%);
+}
+
+.stone-preview.intensity-3 {
+    background: linear-gradient(135deg, #5bc0be 0%, #4a9d9c 100%);
+}
+
+.stone-preview.intensity-4 {
+    background: linear-gradient(135deg, #4a9d9c 0%, #7fb3d5 100%);
+}
+
+.stone-preview.intensity-5 {
+    background: linear-gradient(135deg, #7fb3d5 0%, #9b8aa5 100%);
+}
+
+.stone-preview.intensity-6 {
+    background: linear-gradient(135deg, #9b8aa5 0%, #c9a0dc 100%);
+}
+
+.stone-preview.intensity-7 {
+    background: linear-gradient(135deg, #c9a0dc 0%, #e6a8d7 100%);
+}
+
+.stone-preview.intensity-8 {
+    background: linear-gradient(135deg, #e6a8d7 0%, #f4a6a5 100%);
+}
+
+.stone-preview.intensity-9 {
+    background: linear-gradient(135deg, #f4a6a5 0%, #e74c3c 100%);
+}
+
+.stone-preview.intensity-10 {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    box-shadow: 
+        0 10px 40px rgba(231, 76, 60, 0.4),
+        inset 0 -5px 20px rgba(0, 0, 0, 0.3);
+    animation: stoneFloatIntense 2s ease-in-out infinite;
+}
+
+@keyframes stoneFloatIntense {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg) scale(1);
+    }
+    50% {
+        transform: translateY(-15px) rotate(10deg) scale(1.05);
+    }
+}
+
+/* Intensity label */
+.stone-preview-label {
+    margin-top: 0.75rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.6);
+    transition: color 0.3s ease;
+}
+
+/* Color-coded labels */
+.stone-preview-label.calm { color: #7fcdbb; }
+.stone-preview-label.moderate { color: #7fb3d5; }
+.stone-preview-label.intense { color: #e6a8d7; }
+.stone-preview-label.severe { color: #e74c3c; }
+
+/* Responsive */
+@media (max-width: 480px) {
+    .stone-preview {
+        width: 60px;
+        height: 60px;
+    }
+}

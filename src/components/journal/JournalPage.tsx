@@ -22,6 +22,7 @@ export function JournalPage() {
     const [showPanicConfirm, setShowPanicConfirm] = useState(false);
     const [deleting, setDeleting] = useState(false);
     const [previewEntryId, setPreviewEntryId] = useState<string | null>(null);
+    const [newEntryId, setNewEntryId] = useState<string | null>(null);
     
     // Triple-click detection for panic button
     const clickCountRef = useRef(0);
@@ -92,8 +93,13 @@ export function JournalPage() {
         setIsModalOpen(false);
     };
 
-    const handleEntrySaved = () => {
+    const handleEntrySaved = (entryId?: string) => {
         setIsModalOpen(false);
+        if (entryId) {
+            setNewEntryId(entryId);
+            // Clear new entry ID after animation completes (3 seconds)
+            setTimeout(() => setNewEntryId(null), 3000);
+        }
         loadEntries();
     };
 
@@ -131,6 +137,7 @@ export function JournalPage() {
                         onEntryClick={handleEntryClick}
                         onAddEntry={handleAddEntry}
                         onEntryPreview={handleEntryPreview}
+                        newEntryId={newEntryId}
                     />
                 )}
             </main>

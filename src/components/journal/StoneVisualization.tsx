@@ -12,6 +12,7 @@ interface StoneComponentProps {
     stone: StoneData;
     isMobile: boolean;
     isHovered: boolean;
+    isNew?: boolean;
     onPreview?: (id: string) => void;
     onEdit: (id: string) => void;
     onHover: (stone: StoneData, e: React.MouseEvent) => void;
@@ -24,6 +25,7 @@ function StoneComponent({
     stone, 
     isMobile, 
     isHovered, 
+    isNew = false,
     onPreview, 
     onEdit, 
     onHover, 
@@ -32,6 +34,17 @@ function StoneComponent({
     getStoneGlow,
 }: StoneComponentProps) {
     const [isPressed, setIsPressed] = useState(false);
+    const [animationComplete, setAnimationComplete] = useState(!isNew);
+
+    // Handle new stone animation
+    useEffect(() => {
+        if (isNew) {
+            const timer = setTimeout(() => {
+                setAnimationComplete(true);
+            }, 1000);
+            return () => clearTimeout(timer);
+        }
+    }, [isNew]);
 
     const longPressHandlers = useLongPress({
         onShortPress: () => {
@@ -61,20 +74,28 @@ function StoneComponent({
         }
     };
 
+    // Calculate transform for new stone animation
+    const getTransform = () => {
+        if (isPressed) return 'scale(0.95)';
+        if (!animationComplete) return 'scale(0) rotate(180deg)';
+        return 'scale(1)';
+    };
+
     return (
         <div
-            className={`stone ${stone.intensityClass} ${isHovered ? 'hovered' : ''} ${isPressed ? 'pressed' : ''}`}
+            className={`stone ${stone.intensityClass} ${isHovered ? 'hovered' : ''} ${isPressed ? 'pressed' : ''} ${isNew && !animationComplete ? 'new-stone' : ''}`}
             style={{
                 left: `${stone.x}px`,
                 top: `${stone.y}px`,
                 width: `${stone.size}px`,
                 height: `${stone.size}px`,
-                opacity: stone.opacity,
+                opacity: isNew && !animationComplete ? 1 : stone.opacity,
                 borderRadius: stone.borderRadius,
                 filter: `${getStoneFilters(stone.intensity, stone.opacity)}${stone.blur > 0 ? ` blur(${stone.blur}px)` : ''}`,
                 boxShadow: getStoneGlow(stone.intensity, stone.opacity),
-                zIndex: isPressed ? 1000 : stone.zIndex,
-                transform: isPressed ? 'scale(0.95)' : 'scale(1)',
+                zIndex: isNew ? 9999 : (isPressed ? 1000 : stone.zIndex),
+                transform: getTransform(),
+                transition: isNew && !animationComplete ? 'transform 0.8s cubic-bezier(0.19, 1, 0.22, 1)' : undefined,
             }}
             onClick={handleClick}
             onMouseEnter={(e) => onHover(stone, e)}
@@ -89,6 +110,7 @@ interface StoneVisualizationProps {
     onEntryClick: (id: string) => void;
     onAddEntry: () => void;
     onEntryPreview?: (id: string) => void;
+    newEntryId?: string | null;
 }
 
 interface StoneData {
@@ -106,7 +128,7 @@ interface StoneData {
     intensityClass: string;
 }
 
-export function StoneVisualization({ entries, onEntryClick, onAddEntry, onEntryPreview }: StoneVisualizationProps) {
+export function StoneVisualization({ entries, onEntryClick, onAddEntry, onEntryPreview, newEntryId }: StoneVisualizationProps) {
     const { t, i18n } = useTranslation();
     const isMobile = useIsMobile();
     const containerRef = useRef<HTMLDivElement>(null);
@@ -474,6 +496,7 @@ export function StoneVisualization({ entries, onEntryClick, onAddEntry, onEntryP
                         stone={stone}
                         isMobile={isMobile}
                         isHovered={hoveredStone === stone.id}
+                        isNew={stone.id === newEntryId}
                         onPreview={onEntryPreview}
                         onEdit={onEntryClick}
                         onHover={handleStoneHover}

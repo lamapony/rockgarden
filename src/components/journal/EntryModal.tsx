@@ -3,13 +3,12 @@ import { useTranslation } from 'react-i18next';
 import { X, AlertCircle } from 'lucide-react';
 import { useEntries } from '../../hooks/useEntries';
 import { useIsMobile } from '../../hooks/useIsMobile';
-import { LiquidInput } from './LiquidInput';
-import { WaterImmersive } from './WaterImmersive';
+import { StonePreview } from './StonePreview';
 
 interface EntryModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSaved: () => void;
+    onSaved: (entryId?: string) => void;
 }
 
 // Inline styles for guaranteed visibility
@@ -232,7 +231,6 @@ export function EntryModal({ isOpen, onClose, onSaved }: EntryModalProps) {
     const [intensity, setIntensity] = useState(5);
     const [isSaving, setIsSaving] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [showWaterImmersive, setShowWaterImmersive] = useState(false);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     // Focus textarea when modal opens
@@ -248,20 +246,17 @@ export function EntryModal({ isOpen, onClose, onSaved }: EntryModalProps) {
             setText('');
             setIntensity(5);
             setError(null);
-            setShowWaterImmersive(false);
         }
     }, [isOpen]);
 
     const handleSave = async () => {
         if (!text.trim()) return;
         
-        // Start immersive water animation
-        setShowWaterImmersive(true);
         setIsSaving(true);
         setError(null);
         
         try {
-            await createEntry(
+            const entryId = await createEntry(
                 { 
                     title: text.slice(0, 50) || t('journal.untitled'), 
                     text, 
@@ -269,18 +264,13 @@ export function EntryModal({ isOpen, onClose, onSaved }: EntryModalProps) {
                 },
                 intensity
             );
-            // WaterImmersive will call onComplete when animation finishes
+            onSaved(entryId);
         } catch (e) {
             console.error('Failed to save entry:', e);
             setError(t('common.error'));
-            setShowWaterImmersive(false);
+        } finally {
             setIsSaving(false);
         }
-    };
-
-    const handleWaterAnimationComplete = () => {
-        // Water animation complete, close modal
-        onSaved();
     };
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -337,24 +327,22 @@ export function EntryModal({ isOpen, onClose, onSaved }: EntryModalProps) {
                         </div>
                     )}
 
-                    {/* Water Immersive Animation Overlay */}
-                    <WaterImmersive
-                        isActive={showWaterImmersive}
-                        intensity={intensity}
-                        text={text}
-                        onComplete={handleWaterAnimationComplete}
-                    />
+                    {/* Stone Preview - shows how the stone will look */}
+                    <StonePreview intensity={intensity} />
 
-                    {/* Description input - Liquid Style */}
+                    {/* Description input */}
                     <div style={styles.inputGroup}>
-                        <label style={styles.label}>
+                        <label style={styles.label} htmlFor="entry-text">
                             {t('journal.description')}
                         </label>
-                        <LiquidInput
-                            value={text}
-                            onChange={setText}
-                            intensity={intensity}
+                        <textarea
+                            id="entry-text"
+                            ref={textareaRef}
+                            style={styles.textarea}
                             placeholder={t('journal.describeEvent')}
+                            value={text}
+                            onChange={(e) => setText(e.target.value)}
+                            rows={4}
                         />
                     </div>
 

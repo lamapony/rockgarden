@@ -171,6 +171,49 @@
     transition: transform 0.15s ease, filter 0.15s ease, box-shadow 0.15s ease !important;
 }
 
+/* New stone animation - appears with scale and rotation */
+.stone.new-stone {
+    animation: stoneAppear 0.8s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+    z-index: 9999 !important;
+}
+
+@keyframes stoneAppear {
+    0% {
+        transform: scale(0) rotate(180deg);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.2) rotate(90deg);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+        opacity: var(--final-opacity, 1);
+    }
+}
+
+/* Pulse effect for new stone */
+.stone.new-stone::after {
+    content: '';
+    position: absolute;
+    inset: -10px;
+    border-radius: inherit;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    animation: newStonePulse 1s ease-out forwards;
+    pointer-events: none;
+}
+
+@keyframes newStonePulse {
+    0% {
+        transform: scale(0.8);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
 /* Stone intensity colors - using CSS variables from theme */
 .stone-intensity-1 {
     background-color: var(--intensity-1);
