@@ -68,23 +68,13 @@
     font-size: 1.2rem;
 }
 
+/* Stone logo - organic shape with gradient */
 .landing-nav-icon {
     width: 28px;
     height: 28px;
-    background: var(--color-text-primary, #ffffff);
-    position: relative;
-}
-
-.landing-nav-icon::after {
-    content: '';
-    position: absolute;
-    top: -6px;
-    right: -6px;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: var(--color-bg-app, #0a0a0a);
-    border: 2px solid var(--color-text-primary, #ffffff);
+    background: radial-gradient(circle at 30% 30%, #e0f2fe 0%, #7dd3fc 50%, #0ea5e9 100%);
+    border-radius: 45% 55% 50% 50% / 55% 45% 55% 45%;
+    box-shadow: 0 0 12px rgba(125, 211, 252, 0.5);
 }
 
 .landing-nav-cta {
@@ -733,23 +723,13 @@
     opacity: 0.5;
 }
 
+/* Stone logo - organic shape with gradient */
 .landing-footer-icon {
-    width: 20px;
-    height: 20px;
-    background: var(--color-text-primary, #ffffff);
-    position: relative;
-}
-
-.landing-footer-icon::after {
-    content: '';
-    position: absolute;
-    top: -4px;
-    right: -4px;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--color-bg-app, #0a0a0a);
-    border: 2px solid var(--color-text-primary, #ffffff);
+    width: 24px;
+    height: 24px;
+    background: radial-gradient(circle at 30% 30%, #e0f2fe 0%, #7dd3fc 50%, #0ea5e9 100%);
+    border-radius: 45% 55% 50% 50% / 55% 45% 55% 45%;
+    box-shadow: 0 0 10px rgba(125, 211, 252, 0.5);
 }
 
 .landing-footer-copy {

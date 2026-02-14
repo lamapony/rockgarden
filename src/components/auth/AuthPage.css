@@ -48,23 +48,20 @@
     gap: 1.5rem;
 }
 
+/* Stone logo - organic shape with gradient */
 .brand-icon-stone {
     width: 48px;
     height: 48px;
-    background: white;
+    background: radial-gradient(circle at 30% 30%, #e0f2fe 0%, #7dd3fc 50%, #0ea5e9 100%);
+    border-radius: 45% 55% 50% 50% / 55% 45% 55% 45%;
+    box-shadow: 0 0 20px rgba(125, 211, 252, 0.5);
     position: relative;
+    animation: stoneBreathe 4s ease-in-out infinite;
 }
 
-.brand-icon-stone::after {
-    content: '';
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: var(--color-bg-app);
-    border: 3px solid white;
+@keyframes stoneBreathe {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.05) rotate(2deg); }
 }
 
 .auth-brand-name {
