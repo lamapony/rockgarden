@@ -371,6 +371,9 @@ export function LandingPage({ onEnter }: LandingPageProps) {
                 <p className="landing-footer-copy">
                     {t('landing.footer')}
                 </p>
+                <p className="landing-footer-author">
+                    {t('landing.createdBy')} <a href="https://dmitri.dk" target="_blank" rel="noopener noreferrer">dmitri.dk</a>
+                </p>
             </footer>
         </div>
     );

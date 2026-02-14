@@ -2,14 +2,93 @@ import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Grid3X3, Columns2, Layers } from 'lucide-react';
 import type { DecryptedEntry } from '../../types';
+import { useIsMobile } from '../../hooks/useIsMobile';
+import { useLongPress } from '../../hooks/useLongPress';
 import './StoneVisualization.css';
 
 type LayoutMode = 'layout-scatter' | 'layout-piles' | 'layout-cairn';
+
+interface StoneComponentProps {
+    stone: StoneData;
+    isMobile: boolean;
+    isHovered: boolean;
+    onPreview?: (id: string) => void;
+    onEdit: (id: string) => void;
+    onHover: (stone: StoneData, e: React.MouseEvent) => void;
+    onLeave: () => void;
+    getStoneFilters: (intensity: number, opacity: number) => string;
+    getStoneGlow: (intensity: number, opacity: number) => string;
+}
+
+function StoneComponent({ 
+    stone, 
+    isMobile, 
+    isHovered, 
+    onPreview, 
+    onEdit, 
+    onHover, 
+    onLeave,
+    getStoneFilters,
+    getStoneGlow,
+}: StoneComponentProps) {
+    const [isPressed, setIsPressed] = useState(false);
+
+    const longPressHandlers = useLongPress({
+        onShortPress: () => {
+            // On mobile: short tap = preview
+            // On desktop: click = edit (backward compatible)
+            if (isMobile && onPreview) {
+                onPreview(stone.id);
+            } else {
+                onEdit(stone.id);
+            }
+        },
+        onLongPress: () => {
+            // On mobile: long press = edit
+            if (isMobile) {
+                onEdit(stone.id);
+            }
+        },
+        delay: 400,
+        onPressStart: () => setIsPressed(true),
+        onPressEnd: () => setIsPressed(false),
+    });
+
+    const handleClick = () => {
+        // Desktop behavior: click opens edit
+        if (!isMobile) {
+            onEdit(stone.id);
+        }
+    };
+
+    return (
+        <div
+            className={`stone ${stone.intensityClass} ${isHovered ? 'hovered' : ''} ${isPressed ? 'pressed' : ''}`}
+            style={{
+                left: `${stone.x}px`,
+                top: `${stone.y}px`,
+                width: `${stone.size}px`,
+                height: `${stone.size}px`,
+                opacity: stone.opacity,
+                borderRadius: stone.borderRadius,
+                filter: `${getStoneFilters(stone.intensity, stone.opacity)}${stone.blur > 0 ? ` blur(${stone.blur}px)` : ''}`,
+                boxShadow: getStoneGlow(stone.intensity, stone.opacity),
+                zIndex: isPressed ? 1000 : stone.zIndex,
+                transform: isPressed ? 'scale(0.95)' : 'scale(1)',
+            }}
+            onClick={handleClick}
+            onMouseEnter={(e) => onHover(stone, e)}
+            onMouseLeave={onLeave}
+            {...(isMobile ? longPressHandlers : {})}
+        />
+    );
+}
 
 interface StoneVisualizationProps {
     entries: DecryptedEntry[];
     onEntryClick: (id: string) => void;
     onAddEntry: () => void;
+    onEntryPreview?: (id: string) => void;
 }
 
 interface StoneData {
@@ -27,8 +106,9 @@ interface StoneData {
     intensityClass: string;
 }
 
-export function StoneVisualization({ entries, onEntryClick, onAddEntry }: StoneVisualizationProps) {
+export function StoneVisualization({ entries, onEntryClick, onAddEntry, onEntryPreview }: StoneVisualizationProps) {
     const { t, i18n } = useTranslation();
+    const isMobile = useIsMobile();
     const containerRef = useRef<HTMLDivElement>(null);
     const [layoutMode, setLayoutMode] = useState<LayoutMode>('layout-scatter');
     const [stones, setStones] = useState<StoneData[]>([]);
@@ -389,23 +469,17 @@ export function StoneVisualization({ entries, onEntryClick, onAddEntry }: StoneV
                 onTouchEnd={onTouchEnd}
             >
                 {stones.map((stone) => (
-                    <div
+                    <StoneComponent
                         key={stone.id}
-                        className={`stone ${stone.intensityClass} ${hoveredStone === stone.id ? 'hovered' : ''}`}
-                        style={{
-                            left: `${stone.x}px`,
-                            top: `${stone.y}px`,
-                            width: `${stone.size}px`,
-                            height: `${stone.size}px`,
-                            opacity: stone.opacity,
-                            borderRadius: stone.borderRadius,
-                            filter: `${getStoneFilters(stone.intensity, stone.opacity)}${stone.blur > 0 ? ` blur(${stone.blur}px)` : ''}`,
-                            boxShadow: getStoneGlow(stone.intensity, stone.opacity),
-                            zIndex: stone.zIndex,
-                        }}
-                        onClick={() => onEntryClick(stone.id)}
-                        onMouseEnter={(e) => handleStoneHover(stone, e)}
-                        onMouseLeave={() => setHoveredStone(null)}
+                        stone={stone}
+                        isMobile={isMobile}
+                        isHovered={hoveredStone === stone.id}
+                        onPreview={onEntryPreview}
+                        onEdit={onEntryClick}
+                        onHover={handleStoneHover}
+                        onLeave={() => setHoveredStone(null)}
+                        getStoneFilters={getStoneFilters}
+                        getStoneGlow={getStoneGlow}
                     />
                 ))}
             </div>

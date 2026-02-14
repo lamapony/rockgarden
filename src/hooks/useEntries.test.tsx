@@ -31,6 +31,7 @@ describe('useEntries hook', () => {
             isAuthenticated: true,
             isLoading: false,
             needsSetup: false,
+            isDecoyMode: false,
             login: vi.fn(),
             setupPassword: vi.fn(),
             logout: vi.fn(),

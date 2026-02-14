@@ -164,6 +164,13 @@
     box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
 }
 
+/* Pressed state for mobile long-press feedback */
+.stone.pressed {
+    filter: brightness(1.2) saturate(1.3) !important;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.3), 0 4px 30px rgba(0, 0, 0, 0.5) !important;
+    transition: transform 0.15s ease, filter 0.15s ease, box-shadow 0.15s ease !important;
+}
+
 /* Stone intensity colors - using CSS variables from theme */
 .stone-intensity-1 {
     background-color: var(--intensity-1);

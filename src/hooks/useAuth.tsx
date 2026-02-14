@@ -10,6 +10,7 @@ import {
     needsSetup as checkNeedsSetup,
     setupPassword as doSetupPassword,
     login as doLogin,
+    isDecoyMode as checkDecoyMode,
 } from '../services/auth';
 import { getSettings, updateLanguage } from '../services/storage';
 import { setLanguage as setI18nLanguage } from '../i18n/config';
@@ -29,6 +30,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isAuthenticated: false,
         isLoading: true,
         needsSetup: false,
+        isDecoyMode: false,
     });
 
     // Check initial auth state
@@ -49,6 +51,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                     isAuthenticated: checkAuth(),
                     isLoading: false,
                     needsSetup,
+                    isDecoyMode: checkDecoyMode(),
                 });
             } catch (error) {
                 console.error('Auth check failed:', error);
@@ -56,6 +59,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                     isAuthenticated: false,
                     isLoading: false,
                     needsSetup: true,
+                    isDecoyMode: false,
                 });
             }
         }
@@ -66,7 +70,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const login = useCallback(async (password: string): Promise<boolean> => {
         const success = await doLogin(password);
         if (success) {
-            setState((prev) => ({ ...prev, isAuthenticated: true }));
+            setState((prev) => ({ 
+                ...prev, 
+                isAuthenticated: true,
+                isDecoyMode: checkDecoyMode(),
+            }));
         }
         return success;
     }, []);
@@ -82,12 +90,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             isAuthenticated: true,
             isLoading: false,
             needsSetup: false,
+            isDecoyMode: false,
         });
     }, []);
 
     const logout = useCallback(() => {
         clearSession();
-        setState((prev) => ({ ...prev, isAuthenticated: false }));
+        setState((prev) => ({ ...prev, isAuthenticated: false, isDecoyMode: false }));
     }, []);
 
     const getKey = useCallback((): CryptoKey => {

@@ -68,6 +68,24 @@
     color: var(--color-text-primary);
 }
 
+/* Decoy Mode Indicator */
+.decoy-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 8px;
+    color: #f87171;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.decoy-indicator svg {
+    color: #f87171;
+}
+
 /* Navigation */
 .journal-nav {
     display: flex;

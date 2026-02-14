@@ -1,12 +1,14 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { AlertTriangle } from 'lucide-react';
+import { AlertTriangle, ShieldAlert } from 'lucide-react';
 import { useEntries } from '../../hooks/useEntries';
 import { useSettings } from '../../hooks/useSettings';
+import { useAuth } from '../../hooks/useAuth';
 import { deleteAllData } from '../../services/storage';
 import { StoneVisualization } from './StoneVisualization';
 import { EntryModal } from './EntryModal';
+import { EntryPreview } from './EntryPreview';
 import { Navigation } from '../layout/Navigation';
 import './JournalPage.css';
 
@@ -14,10 +16,12 @@ export function JournalPage() {
     const { t } = useTranslation();
     const { entries, loadEntries, loading } = useEntries();
     const { settings } = useSettings();
+    const { isDecoyMode } = useAuth();
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [showPanicConfirm, setShowPanicConfirm] = useState(false);
     const [deleting, setDeleting] = useState(false);
+    const [previewEntryId, setPreviewEntryId] = useState<string | null>(null);
     
     // Triple-click detection for panic button
     const clickCountRef = useRef(0);
@@ -66,6 +70,20 @@ export function JournalPage() {
         navigate(`/entry/${id}`);
     };
 
+    const handleEntryPreview = (id: string) => {
+        setPreviewEntryId(id);
+    };
+
+    const handleClosePreview = () => {
+        setPreviewEntryId(null);
+    };
+
+    const handleEditFromPreview = () => {
+        if (previewEntryId) {
+            navigate(`/entry/${previewEntryId}`);
+        }
+    };
+
     const handleAddEntry = () => {
         setIsModalOpen(true);
     };
@@ -92,11 +110,13 @@ export function JournalPage() {
                     <span className="journal-brand-name">rockgarden</span>
                 </div>
 
-
-
-
-
-
+                {/* Decoy Mode Indicator */}
+                {isDecoyMode && (
+                    <div className="decoy-indicator" title={t('settings.decoyModeWarning')}>
+                        <ShieldAlert size={18} />
+                        <span>{t('settings.decoyTitle')}</span>
+                    </div>
+                )}
             </header>
 
             {/* Main Content */}
@@ -110,6 +130,7 @@ export function JournalPage() {
                         entries={entries}
                         onEntryClick={handleEntryClick}
                         onAddEntry={handleAddEntry}
+                        onEntryPreview={handleEntryPreview}
                     />
                 )}
             </main>
@@ -119,6 +140,14 @@ export function JournalPage() {
                 isOpen={isModalOpen}
                 onClose={handleModalClose}
                 onSaved={handleEntrySaved}
+            />
+
+            {/* Entry Preview */}
+            <EntryPreview
+                entry={previewEntryId ? entries.find(e => e.id === previewEntryId) || null : null}
+                isOpen={!!previewEntryId}
+                onClose={handleClosePreview}
+                onEdit={handleEditFromPreview}
             />
 
             <Navigation />

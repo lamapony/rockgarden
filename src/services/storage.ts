@@ -22,6 +22,9 @@ export const AppSettingsSchema = z.object({
     offlineMode: z.boolean().optional(),
     autoDeleteDays: z.union([z.number().int().positive().nullable(), z.literal(null)]).optional(),
     panicButtonEnabled: z.boolean().optional(),
+    // Decoy password fields
+    decoySalt: z.string().regex(/^[a-f0-9]{32}$/i, 'Decoy salt must be 16 bytes hex encoded').optional(),
+    decoyVerificationBlock: z.string().min(1, 'Decoy verification block is required').optional(),
 });
 
 // Type inferred from Zod schema
@@ -93,6 +96,13 @@ class SafeJournalDB extends Dexie {
                     entry.isArchived = false;
                 }
             });
+        });
+
+        // Migration to version 3: add decoy password support
+        this.version(3).stores({
+            settings: 'id',
+            entries: 'id, date, intensity, createdAt, isArchived',
+            audioNotes: 'id, entryId, createdAt',
         });
     }
 }

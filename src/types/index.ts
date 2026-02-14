@@ -35,6 +35,7 @@ export interface AuthState {
     isAuthenticated: boolean;
     isLoading: boolean;
     needsSetup: boolean;
+    isDecoyMode: boolean;
 }
 
 // App theme

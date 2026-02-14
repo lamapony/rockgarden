@@ -15,6 +15,7 @@ import { getSettings, saveSettings, isInitialized } from './storage';
 
 // In-memory key storage (cleared on tab close)
 let sessionKey: CryptoKey | null = null;
+let isDecoySession: boolean = false;
 
 /**
  * Check if user is authenticated (has valid session key)
@@ -39,6 +40,14 @@ export function getSessionKey(): CryptoKey {
  */
 export function clearSession(): void {
     sessionKey = null;
+    isDecoySession = false;
+}
+
+/**
+ * Check if current session is in decoy mode
+ */
+export function isDecoyMode(): boolean {
+    return isDecoySession;
 }
 
 /**
@@ -79,7 +88,8 @@ export async function setupPassword(
 
 /**
  * Login with password
- * Returns true if password is correct
+ * Returns true if password is correct (real or decoy)
+ * Sets isDecoySession flag if decoy password was used
  */
 export async function login(password: string): Promise<boolean> {
     const settings = await getSettings();
@@ -94,18 +104,39 @@ export async function login(password: string): Promise<boolean> {
     // Derive key from password
     const key = await deriveKey(password, salt);
 
-    // Verify password
+    // Verify password against real password
     const isValid = await verifyPassword(settings.verificationBlock, key);
 
-    // Artificial delay to prevent brute-force and timing attacks
-    // Randomized 800-1500ms to ensure constant-time response regardless of password validity
-    const delay = 800 + Math.random() * 700;
-    await new Promise(resolve => setTimeout(resolve, delay));
-
     if (isValid) {
+        // Artificial delay to prevent brute-force and timing attacks
+        const delay = 800 + Math.random() * 700;
+        await new Promise(resolve => setTimeout(resolve, delay));
+        
         sessionKey = key;
+        isDecoySession = false;
         return true;
     }
+
+    // Check decoy password if set
+    if (settings.decoySalt && settings.decoyVerificationBlock) {
+        const decoySalt = hexToUint8Array(settings.decoySalt);
+        const decoyKey = await deriveKey(password, decoySalt);
+        const isDecoyValid = await verifyPassword(settings.decoyVerificationBlock, decoyKey);
+
+        if (isDecoyValid) {
+            // Artificial delay to prevent brute-force and timing attacks
+            const delay = 800 + Math.random() * 700;
+            await new Promise(resolve => setTimeout(resolve, delay));
+            
+            sessionKey = decoyKey;
+            isDecoySession = true;
+            return true;
+        }
+    }
+
+    // Artificial delay to prevent brute-force and timing attacks
+    const delay = 800 + Math.random() * 700;
+    await new Promise(resolve => setTimeout(resolve, delay));
 
     return false;
 }
@@ -121,6 +152,11 @@ export async function changePassword(
     // First verify old password
     const loginSuccess = await login(oldPassword);
     if (!loginSuccess) {
+        return false;
+    }
+
+    // Cannot change password in decoy mode
+    if (isDecoySession) {
         return false;
     }
 
@@ -147,4 +183,78 @@ export async function changePassword(
 
     sessionKey = newKey;
     return true;
+}
+
+/**
+ * Set up or change decoy password
+ * Must be authenticated with real password
+ */
+export async function setDecoyPassword(
+    currentPassword: string,
+    decoyPassword: string
+): Promise<boolean> {
+    // Verify current password first
+    const loginSuccess = await login(currentPassword);
+    if (!loginSuccess) {
+        return false;
+    }
+
+    // Cannot set decoy password while in decoy mode
+    if (isDecoySession) {
+        return false;
+    }
+
+    // Generate new salt and key for decoy password
+    const decoySalt = generateSalt();
+    const decoyKey = await deriveKey(decoyPassword, decoySalt);
+    const decoyVerificationBlock = await createVerificationBlock(decoyKey);
+
+    const settings = await getSettings();
+    if (!settings) return false;
+
+    await saveSettings({
+        ...settings,
+        decoySalt: uint8ArrayToHex(decoySalt),
+        decoyVerificationBlock: decoyVerificationBlock,
+    });
+
+    return true;
+}
+
+/**
+ * Remove decoy password
+ */
+export async function removeDecoyPassword(
+    currentPassword: string
+): Promise<boolean> {
+    // Verify current password first
+    const loginSuccess = await login(currentPassword);
+    if (!loginSuccess) {
+        return false;
+    }
+
+    // Cannot remove decoy password while in decoy mode
+    if (isDecoySession) {
+        return false;
+    }
+
+    const settings = await getSettings();
+    if (!settings) return false;
+
+    await saveSettings({
+        ...settings,
+        decoySalt: undefined,
+        decoyVerificationBlock: undefined,
+    });
+
+    return true;
+}
+
+/**
+ * Check if decoy password is set
+ */
+export async function hasDecoyPassword(): Promise<boolean> {
+    const settings = await getSettings();
+    if (!settings) return false;
+    return !!settings.decoySalt && !!settings.decoyVerificationBlock;
 }

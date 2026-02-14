@@ -759,6 +759,24 @@
     letter-spacing: 0.1em;
 }
 
+.landing-footer-author {
+    color: var(--color-text-muted, #666666);
+    font-size: 0.7rem;
+    margin-top: 0.75rem;
+    opacity: 0.7;
+}
+
+.landing-footer-author a {
+    color: var(--accent-color, #c0a080);
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+.landing-footer-author a:hover {
+    opacity: 0.8;
+    text-decoration: underline;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .landing-nav {

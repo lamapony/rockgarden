@@ -6,12 +6,14 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ArchiveRestore, Trash2, GraduationCap } from 'lucide-react';
+import { ArchiveRestore, Trash2, GraduationCap, ShieldAlert } from 'lucide-react';
 import { resetOnboarding } from '../onboarding/Onboarding';
 import { useSettings } from '../../hooks/useSettings';
 import { useEntries } from '../../hooks/useEntries';
+import { useAuth } from '../../hooks/useAuth';
 import { deleteAllData } from '../../services/storage';
 import { setTheme, type Theme } from '../../services/theme';
+import { setDecoyPassword, removeDecoyPassword, hasDecoyPassword } from '../../services/auth';
 import { LanguageSwitcher } from '../layout/LanguageSwitcher';
 import { Navigation } from '../layout/Navigation';
 import './SettingsPage.css';
@@ -42,7 +44,7 @@ const AUTO_DELETE_OPTIONS = [
 
 export function SettingsPage() {
     const { t } = useTranslation();
-    // const { logout } = useAuth();
+    const { isDecoyMode } = useAuth();
     const {
         settings,
         loading,
@@ -60,6 +62,15 @@ export function SettingsPage() {
     const [showPanicConfirm, setShowPanicConfirm] = useState(false);
     const [deleting, setDeleting] = useState(false);
     const [exporting, setExporting] = useState(false);
+    
+    // Decoy password state
+    const [decoySet, setDecoySet] = useState(false);
+    const [showDecoyModal, setShowDecoyModal] = useState(false);
+    const [decoyCurrentPassword, setDecoyCurrentPassword] = useState('');
+    const [decoyNewPassword, setDecoyNewPassword] = useState('');
+    const [decoyConfirmPassword, setDecoyConfirmPassword] = useState('');
+    const [decoyError, setDecoyError] = useState('');
+    const [decoyLoading, setDecoyLoading] = useState(false);
     
     // Triple-click detection for panic button
     const clickCountRef = useRef(0);
@@ -95,6 +106,15 @@ export function SettingsPage() {
             loadEntries();
         }
     }, [activeTab, loadEntries]);
+
+    // Check if decoy password is set
+    useEffect(() => {
+        async function checkDecoy() {
+            const hasDecoy = await hasDecoyPassword();
+            setDecoySet(hasDecoy);
+        }
+        checkDecoy();
+    }, []);
 
     const archivedEntries = entries.filter(e => e.isArchived);
 
@@ -151,6 +171,68 @@ export function SettingsPage() {
     const handleAutoDeleteChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
         const value = e.target.value === 'null' ? null : parseInt(e.target.value, 10);
         await setAutoDelete(value);
+    };
+
+    // Decoy password handlers
+    const handleSetDecoy = async () => {
+        setDecoyError('');
+        
+        if (decoyNewPassword.length < 6) {
+            setDecoyError(t('auth.passwordTooShort'));
+            return;
+        }
+        
+        if (decoyNewPassword !== decoyConfirmPassword) {
+            setDecoyError(t('auth.passwordMismatch'));
+            return;
+        }
+        
+        setDecoyLoading(true);
+        try {
+            const success = await setDecoyPassword(decoyCurrentPassword, decoyNewPassword);
+            if (success) {
+                setDecoySet(true);
+                setShowDecoyModal(false);
+                setDecoyCurrentPassword('');
+                setDecoyNewPassword('');
+                setDecoyConfirmPassword('');
+            } else {
+                setDecoyError(t('auth.wrongPassword'));
+            }
+        } catch (e) {
+            setDecoyError(t('common.error'));
+        } finally {
+            setDecoyLoading(false);
+        }
+    };
+
+    const handleRemoveDecoy = async () => {
+        setDecoyError('');
+        setDecoyLoading(true);
+        try {
+            const success = await removeDecoyPassword(decoyCurrentPassword);
+            if (success) {
+                setDecoySet(false);
+                setShowDecoyModal(false);
+                setDecoyCurrentPassword('');
+                setDecoyNewPassword('');
+                setDecoyConfirmPassword('');
+            } else {
+                setDecoyError(t('auth.wrongPassword'));
+            }
+        } catch (e) {
+            setDecoyError(t('common.error'));
+        } finally {
+            setDecoyLoading(false);
+        }
+    };
+
+    const openDecoyModal = () => {
+        setDecoyError('');
+        setDecoyCurrentPassword('');
+        setDecoyNewPassword('');
+        setDecoyConfirmPassword('');
+        setShowDecoyModal(true);
     };
 
     const tabs: { id: SettingsTab; label: string }[] = [
@@ -345,6 +427,56 @@ export function SettingsPage() {
                                     </button>
                                 </div>
                             </div>
+                            
+                            {/* Decoy Password Section */}
+                            <div className="setting-section-label" style={{ marginTop: '2rem' }}>
+                                {t('settings.decoyTitle')}
+                            </div>
+                            <div className="setting-row">
+                                <div className="setting-info">
+                                    <span className="setting-title">
+                                        <ShieldAlert size={16} style={{ marginRight: '0.5rem', verticalAlign: 'middle' }} />
+                                        {t('settings.decoyPassword')}
+                                    </span>
+                                    <span className="setting-desc">{t('settings.decoyDesc')}</span>
+                                </div>
+                                <div className="setting-action">
+                                    <button 
+                                        className={`btn-action ${decoySet ? 'btn-secondary' : ''}`}
+                                        onClick={openDecoyModal}
+                                        disabled={isDecoyMode}
+                                    >
+                                        {decoySet ? t('settings.decoyUpdate') : t('settings.decoySet')}
+                                    </button>
+                                </div>
+                            </div>
+                            {decoySet && (
+                                <div className="setting-row">
+                                    <div className="setting-info">
+                                        <span className="setting-desc" style={{ color: 'var(--success)' }}>
+                                            {t('settings.decoyActive')}
+                                        </span>
+                                    </div>
+                                    <div className="setting-action">
+                                        <button 
+                                            className="btn-action btn-danger"
+                                            onClick={openDecoyModal}
+                                            disabled={isDecoyMode}
+                                        >
+                                            {t('settings.decoyRemove')}
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                            {isDecoyMode && (
+                                <div className="setting-row">
+                                    <div className="setting-info">
+                                        <span className="setting-desc" style={{ color: 'var(--warning)' }}>
+                                            {t('settings.decoyModeWarning')}
+                                        </span>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     )}
 
@@ -543,6 +675,152 @@ export function SettingsPage() {
                             <button className="btn-action btn-danger" onClick={handlePanic} disabled={deleting}>
                                 {deleting ? t('common.loading') : t('settings.panicConfirmButton')}
                             </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Decoy Password Modal */}
+            {showDecoyModal && (
+                <div className="modal-overlay" onClick={() => setShowDecoyModal(false)}>
+                    <div className="modal" onClick={(e) => e.stopPropagation()}>
+                        <div className="modal-icon">🛡️</div>
+                        <h2 className="modal-title">
+                            {decoySet ? t('settings.decoyUpdate') : t('settings.decoySet')}
+                        </h2>
+                        <p className="modal-text">
+                            {t('settings.decoyModalDesc')}
+                        </p>
+                        
+                        {decoyError && (
+                            <div className="modal-error" style={{ 
+                                color: 'var(--danger)', 
+                                marginBottom: '1rem',
+                                padding: '0.75rem',
+                                background: 'rgba(239, 68, 68, 0.1)',
+                                borderRadius: '6px',
+                                fontSize: '0.875rem'
+                            }}>
+                                {decoyError}
+                            </div>
+                        )}
+                        
+                        <div className="modal-form">
+                            <div className="form-group" style={{ marginBottom: '1rem' }}>
+                                <label style={{ 
+                                    display: 'block', 
+                                    marginBottom: '0.5rem',
+                                    fontSize: '0.875rem',
+                                    color: 'var(--text-secondary)'
+                                }}>
+                                    {t('auth.password')}
+                                </label>
+                                <input
+                                    type="password"
+                                    value={decoyCurrentPassword}
+                                    onChange={(e) => setDecoyCurrentPassword(e.target.value)}
+                                    placeholder={t('auth.enterPassword')}
+                                    style={{
+                                        width: '100%',
+                                        padding: '0.75rem',
+                                        background: 'var(--bg-elevated)',
+                                        border: '1px solid var(--border)',
+                                        borderRadius: '6px',
+                                        color: 'var(--text-primary)',
+                                        fontSize: '1rem'
+                                    }}
+                                />
+                            </div>
+                            
+                            <div className="form-group" style={{ marginBottom: '1rem' }}>
+                                <label style={{ 
+                                    display: 'block', 
+                                    marginBottom: '0.5rem',
+                                    fontSize: '0.875rem',
+                                    color: 'var(--text-secondary)'
+                                }}>
+                                    {decoySet ? t('settings.decoyNewPassword') : t('settings.decoyPassword')}
+                                </label>
+                                <input
+                                    type="password"
+                                    value={decoyNewPassword}
+                                    onChange={(e) => setDecoyNewPassword(e.target.value)}
+                                    placeholder={t('settings.decoyPasswordPlaceholder')}
+                                    style={{
+                                        width: '100%',
+                                        padding: '0.75rem',
+                                        background: 'var(--bg-elevated)',
+                                        border: '1px solid var(--border)',
+                                        borderRadius: '6px',
+                                        color: 'var(--text-primary)',
+                                        fontSize: '1rem'
+                                    }}
+                                />
+                            </div>
+                            
+                            {!decoySet && (
+                                <div className="form-group" style={{ marginBottom: '1rem' }}>
+                                    <label style={{ 
+                                        display: 'block', 
+                                        marginBottom: '0.5rem',
+                                        fontSize: '0.875rem',
+                                        color: 'var(--text-secondary)'
+                                    }}>
+                                        {t('auth.confirmPassword')}
+                                    </label>
+                                    <input
+                                        type="password"
+                                        value={decoyConfirmPassword}
+                                        onChange={(e) => setDecoyConfirmPassword(e.target.value)}
+                                        placeholder={t('auth.confirmPassword')}
+                                        style={{
+                                            width: '100%',
+                                            padding: '0.75rem',
+                                            background: 'var(--bg-elevated)',
+                                            border: '1px solid var(--border)',
+                                            borderRadius: '6px',
+                                            color: 'var(--text-primary)',
+                                            fontSize: '1rem'
+                                        }}
+                                    />
+                                </div>
+                            )}
+                        </div>
+                        
+                        <div className="modal-actions">
+                            <button 
+                                className="btn-action" 
+                                onClick={() => setShowDecoyModal(false)}
+                                disabled={decoyLoading}
+                            >
+                                {t('common.cancel')}
+                            </button>
+                            {decoySet ? (
+                                <>
+                                    <button 
+                                        className="btn-action btn-danger"
+                                        onClick={handleRemoveDecoy}
+                                        disabled={decoyLoading || !decoyCurrentPassword}
+                                    >
+                                        {decoyLoading ? t('common.loading') : t('settings.decoyRemove')}
+                                    </button>
+                                    <button 
+                                        className="btn-action btn-primary"
+                                        onClick={handleSetDecoy}
+                                        disabled={decoyLoading || !decoyCurrentPassword || !decoyNewPassword}
+                                    >
+                                        {decoyLoading ? t('common.loading') : t('common.save')}
+                                    </button>
+                                </>
+                            ) : (
+                                <button 
+                                    className="btn-action btn-primary"
+                                    onClick={handleSetDecoy}
+                                    disabled={decoyLoading || !decoyCurrentPassword || !decoyNewPassword || !decoyConfirmPassword}
+                                >
+                                    {decoyLoading ? t('common.loading') : t('settings.decoySet')}
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>
