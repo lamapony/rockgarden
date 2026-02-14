@@ -22,8 +22,16 @@ export function EntryModal({ isOpen, onClose, onSaved }: EntryModalProps) {
     const [error, setError] = useState<string | null>(null);
     const [isFlying, setIsFlying] = useState(false);
     const [shake, setShake] = useState(false);
+    const [stoneShape, setStoneShape] = useState(1);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const stoneRef = useRef<HTMLDivElement>(null);
+
+    // Generate random stone shape when modal opens
+    useEffect(() => {
+        if (isOpen) {
+            setStoneShape(Math.floor(Math.random() * 8) + 1);
+        }
+    }, [isOpen]);
 
     // Focus textarea when modal opens
     useEffect(() => {
@@ -152,7 +160,7 @@ export function EntryModal({ isOpen, onClose, onSaved }: EntryModalProps) {
                         <div className="stone-preview-wrapper">
                             <div 
                                 ref={stoneRef}
-                                className={`preview-stone intensity-${intensity} ${getAnimationType(intensity)} ${isFlying ? 'flying' : ''}`}
+                                className={`preview-stone shape-${stoneShape} intensity-${intensity} ${getAnimationType(intensity)} ${isFlying ? 'flying' : ''}`}
                             />
                         </div>
 

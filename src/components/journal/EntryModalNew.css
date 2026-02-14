@@ -95,10 +95,19 @@
 
 /* The preview stone - size varies by intensity (inverted metaphor: calm = big, intense = small) */
 .preview-stone {
-    border-radius: 45% 55% 50% 50% / 55% 45% 55% 45%;
     position: relative;
     transition: all 0.5s ease;
 }
+
+/* Various organic stone shapes */
+.preview-stone.shape-1 { border-radius: 45% 55% 50% 50% / 55% 45% 55% 45%; }
+.preview-stone.shape-2 { border-radius: 40% 60% 45% 55% / 50% 50% 55% 45%; }
+.preview-stone.shape-3 { border-radius: 50% 50% 40% 60% / 45% 55% 50% 50%; }
+.preview-stone.shape-4 { border-radius: 35% 65% 50% 50% / 50% 45% 55% 50%; }
+.preview-stone.shape-5 { border-radius: 55% 45% 45% 55% / 50% 50% 45% 55%; }
+.preview-stone.shape-6 { border-radius: 48% 52% 52% 48% / 48% 52% 48% 52%; }
+.preview-stone.shape-7 { border-radius: 42% 58% 48% 52% / 52% 48% 52% 48%; }
+.preview-stone.shape-8 { border-radius: 52% 48% 42% 58% / 48% 52% 48% 52%; }
 
 /* Size based on intensity - calm (1) = large, intense (10) = small */
 .preview-stone.intensity-1 { width: 140px; height: 140px; }

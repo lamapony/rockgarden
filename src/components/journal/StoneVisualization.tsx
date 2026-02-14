@@ -222,12 +222,20 @@ export function StoneVisualization({ entries, onEntryClick, onAddEntry, onEntryP
             // Calculate opacity based on time and intensity
             const opacity = calculateOpacity(entry);
             
-            // Generate organic stone shape
-            const r1 = 40 + Math.random() * 20;
-            const r2 = 40 + Math.random() * 20;
-            const r3 = 40 + Math.random() * 20;
-            const r4 = 40 + Math.random() * 20;
-            const borderRadius = `${r1}% ${100 - r1}% ${r3}% ${100 - r3}% / ${r2}% ${r4}% ${100 - r4}% ${100 - r2}%`;
+            // Generate organic stone shape - more varied and natural
+            const shapes = [
+                // Almost round
+                `${45 + Math.random() * 10}% ${55 - Math.random() * 10}% ${50 + Math.random() * 10}% ${50 - Math.random() * 10}% / ${50 + Math.random() * 10}% ${50 - Math.random() * 10}% ${45 + Math.random() * 10}% ${55 - Math.random() * 10}%`,
+                // Elongated horizontal
+                `${30 + Math.random() * 15}% ${70 - Math.random() * 15}% ${35 + Math.random() * 15}% ${65 - Math.random() * 15}% / ${40 + Math.random() * 20}% ${60 - Math.random() * 20}% ${35 + Math.random() * 15}% ${65 - Math.random() * 15}%`,
+                // Elongated vertical
+                `${40 + Math.random() * 20}% ${60 - Math.random() * 20}% ${45 + Math.random() * 20}% ${55 - Math.random() * 20}% / ${25 + Math.random() * 15}% ${75 - Math.random() * 15}% ${30 + Math.random() * 15}% ${70 - Math.random() * 15}%`,
+                // Irregular blob
+                `${35 + Math.random() * 25}% ${40 + Math.random() * 30}% ${35 + Math.random() * 25}% ${40 + Math.random() * 30}% / ${35 + Math.random() * 25}% ${40 + Math.random() * 30}% ${35 + Math.random() * 25}% ${40 + Math.random() * 30}%`,
+                // Angular stone
+                `${20 + Math.random() * 15}% ${60 + Math.random() * 20}% ${25 + Math.random() * 15}% ${55 + Math.random() * 20}% / ${30 + Math.random() * 20}% ${50 + Math.random() * 25}% ${25 + Math.random() * 15}% ${60 + Math.random() * 20}%`,
+            ];
+            const borderRadius = shapes[Math.floor(Math.random() * shapes.length)];
 
             // CSS class for intensity color
             const intensityClass = `stone-intensity-${entry.intensity}`;
