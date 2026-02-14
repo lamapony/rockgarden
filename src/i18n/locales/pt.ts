@@ -51,6 +51,7 @@ export const ptTranslations = {
         describeEvent: 'Descreva o evento...',
         mild: 'Leve',
         moderate: 'Moderado',
+        intense: 'Intenso',
         noContent: 'Sem conteúdo',
         tapHint: 'Toque longo para editar',
         severe: 'Grave',

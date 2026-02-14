@@ -51,6 +51,7 @@ export const deTranslations = {
         describeEvent: 'Beschreibe das Ereignis...',
         mild: 'Mild',
         moderate: 'Mäßig',
+        intense: 'Intensiv',
         noContent: 'Kein Inhalt',
         tapHint: 'Lange drücken zum Bearbeiten',
         severe: 'Schwer',

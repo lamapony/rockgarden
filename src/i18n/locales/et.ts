@@ -59,6 +59,7 @@ export const etTranslations = {
         describeEvent: 'Kirjelda sündmust...',
         mild: 'Kerge',
         moderate: 'Mõõdukas',
+        intense: 'Intensiivne',
         noContent: 'Sisu puudub',
         tapHint: 'Pikk puudutus muutmiseks',
         severe: 'Tugev',

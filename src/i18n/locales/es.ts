@@ -51,6 +51,7 @@ export const esTranslations = {
         describeEvent: 'Describe el evento...',
         mild: 'Leve',
         moderate: 'Moderado',
+        intense: 'Intenso',
         noContent: 'Sin contenido',
         tapHint: 'Mantén presionado para editar',
         severe: 'Grave',

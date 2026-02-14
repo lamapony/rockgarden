@@ -58,6 +58,7 @@ export const daTranslations = {
         describeEvent: 'Beskriv hændelsen...',
         mild: 'Mild',
         moderate: 'Moderat',
+        intense: 'Intenst',
         noContent: 'Intet indhold',
         tapHint: 'Langt tryk for at redigere',
         severe: 'Alvorlig',

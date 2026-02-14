@@ -51,6 +51,7 @@ export const trTranslations = {
         describeEvent: 'Olayı açıkla...',
         mild: 'Hafif',
         moderate: 'Orta',
+        intense: 'Yoğun',
         noContent: 'İçerik yok',
         tapHint: 'Düzenlemek için uzun basın',
         severe: 'Ağır',

@@ -62,6 +62,7 @@ export const ukTranslations = {
         describeEvent: 'Опишіть подію...',
         mild: 'Слабка',
         moderate: 'Помірна',
+        intense: 'Інтенсивно',
         noContent: 'Немає змісту',
         tapHint: 'Довге натискання для редагування',
         severe: 'Сильна',

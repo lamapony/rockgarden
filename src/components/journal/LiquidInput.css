@@ -1,0 +1,242 @@
+/* Liquid Input - Water-like textarea with ripple effects */
+.liquid-input-container {
+    position: relative;
+    width: 100%;
+    margin: 1.5rem 0;
+}
+
+/* The water surface background */
+.liquid-input-surface {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        180deg,
+        rgba(127, 205, 187, 0.05) 0%,
+        rgba(127, 179, 213, 0.08) 50%,
+        rgba(127, 205, 187, 0.05) 100%
+    );
+    border-radius: 16px;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+/* Animated water waves */
+.liquid-input-surface::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 48%,
+        rgba(127, 205, 187, 0.03) 50%,
+        transparent 52%
+    );
+    animation: waterWave 8s linear infinite;
+}
+
+@keyframes waterWave {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(50%);
+    }
+}
+
+/* Ripple effect overlay */
+.liquid-ripples {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    border-radius: 16px;
+}
+
+/* Individual ripple */
+.liquid-ripple {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(127, 205, 187, 0.3);
+    background: radial-gradient(circle, rgba(127, 205, 187, 0.1) 0%, transparent 70%);
+    animation: rippleExpand 2s ease-out forwards;
+    pointer-events: none;
+}
+
+@keyframes rippleExpand {
+    0% {
+        width: 0;
+        height: 0;
+        opacity: 0.8;
+    }
+    100% {
+        width: 300px;
+        height: 300px;
+        opacity: 0;
+    }
+}
+
+/* The actual textarea */
+.liquid-textarea {
+    width: 100%;
+    min-height: 150px;
+    padding: 1.5rem;
+    background: rgba(26, 26, 26, 0.6);
+    border: 1px solid rgba(127, 205, 187, 0.2);
+    border-radius: 16px;
+    color: var(--text-primary, #fff);
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.7;
+    resize: vertical;
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+/* Focus state - water turbulence effect */
+.liquid-textarea:focus {
+    outline: none;
+    border-color: rgba(127, 205, 187, 0.5);
+    background: rgba(26, 26, 26, 0.8);
+    box-shadow: 
+        0 0 30px rgba(127, 205, 187, 0.1),
+        inset 0 2px 10px rgba(127, 205, 187, 0.05);
+}
+
+/* Placeholder styling */
+.liquid-textarea::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+    font-style: italic;
+}
+
+/* Splash effect when stone is thrown */
+.liquid-input-container.splash .liquid-input-surface::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    animation: splashExpand 0.6s ease-out forwards;
+}
+
+@keyframes splashExpand {
+    0% {
+        width: 0;
+        height: 0;
+        opacity: 1;
+    }
+    50% {
+        width: 150%;
+        height: 150%;
+        opacity: 0.5;
+    }
+    100% {
+        width: 200%;
+        height: 200%;
+        opacity: 0;
+    }
+}
+
+/* Water droplets after splash */
+.liquid-droplet {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(127, 205, 187, 0.6);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: dropletFall 0.8s ease-out forwards;
+}
+
+@keyframes dropletFall {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-30px) scale(0.5);
+        opacity: 0;
+    }
+}
+
+/* Intensity-based coloring */
+.liquid-input-container.intensity-low .liquid-input-surface {
+    background: linear-gradient(
+        180deg,
+        rgba(127, 205, 187, 0.08) 0%,
+        rgba(127, 179, 213, 0.05) 50%,
+        rgba(127, 205, 187, 0.08) 100%
+    );
+}
+
+.liquid-input-container.intensity-low .liquid-textarea {
+    border-color: rgba(127, 205, 187, 0.25);
+}
+
+.liquid-input-container.intensity-medium .liquid-input-surface {
+    background: linear-gradient(
+        180deg,
+        rgba(127, 179, 213, 0.1) 0%,
+        rgba(155, 138, 165, 0.08) 50%,
+        rgba(127, 179, 213, 0.1) 100%
+    );
+}
+
+.liquid-input-container.intensity-medium .liquid-textarea {
+    border-color: rgba(127, 179, 213, 0.3);
+}
+
+.liquid-input-container.intensity-high .liquid-input-surface {
+    background: linear-gradient(
+        180deg,
+        rgba(201, 160, 220, 0.12) 0%,
+        rgba(230, 168, 215, 0.1) 50%,
+        rgba(244, 166, 165, 0.12) 100%
+    );
+}
+
+.liquid-input-container.intensity-high .liquid-textarea {
+    border-color: rgba(201, 160, 220, 0.4);
+}
+
+.liquid-input-container.intensity-severe .liquid-input-surface {
+    background: linear-gradient(
+        180deg,
+        rgba(244, 166, 165, 0.15) 0%,
+        rgba(231, 76, 60, 0.12) 50%,
+        rgba(192, 57, 43, 0.15) 100%
+    );
+    animation: turbulentWater 2s ease-in-out infinite;
+}
+
+@keyframes turbulentWater {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.8;
+    }
+}
+
+.liquid-input-container.intensity-severe .liquid-textarea {
+    border-color: rgba(231, 76, 60, 0.4);
+    box-shadow: 0 0 20px rgba(231, 76, 60, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .liquid-textarea {
+        min-height: 120px;
+        padding: 1rem;
+        font-size: 16px; /* Prevent zoom on iOS */
+    }
+}

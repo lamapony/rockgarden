@@ -55,6 +55,7 @@ export const plTranslations = {
         describeEvent: 'Opisz zdarzenie...',
         mild: 'Łagodny',
         moderate: 'Umiarkowane',
+        intense: 'Intensywne',
         noContent: 'Brak treści',
         tapHint: 'Przytrzymaj, aby edytować',
         severe: 'Poważny',

@@ -62,6 +62,7 @@ export const ltTranslations = {
         describeEvent: 'Apibūdinkite įvykį...',
         mild: 'Silpnas',
         moderate: 'Vidutinis',
+        intense: 'Intensyvus',
         noContent: 'Nėra turinio',
         tapHint: 'Ilgas paspaudimas redagavimui',
         severe: 'Sunkus',

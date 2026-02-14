@@ -61,6 +61,7 @@ export const ruTranslations = {
         describeEvent: 'Опишите событие...',
         mild: 'Слабая',
         moderate: 'Умеренная',
+        intense: 'Интенсивно',
         noContent: 'Нет содержимого',
         tapHint: 'Долгое нажатие для редактирования',
         severe: 'Сильная',

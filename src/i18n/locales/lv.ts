@@ -59,6 +59,7 @@ export const lvTranslations = {
         describeEvent: 'Aprakstiet notikumu...',
         mild: 'Viegls',
         moderate: 'Mērens',
+        intense: 'Intensīvs',
         noContent: 'Nav satura',
         tapHint: 'Ilgs pieskāriens rediģēšanai',
         severe: 'Smags',

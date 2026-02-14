@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { X, AlertCircle } from 'lucide-react';
 import { useEntries } from '../../hooks/useEntries';
 import { useIsMobile } from '../../hooks/useIsMobile';
+import { LiquidStone } from './LiquidStone';
+import { LiquidInput } from './LiquidInput';
 
 interface EntryModalProps {
     isOpen: boolean;
@@ -230,6 +232,8 @@ export function EntryModal({ isOpen, onClose, onSaved }: EntryModalProps) {
     const [intensity, setIntensity] = useState(5);
     const [isSaving, setIsSaving] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [isStoneThrowing, setIsStoneThrowing] = useState(false);
+    const [isSplashing, setIsSplashing] = useState(false);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     // Focus textarea when modal opens
@@ -245,14 +249,25 @@ export function EntryModal({ isOpen, onClose, onSaved }: EntryModalProps) {
             setText('');
             setIntensity(5);
             setError(null);
+            setIsStoneThrowing(false);
+            setIsSplashing(false);
         }
     }, [isOpen]);
 
     const handleSave = async () => {
         if (!text.trim()) return;
         
+        // Start stone throwing animation
+        setIsStoneThrowing(true);
+        
+        // Splash happens when stone hits water
+        setTimeout(() => {
+            setIsSplashing(true);
+        }, 400);
+        
         setIsSaving(true);
         setError(null);
+        
         try {
             await createEntry(
                 { 
@@ -262,13 +277,22 @@ export function EntryModal({ isOpen, onClose, onSaved }: EntryModalProps) {
                 },
                 intensity
             );
-            onSaved();
+            // Delay closing to let animation complete
+            setTimeout(() => {
+                onSaved();
+            }, 600);
         } catch (e) {
             console.error('Failed to save entry:', e);
             setError(t('common.error'));
+            setIsStoneThrowing(false);
+            setIsSplashing(false);
         } finally {
             setIsSaving(false);
         }
+    };
+
+    const handleStoneThrowComplete = () => {
+        // Stone has finished throwing animation
     };
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -325,19 +349,24 @@ export function EntryModal({ isOpen, onClose, onSaved }: EntryModalProps) {
                         </div>
                     )}
 
-                    {/* Description input */}
+                    {/* Animated Liquid Stone */}
+                    <LiquidStone 
+                        intensity={intensity} 
+                        isThrowing={isStoneThrowing}
+                        onThrowComplete={handleStoneThrowComplete}
+                    />
+
+                    {/* Description input - Liquid Style */}
                     <div style={styles.inputGroup}>
-                        <label style={styles.label} htmlFor="entry-text">
+                        <label style={styles.label}>
                             {t('journal.description')}
                         </label>
-                        <textarea
-                            id="entry-text"
-                            ref={textareaRef}
-                            style={styles.textarea}
-                            placeholder={t('journal.describeEvent')}
+                        <LiquidInput
                             value={text}
-                            onChange={(e) => setText(e.target.value)}
-                            rows={4}
+                            onChange={setText}
+                            intensity={intensity}
+                            placeholder={t('journal.describeEvent')}
+                            isSplashing={isSplashing}
                         />
                     </div>
 
