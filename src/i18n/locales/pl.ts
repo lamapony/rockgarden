@@ -57,6 +57,7 @@ export const plTranslations = {
         moderate: 'Umiarkowane',
         intense: 'Intensywne',
         stoneThrown: 'Kamień rzucony do wody',
+        preview: 'Podgląd',
         noContent: 'Brak treści',
         tapHint: 'Przytrzymaj, aby edytować',
         severe: 'Poważny',

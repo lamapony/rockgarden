@@ -60,6 +60,7 @@ export const daTranslations = {
         moderate: 'Moderat',
         intense: 'Intenst',
         stoneThrown: 'Sten kastet i vandet',
+        preview: 'Forhåndsvisning',
         noContent: 'Intet indhold',
         tapHint: 'Langt tryk for at redigere',
         severe: 'Alvorlig',

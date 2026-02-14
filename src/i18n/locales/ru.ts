@@ -63,6 +63,7 @@ export const ruTranslations = {
         moderate: 'Умеренная',
         intense: 'Интенсивно',
         stoneThrown: 'Камень брошен в воду',
+        preview: 'Предпросмотр',
         noContent: 'Нет содержимого',
         tapHint: 'Долгое нажатие для редактирования',
         severe: 'Сильная',

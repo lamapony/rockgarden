@@ -1,226 +1,15 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { X, AlertCircle } from 'lucide-react';
+import { X } from 'lucide-react';
 import { useEntries } from '../../hooks/useEntries';
 import { useIsMobile } from '../../hooks/useIsMobile';
-import { StonePreview } from './StonePreview';
+import './EntryModalNew.css';
 
 interface EntryModalProps {
     isOpen: boolean;
     onClose: () => void;
     onSaved: (entryId?: string) => void;
 }
-
-// Inline styles for guaranteed visibility
-const styles = {
-    modal: {
-        position: 'fixed' as const,
-        bottom: 0,
-        left: 0,
-        width: '100%',
-        height: '0',
-        zIndex: 1000,
-        display: 'flex',
-        flexDirection: 'column' as const,
-        justifyContent: 'flex-end' as const,
-        pointerEvents: 'none' as const,
-    },
-    modalOpen: {
-        height: '100vh',
-        pointerEvents: 'auto' as const,
-    },
-    overlay: {
-        position: 'absolute' as const,
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        background: 'rgba(0, 0, 0, 0.85)',
-        opacity: 0,
-        transition: 'opacity 0.3s ease',
-    },
-    overlayOpen: {
-        opacity: 1,
-    },
-    panel: {
-        position: 'relative' as const,
-        width: '100%',
-        maxHeight: '70vh',
-        background: '#2a2a2a',
-        borderTop: '3px solid #ffffff',
-        transform: 'translateY(100%)',
-        transition: 'transform 0.5s cubic-bezier(0.19, 1, 0.22, 1)',
-        overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column' as const,
-    },
-    panelOpen: {
-        transform: 'translateY(0)',
-    },
-    closeBtn: {
-        position: 'absolute' as const,
-        top: '1rem',
-        right: '1rem',
-        background: '#444444',
-        border: '1px solid #666666',
-        color: '#ffffff',
-        cursor: 'pointer',
-        padding: '0.5rem',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: '4px',
-        width: '36px',
-        height: '36px',
-        zIndex: 10,
-    },
-    content: {
-        width: '100%',
-        maxWidth: '600px',
-        margin: '0 auto',
-        padding: '2rem',
-        opacity: 0,
-        transform: 'translateY(20px)',
-        transition: 'all 0.4s 0.1s',
-        overflowY: 'auto' as const,
-    },
-    contentOpen: {
-        opacity: 1,
-        transform: 'translateY(0)',
-    },
-    error: {
-        display: 'flex',
-        alignItems: 'center',
-        gap: '0.5rem',
-        padding: '0.75rem 1rem',
-        marginBottom: '1.5rem',
-        background: '#451a1a',
-        border: '2px solid #ef4444',
-        color: '#ff8888',
-        fontSize: '0.875rem',
-        borderRadius: '4px',
-    },
-    inputGroup: {
-        marginBottom: '1.5rem',
-    },
-    label: {
-        display: 'block',
-        color: '#cccccc',
-        textTransform: 'uppercase' as const,
-        fontSize: '0.75rem',
-        letterSpacing: '0.1em',
-        marginBottom: '0.75rem',
-        fontWeight: 700,
-    },
-    textarea: {
-        width: '100%',
-        background: '#3a3a3a',
-        border: '2px solid #555555',
-        borderRadius: '6px',
-        color: '#ffffff',
-        fontFamily: 'inherit',
-        fontSize: '1.1rem',
-        padding: '0.875rem',
-        resize: 'none' as const,
-        outline: 'none',
-        minHeight: '100px',
-    },
-    sliderContainer: {
-        padding: '1rem',
-        background: '#333333',
-        borderRadius: '6px',
-    },
-    slider: {
-        width: '100%',
-        height: '8px',
-        background: '#555555',
-        borderRadius: '4px',
-        outline: 'none',
-        WebkitAppearance: 'none' as const,
-        appearance: 'none' as const,
-    },
-    sliderLabels: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        fontSize: '0.75rem',
-        color: '#aaaaaa',
-        textTransform: 'uppercase' as const,
-        letterSpacing: '0.05em',
-        marginTop: '0.75rem',
-    },
-    intensityValue: {
-        color: '#ffffff',
-        fontWeight: 700,
-        fontSize: '1rem',
-        background: '#444444',
-        padding: '0.25rem 0.75rem',
-        borderRadius: '4px',
-        minWidth: '2rem',
-        textAlign: 'center' as const,
-    },
-    hint: {
-        textAlign: 'center' as const,
-        fontSize: '0.8rem',
-        color: '#999999',
-        marginBottom: '1rem',
-        marginTop: '1rem',
-    },
-    kbd: {
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minWidth: '2rem',
-        height: '1.75rem',
-        padding: '0 0.5rem',
-        background: '#444444',
-        border: '1px solid #666666',
-        borderRadius: '4px',
-        fontFamily: 'monospace',
-        fontSize: '0.75rem',
-        color: '#dddddd',
-        margin: '0 0.25rem',
-    },
-    actions: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginTop: '2rem',
-        paddingTop: '1.5rem',
-        borderTop: '2px solid #444444',
-    },
-    btnCancel: {
-        background: 'transparent',
-        border: '2px solid #666666',
-        color: '#bbbbbb',
-        fontSize: '0.8rem',
-        textTransform: 'uppercase' as const,
-        letterSpacing: '0.1em',
-        cursor: 'pointer',
-        padding: '0.875rem 1.25rem',
-        borderRadius: '4px',
-        minHeight: '48px',
-        fontWeight: 600,
-    },
-    btnPrimary: {
-        background: '#ffffff',
-        color: '#000000',
-        border: '2px solid #ffffff',
-        padding: '0.875rem 2rem',
-        textTransform: 'uppercase' as const,
-        letterSpacing: '0.1em',
-        fontWeight: 700,
-        fontSize: '0.85rem',
-        cursor: 'pointer',
-        borderRadius: '4px',
-        minHeight: '48px',
-        minWidth: '150px',
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.5)',
-    },
-    btnPrimaryDisabled: {
-        opacity: 0.4,
-        cursor: 'not-allowed' as const,
-    },
-};
 
 export function EntryModal({ isOpen, onClose, onSaved }: EntryModalProps) {
     const { t } = useTranslation();
@@ -249,6 +38,21 @@ export function EntryModal({ isOpen, onClose, onSaved }: EntryModalProps) {
         }
     }, [isOpen]);
 
+    // Handle keyboard shortcuts
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (!isOpen) return;
+            if (e.key === 'Escape') {
+                onClose();
+            }
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                handleSave();
+            }
+        };
+        document.addEventListener('keydown', handleKeyDown);
+        return () => document.removeEventListener('keydown', handleKeyDown);
+    }, [isOpen, text, intensity]);
+
     const handleSave = async () => {
         if (!text.trim()) return;
         
@@ -273,128 +77,180 @@ export function EntryModal({ isOpen, onClose, onSaved }: EntryModalProps) {
         }
     };
 
-    const handleKeyDown = (e: React.KeyboardEvent) => {
-        if (e.key === 'Escape') {
-            onClose();
-        }
-        // Ctrl+Enter to save
-        if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
-            handleSave();
-        }
+    // Get animation type based on intensity
+    const getAnimationType = (value: number): string => {
+        return value <= 5 ? 'calm' : 'anxious';
     };
+
+    // Get aura color based on intensity
+    const getAuraColor = (value: number): string => {
+        const colors = [
+            'rgba(125, 211, 252, 0.15)', // 1 - light blue
+            'rgba(147, 197, 253, 0.15)', // 2
+            'rgba(165, 180, 252, 0.15)', // 3
+            'rgba(216, 180, 254, 0.15)', // 4
+            'rgba(249, 168, 212, 0.15)', // 5 - pink
+            'rgba(253, 164, 175, 0.15)', // 6
+            'rgba(253, 186, 116, 0.15)', // 7
+            'rgba(252, 211, 77, 0.15)',  // 8
+            'rgba(252, 165, 165, 0.15)', // 9
+            'rgba(248, 113, 113, 0.2)',  // 10 - red
+        ];
+        return colors[value - 1] || colors[0];
+    };
+
+    // Calculate slider fill percentage
+    const sliderFillPercent = ((intensity - 1) / 9) * 100;
+
+    if (!isOpen) return null;
 
     return (
         <div 
-            style={{
-                ...styles.modal,
-                ...(isOpen ? styles.modalOpen : {}),
+            className={`entry-modal-overlay ${isOpen ? 'open' : ''}`}
+            onClick={(e) => {
+                if (e.target === e.currentTarget) onClose();
             }}
-            onKeyDown={handleKeyDown}
         >
-            <div 
-                style={{
-                    ...styles.overlay,
-                    ...(isOpen ? styles.overlayOpen : {}),
-                }} 
-                onClick={onClose} 
-            />
-            
-            <div 
-                style={{
-                    ...styles.panel,
-                    ...(isOpen ? styles.panelOpen : {}),
-                }}
-            >
+            <div className="entry-modal-new">
+                {/* Close button */}
                 <button 
-                    style={styles.closeBtn}
+                    className="entry-modal-close"
                     onClick={onClose}
                     aria-label={t('common.close')}
                 >
-                    <X size={20} />
+                    <X size={32} strokeWidth={1.5} />
                 </button>
 
-                <div 
-                    style={{
-                        ...styles.content,
-                        ...(isOpen ? styles.contentOpen : {}),
-                    }}
-                >
-                    {/* Error display */}
-                    {error && (
-                        <div style={styles.error} role="alert">
-                            <AlertCircle size={16} />
-                            <span>{error}</span>
-                        </div>
-                    )}
-
-                    {/* Stone Preview - shows how the stone will look */}
-                    <StonePreview intensity={intensity} />
-
-                    {/* Description input */}
-                    <div style={styles.inputGroup}>
-                        <label style={styles.label} htmlFor="entry-text">
-                            {t('journal.description')}
-                        </label>
-                        <textarea
-                            id="entry-text"
-                            ref={textareaRef}
-                            style={styles.textarea}
-                            placeholder={t('journal.describeEvent')}
-                            value={text}
-                            onChange={(e) => setText(e.target.value)}
-                            rows={4}
+                <div className="entry-modal-split">
+                    {/* Left side - Stone preview */}
+                    <div className="entry-modal-stone-section">
+                        {/* Aura */}
+                        <div 
+                            className="stone-aura"
+                            style={{ backgroundColor: getAuraColor(intensity) }}
                         />
-                    </div>
-
-                    {/* Intensity slider */}
-                    <div style={styles.inputGroup}>
-                        <label style={styles.label} htmlFor="entry-intensity">
-                            {t('journal.intensity')}
-                        </label>
-                        <div style={styles.sliderContainer}>
-                            <input
-                                id="entry-intensity"
-                                type="range"
-                                min="1"
-                                max="10"
-                                value={intensity}
-                                onChange={(e) => setIntensity(Number(e.target.value))}
-                                style={styles.slider}
-                                className="modal-slider"
+                        
+                        {/* Stone */}
+                        <div className="stone-preview-wrapper">
+                            <div 
+                                className={`preview-stone intensity-${intensity} ${getAnimationType(intensity)}`}
+                                style={{
+                                    transform: text ? `scale(${0.7 + (intensity / 10) * 0.4})` : undefined
+                                }}
                             />
                         </div>
-                        <div style={styles.sliderLabels}>
-                            <span>{t('journal.mild')}</span>
-                            <span style={styles.intensityValue}>{intensity}</span>
-                            <span>{t('journal.severe')}</span>
-                        </div>
+
+                        {/* Label */}
+                        <span className="stone-preview-label">
+                            {t('journal.preview')}
+                        </span>
                     </div>
 
-                    {/* Hint - hidden on mobile */}
-                    {!isMobile && (
-                        <div style={styles.hint}>
-                            <kbd style={styles.kbd}>Ctrl</kbd> + <kbd style={styles.kbd}>Enter</kbd> {t('common.save')}
-                        </div>
-                    )}
+                    {/* Right side - Form */}
+                    <div className="entry-modal-form-section">
+                        <div className="glass-panel">
+                            <div className="form-content">
+                                {/* Error */}
+                                {error && (
+                                    <div className="error-message" style={{ 
+                                        color: '#ef4444', 
+                                        fontSize: '0.875rem',
+                                        padding: '0.75rem',
+                                        background: 'rgba(239, 68, 68, 0.1)',
+                                        borderRadius: '8px'
+                                    }}>
+                                        {error}
+                                    </div>
+                                )}
 
-                    {/* Actions */}
-                    <div style={styles.actions}>
-                        <button 
-                            style={styles.btnCancel} 
-                            onClick={onClose}
-                        >
-                            {t('common.cancel')}
-                        </button>
-                        <button 
-                            style={{
-                                ...styles.btnPrimary,
-                                ...(isSaving || !text.trim() ? styles.btnPrimaryDisabled : {}),
-                            }}
-                            onClick={handleSave}
-                            disabled={isSaving || !text.trim()}
-                        >
-                            {isSaving ? t('common.saving') : t('journal.logEntry')}
-                        </button>
+                                {/* Textarea */}
+                                <div className="textarea-group">
+                                    <label className="form-label">
+                                        {t('journal.description')}
+                                    </label>
+                                    <div className="textarea-wrapper">
+                                        <textarea
+                                            ref={textareaRef}
+                                            className="textarea-new"
+                                            placeholder={t('journal.describeEvent')}
+                                            value={text}
+                                            onChange={(e) => setText(e.target.value)}
+                                            rows={isMobile ? 3 : 4}
+                                        />
+                                        <div className="cursor-indicator" />
+                                    </div>
+                                </div>
+
+                                {/* Intensity slider */}
+                                <div className="intensity-section">
+                                    <div className="intensity-header">
+                                        <label className="form-label" style={{ margin: 0 }}>
+                                            {t('journal.intensity')}
+                                        </label>
+                                        <div className="intensity-value">
+                                            <span className="intensity-number">{intensity}</span>
+                                            <span className="intensity-total">/10</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="slider-container">
+                                        <input
+                                            type="range"
+                                            min="1"
+                                            max="10"
+                                            value={intensity}
+                                            onChange={(e) => setIntensity(Number(e.target.value))}
+                                            className="slider-input"
+                                        />
+                                        <div className="slider-track">
+                                            <div 
+                                                className="slider-fill"
+                                                style={{ width: `${sliderFillPercent}%` }}
+                                            />
+                                        </div>
+                                        <div className="slider-ticks">
+                                            {[...Array(11)].map((_, i) => (
+                                                <div key={i} className="slider-tick" />
+                                            ))}
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="slider-labels">
+                                        <span>{t('journal.mild')}</span>
+                                        <span>{t('journal.severe')}</span>
+                                    </div>
+                                </div>
+
+                                {/* Actions */}
+                                <div className="form-actions">
+                                    {!isMobile && (
+                                        <div className="keyboard-hint">
+                                            <span className="key">Ctrl</span>
+                                            <span>+</span>
+                                            <span className="key">Enter</span>
+                                            <span>{t('common.save')}</span>
+                                        </div>
+                                    )}
+                                    
+                                    <div className="action-buttons">
+                                        <button 
+                                            className="btn-cancel"
+                                            onClick={onClose}
+                                            disabled={isSaving}
+                                        >
+                                            {t('common.cancel')}
+                                        </button>
+                                        <button 
+                                            className="btn-save"
+                                            onClick={handleSave}
+                                            disabled={isSaving || !text.trim()}
+                                        >
+                                            {isSaving ? t('common.saving') : t('common.save')}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

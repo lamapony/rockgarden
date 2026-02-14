@@ -60,6 +60,7 @@ export const enTranslations = {
         moderate: 'Moderate',
         intense: 'Intense',
         stoneThrown: 'Stone cast into water',
+        preview: 'Preview',
         noContent: 'No content',
         tapHint: 'Long press to edit',
         severe: 'Severe',

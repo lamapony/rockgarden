@@ -61,6 +61,7 @@ export const etTranslations = {
         moderate: 'Mõõdukas',
         intense: 'Intensiivne',
         stoneThrown: 'Kivi visati vette',
+        preview: 'Eelvaade',
         noContent: 'Sisu puudub',
         tapHint: 'Pikk puudutus muutmiseks',
         severe: 'Tugev',

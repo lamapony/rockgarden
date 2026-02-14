@@ -64,6 +64,7 @@ export const ukTranslations = {
         moderate: 'Помірна',
         intense: 'Інтенсивно',
         stoneThrown: 'Камінь кинуто в воду',
+        preview: 'Попередній перегляд',
         noContent: 'Немає змісту',
         tapHint: 'Довге натискання для редагування',
         severe: 'Сильна',

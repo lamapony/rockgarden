@@ -61,6 +61,7 @@ export const lvTranslations = {
         moderate: 'Mērens',
         intense: 'Intensīvs',
         stoneThrown: 'Akmens iemests ūdenī',
+        preview: 'Priekšskatījums',
         noContent: 'Nav satura',
         tapHint: 'Ilgs pieskāriens rediģēšanai',
         severe: 'Smags',

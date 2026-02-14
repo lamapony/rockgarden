@@ -53,6 +53,7 @@ export const ptTranslations = {
         moderate: 'Moderado',
         intense: 'Intenso',
         stoneThrown: 'Pedra lançada na água',
+        preview: 'Pré-visualização',
         noContent: 'Sem conteúdo',
         tapHint: 'Toque longo para editar',
         severe: 'Grave',

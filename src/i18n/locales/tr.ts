@@ -53,6 +53,7 @@ export const trTranslations = {
         moderate: 'Orta',
         intense: 'Yoğun',
         stoneThrown: 'Suya taş atıldı',
+        preview: 'Önizleme',
         noContent: 'İçerik yok',
         tapHint: 'Düzenlemek için uzun basın',
         severe: 'Ağır',
