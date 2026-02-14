@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import './WaterImmersive.css';
 
@@ -9,17 +9,17 @@ interface WaterImmersiveProps {
     onComplete: () => void;
 }
 
-type AnimationPhase = 'idle' | 'hover' | 'drop' | 'splash' | 'ripples' | 'fade';
+type AnimationPhase = 'idle' | 'hover' | 'drop' | 'splash' | 'ripples' | 'fade' | 'done';
 
 export function WaterImmersive({ isActive, intensity, text, onComplete }: WaterImmersiveProps) {
     const { t } = useTranslation();
     const [phase, setPhase] = useState<AnimationPhase>('idle');
     const [showContent, setShowContent] = useState(false);
-    const [droplets, setDroplets] = useState<Array<{ id: number; tx: string; ty: string; delay: number }>>([]);
-    const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const animationStarted = useRef(false);
+    const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
 
-    // Generate random droplets for splash
-    const generateDroplets = useCallback(() => {
+    // Generate droplets once using useMemo
+    const droplets = useMemo(() => {
         const newDroplets = [];
         for (let i = 0; i < 12; i++) {
             const angle = (i / 12) * Math.PI * 2;
@@ -28,55 +28,64 @@ export function WaterImmersive({ isActive, intensity, text, onComplete }: WaterI
             const ty = `${-Math.sin(angle) * distance - 50}px`;
             newDroplets.push({ id: i, tx, ty, delay: Math.random() * 0.2 });
         }
-        setDroplets(newDroplets);
+        return newDroplets;
     }, []);
+
+    // Clear all timeouts
+    const clearAllTimeouts = () => {
+        timeoutsRef.current.forEach(id => clearTimeout(id));
+        timeoutsRef.current = [];
+    };
 
     // Animation sequence
     useEffect(() => {
         if (!isActive) {
             setPhase('idle');
             setShowContent(false);
+            animationStarted.current = false;
+            clearAllTimeouts();
             return;
         }
+
+        // Prevent restarting animation if already started
+        if (animationStarted.current) return;
+        animationStarted.current = true;
 
         // Start sequence
         setPhase('hover');
         setShowContent(true);
-        generateDroplets();
+
+        // Schedule all phases
+        const schedule = (callback: () => void, delay: number) => {
+            const id = setTimeout(callback, delay);
+            timeoutsRef.current.push(id);
+        };
 
         // Start drop after 2 seconds
-        timeoutRef.current = setTimeout(() => {
-            setPhase('drop');
-        }, 2000);
+        schedule(() => setPhase('drop'), 2000);
 
-        // Splash when stone hits water (1.5s drop animation)
-        timeoutRef.current = setTimeout(() => {
-            setPhase('splash');
-        }, 3500);
+        // Splash when stone hits water
+        schedule(() => setPhase('splash'), 3500);
 
         // Ripples phase
-        timeoutRef.current = setTimeout(() => {
-            setPhase('ripples');
-        }, 4000);
+        schedule(() => setPhase('ripples'), 4000);
 
         // Fade out
-        timeoutRef.current = setTimeout(() => {
-            setPhase('fade');
-        }, 5000);
+        schedule(() => setPhase('fade'), 5000);
 
         // Complete
-        timeoutRef.current = setTimeout(() => {
+        schedule(() => {
+            setPhase('done');
             onComplete();
         }, 5800);
 
         return () => {
-            if (timeoutRef.current) {
-                clearTimeout(timeoutRef.current);
-            }
+            clearAllTimeouts();
         };
-    }, [isActive, onComplete, generateDroplets]);
+    }, [isActive, onComplete]);
 
-    if (!isActive) return null;
+    // Don't render if not active or animation is done
+    if (!isActive || phase === 'done') return null;
 
     const getIntensityClass = (value: number): string => {
         return `intensity-${value}`;
