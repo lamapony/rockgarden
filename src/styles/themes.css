@@ -22,18 +22,29 @@
   --border: rgba(255, 255, 255, 0.08);
   --border-hover: rgba(255, 255, 255, 0.2);
   
-  /* Intensity scale - monochrome with high contrast */
-  /* Intensity 1 (calm) = bright white, Intensity 10 (strong) = dark */
-  --intensity-1: #ffffff;
-  --intensity-2: #f0f0f0;
-  --intensity-3: #e0e0e0;
-  --intensity-4: #d0d0d0;
-  --intensity-5: #b8b8b8;
-  --intensity-6: #a0a0a0;
-  --intensity-7: #808080;
-  --intensity-8: #606060;
-  --intensity-9: #404040;
-  --intensity-10: #2a2a2a;
+  /* Intensity scale - monochrome: calm (light gray) → intense (dark dirty gray) */
+  --intensity-1: #e8e8e8;
+  --intensity-2: #d5d5d5;
+  --intensity-3: #c0c0c0;
+  --intensity-4: #a8a8a8;
+  --intensity-5: #909090;
+  --intensity-6: #787878;
+  --intensity-7: #606060;
+  --intensity-8: #484848;
+  --intensity-9: #303030;
+  --intensity-10: #1a1a1a;
+  
+  /* Glow colors for stones */
+  --intensity-1-glow: rgba(232, 232, 232, 0.4);
+  --intensity-2-glow: rgba(213, 213, 213, 0.4);
+  --intensity-3-glow: rgba(192, 192, 192, 0.4);
+  --intensity-4-glow: rgba(168, 168, 168, 0.4);
+  --intensity-5-glow: rgba(144, 144, 144, 0.45);
+  --intensity-6-glow: rgba(120, 120, 120, 0.5);
+  --intensity-7-glow: rgba(96, 96, 96, 0.5);
+  --intensity-8-glow: rgba(72, 72, 72, 0.55);
+  --intensity-9-glow: rgba(48, 48, 48, 0.6);
+  --intensity-10-glow: rgba(26, 26, 26, 0.7);
   
   /* Legacy mapping for compatibility */
   --color-bg-app: var(--bg-deep);
@@ -79,16 +90,28 @@
   --border: rgba(212, 165, 116, 0.15);
   --border-hover: rgba(212, 165, 116, 0.3);
   
-  --intensity-1: #f5e6d3;
-  --intensity-2: #edd5b8;
-  --intensity-3: #e5c49d;
-  --intensity-4: #ddb382;
+  /* Calm (blue) → Intense (red/orange) */
+  --intensity-1: #a8d8ea;
+  --intensity-2: #7fcdbb;
+  --intensity-3: #5bc0be;
+  --intensity-4: #7fb3d5;
   --intensity-5: #d4a574;
-  --intensity-6: #c99463;
-  --intensity-7: #be8352;
-  --intensity-8: #b37241;
-  --intensity-9: #a86130;
-  --intensity-10: #9d501f;
+  --intensity-6: #e6a8a8;
+  --intensity-7: #f4a6a5;
+  --intensity-8: #e88b7a;
+  --intensity-9: #e06c5d;
+  --intensity-10: #c0392b;
+  
+  --intensity-1-glow: rgba(168, 216, 234, 0.4);
+  --intensity-2-glow: rgba(127, 205, 187, 0.4);
+  --intensity-3-glow: rgba(91, 192, 190, 0.4);
+  --intensity-4-glow: rgba(127, 179, 213, 0.4);
+  --intensity-5-glow: rgba(212, 165, 116, 0.45);
+  --intensity-6-glow: rgba(230, 168, 168, 0.5);
+  --intensity-7-glow: rgba(244, 166, 165, 0.5);
+  --intensity-8-glow: rgba(232, 139, 122, 0.55);
+  --intensity-9-glow: rgba(224, 108, 93, 0.6);
+  --intensity-10-glow: rgba(192, 57, 43, 0.7);
   
   /* Legacy mapping */
   --color-bg-app: var(--bg-deep);
@@ -130,16 +153,28 @@
   --border: rgba(127, 179, 213, 0.15);
   --border-hover: rgba(127, 179, 213, 0.3);
   
-  --intensity-1: #e3f0f7;
-  --intensity-2: #c8e1ef;
-  --intensity-3: #add2e7;
-  --intensity-4: #92c3df;
-  --intensity-5: #7fb3d5;
-  --intensity-6: #6a9ec0;
-  --intensity-7: #5589ab;
-  --intensity-8: #407496;
-  --intensity-9: #2b5f81;
-  --intensity-10: #164a6c;
+  /* Calm (ice blue) → Intense (deep red) */
+  --intensity-1: #e0f7fa;
+  --intensity-2: #b2ebf2;
+  --intensity-3: #80deea;
+  --intensity-4: #7fb3d5;
+  --intensity-5: #90caf9;
+  --intensity-6: #f48fb1;
+  --intensity-7: #f06292;
+  --intensity-8: #e53935;
+  --intensity-9: #c62828;
+  --intensity-10: #8e0000;
+  
+  --intensity-1-glow: rgba(224, 247, 250, 0.4);
+  --intensity-2-glow: rgba(178, 235, 242, 0.4);
+  --intensity-3-glow: rgba(128, 222, 234, 0.4);
+  --intensity-4-glow: rgba(127, 179, 213, 0.4);
+  --intensity-5-glow: rgba(144, 202, 249, 0.45);
+  --intensity-6-glow: rgba(244, 143, 177, 0.5);
+  --intensity-7-glow: rgba(240, 98, 146, 0.5);
+  --intensity-8-glow: rgba(229, 57, 53, 0.55);
+  --intensity-9-glow: rgba(198, 40, 40, 0.6);
+  --intensity-10-glow: rgba(142, 0, 0, 0.7);
   
   /* Legacy mapping */
   --color-bg-app: var(--bg-deep);
@@ -181,16 +216,28 @@
   --border: rgba(143, 176, 112, 0.15);
   --border-hover: rgba(143, 176, 112, 0.3);
   
-  --intensity-1: #e8f0e0;
-  --intensity-2: #d1e1c1;
-  --intensity-3: #bad2a2;
-  --intensity-4: #a3c383;
+  /* Calm (light green) → Intense (dark red/brown) */
+  --intensity-1: #dcedc8;
+  --intensity-2: #c5e1a5;
+  --intensity-3: #aed581;
+  --intensity-4: #9ccc65;
   --intensity-5: #8fb070;
-  --intensity-6: #7a9b5b;
-  --intensity-7: #658646;
-  --intensity-8: #507131;
-  --intensity-9: #3b5c1c;
-  --intensity-10: #264707;
+  --intensity-6: #d4a574;
+  --intensity-7: #e6a278;
+  --intensity-8: #d68658;
+  --intensity-9: #c65d38;
+  --intensity-10: #8b3a1a;
+  
+  --intensity-1-glow: rgba(220, 237, 200, 0.4);
+  --intensity-2-glow: rgba(197, 225, 165, 0.4);
+  --intensity-3-glow: rgba(174, 213, 129, 0.4);
+  --intensity-4-glow: rgba(156, 204, 101, 0.4);
+  --intensity-5-glow: rgba(143, 176, 112, 0.45);
+  --intensity-6-glow: rgba(212, 165, 116, 0.5);
+  --intensity-7-glow: rgba(230, 162, 120, 0.5);
+  --intensity-8-glow: rgba(214, 134, 88, 0.55);
+  --intensity-9-glow: rgba(198, 93, 56, 0.6);
+  --intensity-10-glow: rgba(139, 58, 26, 0.7);
   
   /* Legacy mapping */
   --color-bg-app: var(--bg-deep);
@@ -232,16 +279,28 @@
   --border: rgba(139, 146, 196, 0.15);
   --border-hover: rgba(139, 146, 196, 0.3);
   
-  --intensity-1: #e5e7f0;
-  --intensity-2: #cacde1;
-  --intensity-3: #afb3d2;
-  --intensity-4: #9499c3;
-  --intensity-5: #8b92c4;
-  --intensity-6: #767db0;
-  --intensity-7: #61689c;
-  --intensity-8: #4c5388;
-  --intensity-9: #373e74;
-  --intensity-10: #222960;
+  /* Calm (light purple) → Intense (deep crimson) */
+  --intensity-1: #e1e3f0;
+  --intensity-2: #c5c9e8;
+  --intensity-3: #a9afd8;
+  --intensity-4: #8b92c4;
+  --intensity-5: #9fa8d8;
+  --intensity-6: #d4a5c9;
+  --intensity-7: #e07b9a;
+  --intensity-8: #d4576a;
+  --intensity-9: #b73c4a;
+  --intensity-10: #7a1f2a;
+  
+  --intensity-1-glow: rgba(225, 227, 240, 0.4);
+  --intensity-2-glow: rgba(197, 201, 232, 0.4);
+  --intensity-3-glow: rgba(169, 175, 216, 0.4);
+  --intensity-4-glow: rgba(139, 146, 196, 0.4);
+  --intensity-5-glow: rgba(159, 168, 216, 0.45);
+  --intensity-6-glow: rgba(212, 165, 201, 0.5);
+  --intensity-7-glow: rgba(224, 123, 154, 0.5);
+  --intensity-8-glow: rgba(212, 87, 106, 0.55);
+  --intensity-9-glow: rgba(183, 60, 74, 0.6);
+  --intensity-10-glow: rgba(122, 31, 42, 0.7);
   
   /* Legacy mapping */
   --color-bg-app: var(--bg-deep);
@@ -283,16 +342,28 @@
   --border: rgba(184, 160, 128, 0.15);
   --border-hover: rgba(184, 160, 128, 0.3);
   
-  --intensity-1: #f0e8d8;
-  --intensity-2: #e3d5c0;
-  --intensity-3: #d6c2a8;
-  --intensity-4: #c9af90;
-  --intensity-5: #b8a080;
-  --intensity-6: #a58d6d;
-  --intensity-7: #927a5a;
-  --intensity-8: #7f6747;
-  --intensity-9: #6c5434;
-  --intensity-10: #594121;
+  /* Calm (cream) → Intense (dark brown/red) */
+  --intensity-1: #f5f0e6;
+  --intensity-2: #e8dcc8;
+  --intensity-3: #dbc8aa;
+  --intensity-4: #b8a080;
+  --intensity-5: #c9b896;
+  --intensity-6: #d4a090;
+  --intensity-7: #c98b70;
+  --intensity-8: #b86b50;
+  --intensity-9: #a04b30;
+  --intensity-10: #783620;
+  
+  --intensity-1-glow: rgba(245, 240, 230, 0.4);
+  --intensity-2-glow: rgba(232, 220, 200, 0.4);
+  --intensity-3-glow: rgba(219, 200, 170, 0.4);
+  --intensity-4-glow: rgba(184, 160, 128, 0.4);
+  --intensity-5-glow: rgba(201, 184, 150, 0.45);
+  --intensity-6-glow: rgba(212, 160, 144, 0.5);
+  --intensity-7-glow: rgba(201, 139, 112, 0.5);
+  --intensity-8-glow: rgba(184, 107, 80, 0.55);
+  --intensity-9-glow: rgba(160, 75, 48, 0.6);
+  --intensity-10-glow: rgba(120, 54, 32, 0.7);
   
   /* Legacy mapping */
   --color-bg-app: var(--bg-deep);
