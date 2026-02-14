@@ -61,18 +61,13 @@ describe('PDF Export Options interface', () => {
             averageIntensity: 'Average Intensity',
             period: 'Period',
             intensity: 'Intensity',
-            audioNote: 'Audio Note',
             analysis: 'Analysis',
             riskLevel: 'Risk Level',
-            escalation: 'Escalation',
-            frequency: 'Frequency',
-            timeOfDay: 'Time of Day',
             generated: 'Generated',
-            page: 'Page'
         };
 
         // Verify all required keys are present
-        expect(Object.keys(mockTranslations)).toHaveLength(14);
+        expect(Object.keys(mockTranslations)).toHaveLength(9);
         expect(mockTranslations.timeline).toBe('Timeline');
         expect(mockTranslations.statistics).toBe('Statistics');
     });

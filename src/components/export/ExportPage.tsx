@@ -42,14 +42,9 @@ export function ExportPage() {
                     averageIntensity: t('export.averageIntensity'),
                     period: t('export.period'),
                     intensity: t('journal.intensity'),
-                    audioNote: t('voice.record'),
                     analysis: t('export.analysis'),
                     riskLevel: t('export.riskLevel'),
-                    escalation: t('export.escalation'),
-                    frequency: t('export.frequency'),
-                    timeOfDay: t('export.timeOfDay'),
                     generated: t('export.generated'),
-                    page: t('export.page'),
                 },
             });
 
