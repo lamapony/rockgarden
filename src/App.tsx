@@ -35,8 +35,10 @@ function AppRoutes() {
   // Check if landing page was seen
   useEffect(() => {
     const landingSeen = localStorage.getItem(LANDING_SEEN_KEY);
-    if (!landingSeen && !isAuthenticated && !needsSetup) {
+    if (!landingSeen && !isAuthenticated) {
       setShowLanding(true);
+    } else {
+      setShowLanding(false);
     }
   }, [isAuthenticated, needsSetup]);
 
