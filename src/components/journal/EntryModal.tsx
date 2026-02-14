@@ -20,7 +20,10 @@ export function EntryModal({ isOpen, onClose, onSaved }: EntryModalProps) {
     const [intensity, setIntensity] = useState(5);
     const [isSaving, setIsSaving] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [isFlying, setIsFlying] = useState(false);
+    const [shake, setShake] = useState(false);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const stoneRef = useRef<HTMLDivElement>(null);
 
     // Focus textarea when modal opens
     useEffect(() => {
@@ -54,27 +57,38 @@ export function EntryModal({ isOpen, onClose, onSaved }: EntryModalProps) {
     }, [isOpen, text, intensity]);
 
     const handleSave = async () => {
-        if (!text.trim()) return;
+        if (!text.trim()) {
+            // Shake animation on empty text
+            setShake(true);
+            setTimeout(() => setShake(false), 300);
+            textareaRef.current?.focus();
+            return;
+        }
         
         setIsSaving(true);
         setError(null);
+        setIsFlying(true);
         
-        try {
-            const entryId = await createEntry(
-                { 
-                    title: text.slice(0, 50) || t('journal.untitled'), 
-                    text, 
-                    tags: [] 
-                },
-                intensity
-            );
-            onSaved(entryId);
-        } catch (e) {
-            console.error('Failed to save entry:', e);
-            setError(t('common.error'));
-        } finally {
-            setIsSaving(false);
-        }
+        // Wait for fly animation
+        setTimeout(async () => {
+            try {
+                const entryId = await createEntry(
+                    { 
+                        title: text.slice(0, 50) || t('journal.untitled'), 
+                        text, 
+                        tags: [] 
+                    },
+                    intensity
+                );
+                onSaved(entryId);
+            } catch (e) {
+                console.error('Failed to save entry:', e);
+                setError(t('common.error'));
+                setIsFlying(false);
+            } finally {
+                setIsSaving(false);
+            }
+        }, 600);
     };
 
     // Get animation type based on intensity
@@ -111,7 +125,7 @@ export function EntryModal({ isOpen, onClose, onSaved }: EntryModalProps) {
                 if (e.target === e.currentTarget) onClose();
             }}
         >
-            <div className="entry-modal-new">
+            <div className={`entry-modal-new ${shake ? 'shake' : ''}`}>
                 {/* Close button */}
                 <button 
                     className="entry-modal-close"
@@ -121,22 +135,24 @@ export function EntryModal({ isOpen, onClose, onSaved }: EntryModalProps) {
                     <X size={32} strokeWidth={1.5} />
                 </button>
 
-                <div className="entry-modal-split">
+                <div className={`entry-modal-split ${isFlying ? 'flying' : ''}`}>
                     {/* Left side - Stone preview */}
                     <div className="entry-modal-stone-section">
-                        {/* Aura */}
+                        {/* Aura with scale based on intensity */}
                         <div 
                             className="stone-aura"
-                            style={{ backgroundColor: getAuraColor(intensity) }}
+                            style={{ 
+                                backgroundColor: getAuraColor(intensity),
+                                transform: `scale(${1 + intensity / 20})`,
+                                opacity: 0.1 + (intensity / 50)
+                            }}
                         />
                         
                         {/* Stone */}
                         <div className="stone-preview-wrapper">
                             <div 
-                                className={`preview-stone intensity-${intensity} ${getAnimationType(intensity)}`}
-                                style={{
-                                    transform: text ? `scale(${0.7 + (intensity / 10) * 0.4})` : undefined
-                                }}
+                                ref={stoneRef}
+                                className={`preview-stone intensity-${intensity} ${getAnimationType(intensity)} ${isFlying ? 'flying' : ''}`}
                             />
                         </div>
 
