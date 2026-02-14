@@ -246,21 +246,33 @@ export function StoneVisualization({ entries, onEntryClick, onAddEntry, onEntryP
                 const ageDays = (Date.now() - entry.createdAt) / (1000 * 60 * 60 * 24);
                 blur = ageDays > 30 ? Math.min((ageDays - 30) / 30, 3) : 0;
             } else if (layoutMode === 'layout-piles') {
-                // Piles view: columns by time period
-                const colCount = Math.min(10, Math.max(3, Math.floor(width / 80)));
-                const colIndex = Math.floor(recency * colCount);
+                // Piles view: stacks of 5 stones, sorted by time (oldest left/bottom, newest right/top)
+                const STONES_PER_PILE = 5;
+                const PILE_WIDTH = 70; // width allocated for each pile
+                const PILE_SPACING = 20; // spacing between piles
+                
+                // Calculate which pile this stone belongs to (0 = oldest pile at left)
+                const pileIndex = Math.floor(index / STONES_PER_PILE);
+                // Position within pile (0 = bottom, 4 = top)
+                const positionInPile = index % STONES_PER_PILE;
+                
                 size = calculateSize(entry.intensity, layoutMode);
-                const colWidth = width / colCount;
-                const centerX = (colIndex * colWidth) + (colWidth / 2) - (size / 2);
-                const jitterX = (Math.random() - 0.5) * 20;
-                x = centerX + jitterX;
                 
-                const myIndexInCol = sortedEntries.filter((_, i) => 
-                    i < index && Math.floor((i / sortedEntries.length) * colCount) === colIndex
-                ).length;
+                // Calculate x position - older piles (lower index) on the left
+                const totalPileWidth = PILE_WIDTH + PILE_SPACING;
+                const startX = 20; // left margin
+                x = startX + (pileIndex * totalPileWidth) + (PILE_WIDTH / 2) - (size / 2);
                 
-                y = height - size - 10 - (myIndexInCol * 35);
-                zIndex = myIndexInCol;
+                // Add slight random jitter for natural look
+                const jitterX = (Math.random() - 0.5) * 15;
+                x += jitterX;
+                
+                // Calculate y position - stack from bottom up
+                const pileBaseY = height - 20; // bottom margin
+                const yOffset = positionInPile * (size * 0.7); // 0.7 for slight overlap
+                y = pileBaseY - size - yOffset;
+                
+                zIndex = positionInPile;
                 blur = 0;
             } else if (layoutMode === 'layout-cairn') {
                 // Cairn view: stacked stones

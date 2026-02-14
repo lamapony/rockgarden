@@ -140,6 +140,28 @@
     min-height: 300px;
 }
 
+/* Piles layout - horizontal scrolling for multiple piles */
+.stones-container.layout-piles {
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.stones-container.layout-piles::-webkit-scrollbar {
+    height: 6px;
+}
+
+.stones-container.layout-piles::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.stones-container.layout-piles::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
 /* Stone base styles */
 .stone {
     position: absolute;
