@@ -63,6 +63,7 @@ export const ltTranslations = {
         mild: 'Silpnas',
         moderate: 'Vidutinis',
         intense: 'Intensyvus',
+        stoneThrown: 'Akmuo mestas į vandenį',
         noContent: 'Nėra turinio',
         tapHint: 'Ilgas paspaudimas redagavimui',
         severe: 'Sunkus',

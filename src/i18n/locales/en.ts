@@ -59,6 +59,7 @@ export const enTranslations = {
         mild: 'Mild',
         moderate: 'Moderate',
         intense: 'Intense',
+        stoneThrown: 'Stone cast into water',
         noContent: 'No content',
         tapHint: 'Long press to edit',
         severe: 'Severe',

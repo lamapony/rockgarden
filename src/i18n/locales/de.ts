@@ -52,6 +52,7 @@ export const deTranslations = {
         mild: 'Mild',
         moderate: 'Mäßig',
         intense: 'Intensiv',
+        stoneThrown: 'Stein ins Wasser geworfen',
         noContent: 'Kein Inhalt',
         tapHint: 'Lange drücken zum Bearbeiten',
         severe: 'Schwer',

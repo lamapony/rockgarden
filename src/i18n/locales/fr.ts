@@ -52,6 +52,7 @@ export const frTranslations = {
         mild: 'Léger',
         moderate: 'Modérée',
         intense: 'Intense',
+        stoneThrown: 'Pierre jetée dans l\'eau',
         noContent: 'Pas de contenu',
         tapHint: 'Appui long pour modifier',
         severe: 'Grave',

@@ -52,6 +52,7 @@ export const esTranslations = {
         mild: 'Leve',
         moderate: 'Moderado',
         intense: 'Intenso',
+        stoneThrown: 'Piedra lanzada al agua',
         noContent: 'Sin contenido',
         tapHint: 'Mantén presionado para editar',
         severe: 'Grave',

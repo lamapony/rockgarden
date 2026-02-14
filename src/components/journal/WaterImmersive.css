@@ -1,0 +1,366 @@
+/* Water Immersive - Fullscreen water with 3D stone drop */
+.water-immersive {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    overflow: hidden;
+    perspective: 1000px;
+}
+
+/* Water surface layers */
+.water-surface {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        180deg,
+        #0a1628 0%,
+        #1a3a52 30%,
+        #2d5a72 60%,
+        #1a4a62 100%
+    );
+    overflow: hidden;
+}
+
+/* Animated caustics (light patterns) */
+.water-caustics {
+    position: absolute;
+    inset: -50%;
+    background: 
+        radial-gradient(ellipse 80% 50% at 20% 40%, rgba(127, 205, 187, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 40% at 80% 60%, rgba(127, 179, 213, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse 100% 60% at 50% 80%, rgba(100, 200, 200, 0.1) 0%, transparent 50%);
+    animation: causticsMove 8s ease-in-out infinite;
+}
+
+@keyframes causticsMove {
+    0%, 100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    33% {
+        transform: translate(5%, 3%) rotate(2deg);
+    }
+    66% {
+        transform: translate(-3%, 5%) rotate(-1deg);
+    }
+}
+
+/* Water waves */
+.water-waves {
+    position: absolute;
+    inset: 0;
+}
+
+.water-wave {
+    position: absolute;
+    width: 200%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 48%,
+        rgba(127, 205, 187, 0.03) 50%,
+        transparent 52%
+    );
+    animation: waveScroll 12s linear infinite;
+}
+
+.water-wave:nth-child(2) {
+    animation-delay: -4s;
+    opacity: 0.5;
+}
+
+.water-wave:nth-child(3) {
+    animation-delay: -8s;
+    opacity: 0.3;
+}
+
+@keyframes waveScroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* The falling stone container */
+.falling-stone-container {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 200px;
+    transform-style: preserve-3d;
+}
+
+/* The falling stone */
+.falling-stone {
+    width: 100%;
+    height: 100%;
+    border-radius: 45% 55% 40% 60% / 55% 45% 60% 40%;
+    position: relative;
+    transform-style: preserve-3d;
+    box-shadow: 
+        0 30px 60px rgba(0, 0, 0, 0.5),
+        inset 0 -10px 30px rgba(0, 0, 0, 0.3),
+        inset 0 10px 30px rgba(255, 255, 255, 0.2);
+}
+
+/* Stone intensity colors */
+.falling-stone.intensity-1 {
+    background: linear-gradient(135deg, #a8d8ea 0%, #7fcdbb 50%, #5bc0be 100%);
+    box-shadow: 
+        0 30px 60px rgba(127, 205, 187, 0.4),
+        inset 0 -10px 30px rgba(0, 0, 0, 0.2),
+        inset 0 10px 30px rgba(255, 255, 255, 0.3);
+}
+
+.falling-stone.intensity-2 {
+    background: linear-gradient(135deg, #7fcdbb 0%, #5bc0be 50%, #4a9d9c 100%);
+}
+
+.falling-stone.intensity-3 {
+    background: linear-gradient(135deg, #5bc0be 0%, #4a9d9c 50%, #7fb3d5 100%);
+}
+
+.falling-stone.intensity-4 {
+    background: linear-gradient(135deg, #4a9d9c 0%, #7fb3d5 50%, #6b8cae 100%);
+}
+
+.falling-stone.intensity-5 {
+    background: linear-gradient(135deg, #7fb3d5 0%, #6b8cae 50%, #9b8aa5 100%);
+}
+
+.falling-stone.intensity-6 {
+    background: linear-gradient(135deg, #6b8cae 0%, #9b8aa5 50%, #c9a0dc 100%);
+}
+
+.falling-stone.intensity-7 {
+    background: linear-gradient(135deg, #9b8aa5 0%, #c9a0dc 50%, #e6a8d7 100%);
+}
+
+.falling-stone.intensity-8 {
+    background: linear-gradient(135deg, #c9a0dc 0%, #e6a8d7 50%, #f4a6a5 100%);
+}
+
+.falling-stone.intensity-9 {
+    background: linear-gradient(135deg, #e6a8d7 0%, #f4a6a5 50%, #e74c3c 100%);
+}
+
+.falling-stone.intensity-10 {
+    background: linear-gradient(135deg, #f4a6a5 0%, #e74c3c 50%, #c0392b 100%);
+    box-shadow: 
+        0 30px 60px rgba(231, 76, 60, 0.5),
+        inset 0 -10px 30px rgba(0, 0, 0, 0.3),
+        inset 0 10px 30px rgba(255, 255, 255, 0.2);
+}
+
+/* Falling animation phases */
+.falling-stone-container.phase-hover {
+    animation: stoneHover 3s ease-in-out infinite;
+}
+
+@keyframes stoneHover {
+    0%, 100% {
+        transform: translateX(-50%) translateY(0) rotateY(0deg) rotateX(10deg);
+    }
+    50% {
+        transform: translateX(-50%) translateY(-20px) rotateY(180deg) rotateX(10deg);
+    }
+}
+
+.falling-stone-container.phase-drop {
+    animation: stoneDrop 1.5s cubic-bezier(0.5, 0, 0.5, 1) forwards;
+}
+
+@keyframes stoneDrop {
+    0% {
+        transform: translateX(-50%) translateY(0) scale(1) rotateY(0deg);
+    }
+    30% {
+        transform: translateX(-50%) translateY(20vh) scale(0.9) rotateY(90deg);
+    }
+    60% {
+        transform: translateX(-50%) translateY(60vh) scale(0.7) rotateY(180deg);
+    }
+    100% {
+        transform: translateX(-50%) translateY(80vh) scale(0.3) rotateY(360deg);
+        opacity: 0;
+    }
+}
+
+/* Splash effect container */
+.splash-container {
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 400px;
+    height: 400px;
+    pointer-events: none;
+}
+
+/* Main splash */
+.splash-main {
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(127,205,187,0.4) 50%, transparent 70%);
+    border-radius: 50%;
+    transform: translate(-50%, 50%);
+    opacity: 0;
+}
+
+.splash-main.active {
+    animation: splashExpand 1s ease-out forwards;
+}
+
+@keyframes splashExpand {
+    0% {
+        width: 0;
+        height: 0;
+        opacity: 1;
+    }
+    50% {
+        width: 300px;
+        height: 300px;
+        opacity: 0.8;
+    }
+    100% {
+        width: 500px;
+        height: 500px;
+        opacity: 0;
+    }
+}
+
+/* Splash droplets */
+.splash-droplets {
+    position: absolute;
+    inset: 0;
+}
+
+.droplet {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(127,205,187,0.6) 100%);
+    border-radius: 50%;
+    bottom: 50%;
+    left: 50%;
+    opacity: 0;
+}
+
+.droplet.active {
+    animation: dropletFly 0.8s ease-out forwards;
+}
+
+@keyframes dropletFly {
+    0% {
+        transform: translate(-50%, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0.3);
+        opacity: 0;
+    }
+}
+
+/* Water ripples */
+.water-ripples-container {
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 300px;
+}
+
+.water-ripple-ring {
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    border: 2px solid rgba(127, 205, 187, 0.4);
+    border-radius: 50%;
+    transform: translate(-50%, 50%);
+    opacity: 0;
+}
+
+.water-ripple-ring.active {
+    animation: rippleExpand 2s ease-out forwards;
+}
+
+@keyframes rippleExpand {
+    0% {
+        width: 0;
+        height: 0;
+        opacity: 0.8;
+    }
+    100% {
+        width: 600px;
+        height: 300px;
+        opacity: 0;
+    }
+}
+
+/* Text content floating */
+.water-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.water-content.visible {
+    opacity: 1;
+}
+
+.water-content h2 {
+    font-size: 2rem;
+    font-weight: 300;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+}
+
+.water-content p {
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+/* Fade out animation */
+.water-immersive.fade-out {
+    animation: waterFadeOut 0.8s ease-out forwards;
+}
+
+@keyframes waterFadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .falling-stone-container {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .splash-container {
+        width: 300px;
+        height: 300px;
+    }
+    
+    .water-ripples-container {
+        width: 400px;
+        height: 200px;
+    }
+}

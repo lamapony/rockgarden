@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { X, AlertCircle } from 'lucide-react';
 import { useEntries } from '../../hooks/useEntries';
 import { useIsMobile } from '../../hooks/useIsMobile';
-import { LiquidStone } from './LiquidStone';
 import { LiquidInput } from './LiquidInput';
+import { WaterImmersive } from './WaterImmersive';
 
 interface EntryModalProps {
     isOpen: boolean;
@@ -232,8 +232,7 @@ export function EntryModal({ isOpen, onClose, onSaved }: EntryModalProps) {
     const [intensity, setIntensity] = useState(5);
     const [isSaving, setIsSaving] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [isStoneThrowing, setIsStoneThrowing] = useState(false);
-    const [isSplashing, setIsSplashing] = useState(false);
+    const [showWaterImmersive, setShowWaterImmersive] = useState(false);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     // Focus textarea when modal opens
@@ -249,22 +248,15 @@ export function EntryModal({ isOpen, onClose, onSaved }: EntryModalProps) {
             setText('');
             setIntensity(5);
             setError(null);
-            setIsStoneThrowing(false);
-            setIsSplashing(false);
+            setShowWaterImmersive(false);
         }
     }, [isOpen]);
 
     const handleSave = async () => {
         if (!text.trim()) return;
         
-        // Start stone throwing animation
-        setIsStoneThrowing(true);
-        
-        // Splash happens when stone hits water
-        setTimeout(() => {
-            setIsSplashing(true);
-        }, 400);
-        
+        // Start immersive water animation
+        setShowWaterImmersive(true);
         setIsSaving(true);
         setError(null);
         
@@ -277,22 +269,18 @@ export function EntryModal({ isOpen, onClose, onSaved }: EntryModalProps) {
                 },
                 intensity
             );
-            // Delay closing to let animation complete
-            setTimeout(() => {
-                onSaved();
-            }, 600);
+            // WaterImmersive will call onComplete when animation finishes
         } catch (e) {
             console.error('Failed to save entry:', e);
             setError(t('common.error'));
-            setIsStoneThrowing(false);
-            setIsSplashing(false);
-        } finally {
+            setShowWaterImmersive(false);
             setIsSaving(false);
         }
     };
 
-    const handleStoneThrowComplete = () => {
-        // Stone has finished throwing animation
+    const handleWaterAnimationComplete = () => {
+        // Water animation complete, close modal
+        onSaved();
     };
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -349,11 +337,12 @@ export function EntryModal({ isOpen, onClose, onSaved }: EntryModalProps) {
                         </div>
                     )}
 
-                    {/* Animated Liquid Stone */}
-                    <LiquidStone 
-                        intensity={intensity} 
-                        isThrowing={isStoneThrowing}
-                        onThrowComplete={handleStoneThrowComplete}
+                    {/* Water Immersive Animation Overlay */}
+                    <WaterImmersive
+                        isActive={showWaterImmersive}
+                        intensity={intensity}
+                        text={text}
+                        onComplete={handleWaterAnimationComplete}
                     />
 
                     {/* Description input - Liquid Style */}
@@ -366,7 +355,6 @@ export function EntryModal({ isOpen, onClose, onSaved }: EntryModalProps) {
                             onChange={setText}
                             intensity={intensity}
                             placeholder={t('journal.describeEvent')}
-                            isSplashing={isSplashing}
                         />
                     </div>
 
