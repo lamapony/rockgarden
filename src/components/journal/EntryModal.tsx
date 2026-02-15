@@ -33,11 +33,22 @@ export function EntryModal({ isOpen, onClose, onSaved }: EntryModalProps) {
         }
     }, [isOpen]);
 
-    // Focus textarea when modal opens
+    // Focus textarea when modal opens - retry if ref not ready
     useEffect(() => {
-        if (isOpen && textareaRef.current) {
-            setTimeout(() => textareaRef.current?.focus(), 100);
-        }
+        if (!isOpen) return;
+        
+        // Try to focus immediately and retry if needed
+        const tryFocus = (attempts = 0) => {
+            if (textareaRef.current) {
+                textareaRef.current.focus();
+            } else if (attempts < 10) {
+                setTimeout(() => tryFocus(attempts + 1), 50);
+            }
+        };
+        
+        // Delay to allow animation to start
+        const timer = setTimeout(() => tryFocus(), 150);
+        return () => clearTimeout(timer);
     }, [isOpen]);
 
     // Reset form when modal closes
@@ -164,10 +175,6 @@ export function EntryModal({ isOpen, onClose, onSaved }: EntryModalProps) {
                             />
                         </div>
 
-                        {/* Label */}
-                        <span className="stone-preview-label">
-                            {t('journal.preview')}
-                        </span>
                     </div>
 
                     {/* Right side - Form */}
