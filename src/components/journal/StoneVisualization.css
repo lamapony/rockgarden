@@ -356,10 +356,20 @@
 .entry-trigger-icon {
     font-size: 1.25rem;
     font-weight: 300;
+    transition: transform 0.5s ease;
+}
+
+.entry-trigger:hover .entry-trigger-icon {
+    transform: rotate(90deg);
 }
 
 .entry-trigger-text {
     font-weight: 600;
+    transition: opacity 0.3s ease;
+}
+
+.entry-trigger:hover .entry-trigger-text {
+    opacity: 1;
 }
 
 /* Responsive adjustments */
