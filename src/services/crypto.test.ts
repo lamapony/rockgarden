@@ -73,11 +73,11 @@ describe('Cryptography Service', () => {
         const verificationBlock = await createVerificationBlock(key);
         expect(verificationBlock).toBeTruthy();
 
-        const isValid = await verifyPassword(verificationBlock, key);
+        const isValid = await verifyPassword(key, verificationBlock);
         expect(isValid).toBe(true);
 
         const wrongKey = await deriveKey('wrong-password', salt);
-        const isValidWrong = await verifyPassword(verificationBlock, wrongKey);
+        const isValidWrong = await verifyPassword(wrongKey, verificationBlock);
         expect(isValidWrong).toBe(false);
     });
 

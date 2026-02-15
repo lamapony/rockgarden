@@ -147,6 +147,11 @@ export const itTranslations = {
         languageDesc: 'Seleziona la lingua per tutti gli elementi dell\'interfaccia e le esportazioni.',
         colorTheme: 'Tema colore',
         themeDesc: 'Metafore visive di pietra per l\'estetica dell\'interfaccia.',
+        layoutMode: 'Disposizione pietre',
+        layoutModeDesc: 'Come le pietre sono disposte nel tuo giardino.',
+        layoutScatter: 'Disperso',
+        layoutPiles: 'Pile',
+        layoutCairn: 'Cairn',
         securityTitle: 'Sicurezza attiva',
         appLock: 'Blocco app',
         appLockDesc: 'Richiedi password ad ogni avvio dell\'app.',
@@ -364,6 +369,12 @@ export const itTranslations = {
         restartTitle: 'Riavvia il tutorial',
         restartDesc: 'Guarda di nuovo l\'introduzione per conoscere tutte le funzionalità.',
         restartButton: 'Avvia tutorial',
+        step: 'Passo {{number}}',
+    },
+
+    // Accessibility / Tooltips
+    a11y: {
+        tripleTapPanic: 'Triple-tap for panic button',
     },
 
     languages: {

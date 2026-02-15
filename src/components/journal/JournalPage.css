@@ -6,7 +6,8 @@
     flex-direction: column;
     background: var(--color-bg-app);
     position: relative;
-    padding-bottom: 64px; /* Space for bottom nav */
+    padding-bottom: 64px;
+    /* Space for bottom nav */
 }
 
 /* Noise overlay */
@@ -33,36 +34,6 @@
     position: relative;
     z-index: 10;
     flex-shrink: 0;
-}
-
-/* Brand */
-.journal-brand {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-/* Stone logo - organic shape with gradient */
-.journal-brand-icon {
-    width: 28px;
-    height: 28px;
-    background: radial-gradient(circle at 30% 30%, #e0f2fe 0%, #7dd3fc 50%, #0ea5e9 100%);
-    border-radius: 45% 55% 50% 50% / 55% 45% 55% 45%;
-    box-shadow: 0 0 12px rgba(125, 211, 252, 0.5);
-    position: relative;
-    animation: stoneBreathe 4s ease-in-out infinite;
-}
-
-@keyframes stoneBreathe {
-    0%, 100% { transform: scale(1) rotate(0deg); }
-    50% { transform: scale(1.05) rotate(2deg); }
-}
-
-.journal-brand-name {
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    font-size: 1.1rem;
-    color: var(--color-text-primary);
 }
 
 /* Decoy Mode Indicator */
@@ -168,7 +139,9 @@
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* Responsive */
@@ -177,11 +150,11 @@
         padding: 0 1.5rem;
         height: 64px;
     }
-    
+
     .journal-nav {
         display: none;
     }
-    
+
     .journal-main {
         padding: 1rem;
     }
@@ -191,6 +164,36 @@
     .journal-brand-name {
         font-size: 1rem;
     }
+}
+
+/* Pagination Dots */
+.view-pagination {
+    position: absolute;
+    bottom: 80px;
+    /* Above the navigation bar */
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    z-index: 50;
+    pointer-events: none;
+}
+
+.pagination-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    pointer-events: auto;
+}
+
+.pagination-dot.active {
+    background: var(--color-text-primary, #fff);
+    transform: scale(1.2);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
 /* Panic Button Styles */

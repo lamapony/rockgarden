@@ -48,6 +48,7 @@ describe('useSettings hook', () => {
             offlineMode: true,
             autoDeleteDays: null,
             panicButtonEnabled: true,
+            layoutMode: 'scatter',
         });
     });
 

@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { AlertTriangle, ShieldAlert } from 'lucide-react';
@@ -10,12 +10,13 @@ import { StoneVisualization } from './StoneVisualization';
 import { EntryModal } from './EntryModal';
 import { EntryPreview } from './EntryPreview';
 import { Navigation } from '../layout/Navigation';
+import { BrandLogo } from '../layout/BrandLogo';
 import './JournalPage.css';
 
 export function JournalPage() {
     const { t } = useTranslation();
     const { entries, loadEntries, loading } = useEntries();
-    const { settings } = useSettings();
+    const { settings, setLayoutMode } = useSettings();
     const { isDecoyMode } = useAuth();
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,38 +24,15 @@ export function JournalPage() {
     const [deleting, setDeleting] = useState(false);
     const [previewEntryId, setPreviewEntryId] = useState<string | null>(null);
     const [newEntryId, setNewEntryId] = useState<string | null>(null);
-    
-    // Triple-click detection for panic button
-    const clickCountRef = useRef(0);
-    const clickTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    // Panic button handler
+    const handlePanicTrigger = useCallback(() => {
+        setShowPanicConfirm(true);
+    }, []);
 
     useEffect(() => {
         loadEntries();
     }, [loadEntries]);
-
-    const handleBrandClick = useCallback(() => {
-        if (!settings.panicButtonEnabled) return;
-        
-        clickCountRef.current += 1;
-        
-        if (clickCountRef.current === 3) {
-            // Triple click detected
-            setShowPanicConfirm(true);
-            clickCountRef.current = 0;
-            if (clickTimerRef.current) {
-                clearTimeout(clickTimerRef.current);
-                clickTimerRef.current = null;
-            }
-        } else {
-            // Reset counter after 500ms
-            if (clickTimerRef.current) {
-                clearTimeout(clickTimerRef.current);
-            }
-            clickTimerRef.current = setTimeout(() => {
-                clickCountRef.current = 0;
-            }, 500);
-        }
-    }, [settings.panicButtonEnabled]);
 
     const handlePanic = async () => {
         setDeleting(true);
@@ -103,18 +81,54 @@ export function JournalPage() {
         loadEntries();
     };
 
+    // Swipe handlers
+    const [touchStart, setTouchStart] = useState<number | null>(null);
+    const [touchEnd, setTouchEnd] = useState<number | null>(null);
+    const minSwipeDistance = 50;
+
+    const handleTouchStart = (e: React.TouchEvent) => {
+        setTouchEnd(null);
+        setTouchStart(e.targetTouches[0].clientX);
+    };
+
+    const handleTouchMove = (e: React.TouchEvent) => {
+        setTouchEnd(e.targetTouches[0].clientX);
+    };
+
+    const handleTouchEnd = () => {
+        if (!touchStart || !touchEnd) return;
+
+        const distance = touchStart - touchEnd;
+        const isLeftSwipe = distance > minSwipeDistance;
+        const isRightSwipe = distance < -minSwipeDistance;
+
+        if (isLeftSwipe || isRightSwipe) {
+            const modes: ('scatter' | 'piles' | 'cairn')[] = ['scatter', 'piles', 'cairn'];
+            const currentIndex = modes.indexOf(settings.layoutMode);
+            let nextIndex = currentIndex;
+
+            if (isLeftSwipe) {
+                // Swipe left -> Next mode
+                nextIndex = currentIndex === modes.length - 1 ? 0 : currentIndex + 1;
+            } else if (isRightSwipe) {
+                // Swipe right -> Previous mode
+                nextIndex = currentIndex === 0 ? modes.length - 1 : currentIndex - 1;
+            }
+
+            setLayoutMode(modes[nextIndex]);
+        }
+    };
+
     return (
         <div className="journal-page">
             {/* Header */}
             <header className="journal-header">
-                <div 
-                    className={`journal-brand ${settings.panicButtonEnabled ? 'panic-enabled' : ''}`}
-                    onClick={handleBrandClick}
-                    title={settings.panicButtonEnabled ? t('settings.panicButtonDesc') : ''}
-                >
-                    <div className="journal-brand-icon"></div>
-                    <span className="journal-brand-name">rockgarden</span>
-                </div>
+                <BrandLogo
+                    size="small"
+                    showText={true}
+                    panicEnabled={true}
+                    onClick={handlePanicTrigger}
+                />
 
                 {/* Decoy Mode Indicator */}
                 {isDecoyMode && (
@@ -126,19 +140,43 @@ export function JournalPage() {
             </header>
 
             {/* Main Content */}
-            <main className="journal-main">
+            <main
+                className="journal-main"
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+            >
                 {loading ? (
                     <div className="journal-loading">
                         <div className="journal-spinner" />
                     </div>
                 ) : (
-                    <StoneVisualization
-                        entries={entries}
-                        onEntryClick={handleEntryClick}
-                        onAddEntry={handleAddEntry}
-                        onEntryPreview={handleEntryPreview}
-                        newEntryId={newEntryId}
-                    />
+                    <>
+                        <StoneVisualization
+                            entries={entries}
+                            onEntryClick={handleEntryClick}
+                            onAddEntry={handleAddEntry}
+                            onEntryPreview={handleEntryPreview}
+                            newEntryId={newEntryId}
+                            layoutMode={settings.layoutMode}
+                        />
+
+                        {/* Pagination Dots */}
+                        <div className="view-pagination">
+                            <div
+                                className={`pagination-dot ${settings.layoutMode === 'scatter' ? 'active' : ''}`}
+                                onClick={() => setLayoutMode('scatter')}
+                            />
+                            <div
+                                className={`pagination-dot ${settings.layoutMode === 'piles' ? 'active' : ''}`}
+                                onClick={() => setLayoutMode('piles')}
+                            />
+                            <div
+                                className={`pagination-dot ${settings.layoutMode === 'cairn' ? 'active' : ''}`}
+                                onClick={() => setLayoutMode('cairn')}
+                            />
+                        </div>
+                    </>
                 )}
             </main>
 
@@ -169,13 +207,13 @@ export function JournalPage() {
                         <h2 className="panic-modal-title">{t('settings.panicButton')}</h2>
                         <p className="panic-modal-text">{t('settings.panicConfirm')}</p>
                         <div className="panic-modal-actions">
-                            <button 
+                            <button
                                 className="panic-btn-secondary"
                                 onClick={() => setShowPanicConfirm(false)}
                             >
                                 {t('common.cancel')}
                             </button>
-                            <button 
+                            <button
                                 className="panic-btn-danger"
                                 onClick={handlePanic}
                                 disabled={deleting}

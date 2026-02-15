@@ -166,6 +166,11 @@ export const ltTranslations = {
         languageDesc: 'Pasirinkite kalbą visoms sąsajos dalims ir eksportams.',
         colorTheme: 'Spalvų tema',
         themeDesc: 'Vizualinės akmens metaforos sąsajos estetikai.',
+        layoutMode: 'Akmenų išdėstymas',
+        layoutModeDesc: 'Kaip akmenys išdėstyti sode.',
+        layoutScatter: 'Išmėtyta',
+        layoutPiles: 'Krūvos',
+        layoutCairn: 'Cairn',
         securityTitle: 'Aktyvus saugumas',
         appLock: 'Programos užraktas',
         appLockDesc: 'Reikalauti slaptažodžio kiekvieną kartą paleidus programą.',
@@ -390,6 +395,12 @@ export const ltTranslations = {
         restartTitle: 'Paleisti instrukciją iš naujo',
         restartDesc: 'Žiūrėkite įvadą dar kartą, kad sužinotumėte apie visas funkcijas.',
         restartButton: 'Pradėti instrukciją',
+        step: 'Žingsnis {{number}}',
+    },
+
+    // Accessibility / Tooltips
+    a11y: {
+        tripleTapPanic: 'Triple-tap for panic button',
     },
 
     // Languages

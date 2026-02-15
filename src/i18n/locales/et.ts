@@ -163,6 +163,11 @@ export const etTranslations = {
         languageDesc: 'Valige keel kõigile liidese elementidele ja eksportidele.',
         colorTheme: 'Värviteema',
         themeDesc: 'Visuaalsed kivimetafoorid liidese esteetikaks.',
+        layoutMode: 'Kivide paigutus',
+        layoutModeDesc: 'Kuidas kivid on teie aias paigutatud.',
+        layoutScatter: 'Hajutatud',
+        layoutPiles: 'Hunnikud',
+        layoutCairn: 'Cairn',
         securityTitle: 'Aktiivne turvalisus',
         appLock: 'Rakenduse lukk',
         appLockDesc: 'Nõua parooli iga kord rakendust käivitades.',
@@ -387,6 +392,12 @@ export const etTranslations = {
         restartTitle: 'Taaskäivita õpetus',
         restartDesc: 'Vaadake sissejuhatus uuesti, et õppida kõiki funktsioone tundma.',
         restartButton: 'Alusta õpetust',
+        step: 'Samm {{number}}',
+    },
+
+    // Accessibility / Tooltips
+    a11y: {
+        tripleTapPanic: 'Triple-tap for panic button',
     },
 
     // Languages

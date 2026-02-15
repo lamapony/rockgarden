@@ -100,10 +100,11 @@ describe('Authentication Service', () => {
             expect(key).toBeDefined();
         });
 
-        it('should throw when app is not initialized', async () => {
+        it('should return false when app is not initialized', async () => {
             await deleteAllData();
 
-            await expect(login('any-password')).rejects.toThrow('App not initialized');
+            const result = await login('any-password');
+            expect(result).toBe(false);
         });
 
         it('should have artificial delay to prevent brute force', async () => {

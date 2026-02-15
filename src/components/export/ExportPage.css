@@ -239,4 +239,17 @@
     .stat-number {
         font-size: 1.5rem;
     }
+    
+    .export-btn-primary {
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+        padding: 0 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .export-btn-primary {
+        font-size: 0.7rem;
+        height: 52px;
+    }
 }

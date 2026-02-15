@@ -162,6 +162,11 @@ export const enTranslations = {
         languageDesc: 'Select the language for all interface elements and exports.',
         colorTheme: 'Color Theme',
         themeDesc: 'Visual stone metaphors for the UI aesthetic.',
+        layoutMode: 'Stone Layout',
+        layoutModeDesc: 'How stones are arranged in your garden.',
+        layoutScatter: 'Scatter',
+        layoutPiles: 'Piles',
+        layoutCairn: 'Cairn',
         securityTitle: 'Active Security',
         appLock: 'App Lock',
         appLockDesc: 'Require password upon every app launch.',
@@ -405,5 +410,11 @@ export const enTranslations = {
         restartTitle: 'Restart Tutorial',
         restartDesc: 'Watch the introduction again to learn about all features.',
         restartButton: 'Start Tutorial',
+        step: 'Step {{number}}',
+    },
+
+    // Accessibility / Tooltips
+    a11y: {
+        tripleTapPanic: 'Triple-tap for panic button',
     },
 };

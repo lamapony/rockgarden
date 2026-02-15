@@ -165,6 +165,11 @@ export const ruTranslations = {
         languageDesc: 'Выберите язык для всех элементов интерфейса и экспортов.',
         colorTheme: 'Цветовая тема',
         themeDesc: 'Визуальные метафоры камней для эстетики интерфейса.',
+        layoutMode: 'Расположение камней',
+        layoutModeDesc: 'Как камни располагаются в саду.',
+        layoutScatter: 'Разброс',
+        layoutPiles: 'Стопки',
+        layoutCairn: 'Каирн',
         securityTitle: 'Активная безопасность',
         appLock: 'Блокировка приложения',
         appLockDesc: 'Требовать пароль при каждом запуске.',
@@ -407,5 +412,11 @@ export const ruTranslations = {
         restartTitle: 'Повторить обучение',
         restartDesc: 'Посмотрите введение снова, чтобы узнать обо всех функциях.',
         restartButton: 'Начать обучение',
+        step: 'Шаг {{number}}',
+    },
+
+    // Accessibility / Tooltips
+    a11y: {
+        tripleTapPanic: 'Тройное нажатие для кнопки паники',
     },
 };

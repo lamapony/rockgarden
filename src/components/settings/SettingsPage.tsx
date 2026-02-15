@@ -4,7 +4,7 @@
  * Fully functional with backend integration
  */
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ArchiveRestore, Trash2, GraduationCap, ShieldAlert } from 'lucide-react';
 import { resetOnboarding } from '../onboarding/Onboarding';
@@ -13,9 +13,11 @@ import { useEntries } from '../../hooks/useEntries';
 import { useAuth } from '../../hooks/useAuth';
 import { deleteAllData } from '../../services/storage';
 import { setTheme, type Theme } from '../../services/theme';
+import type { LayoutMode } from '../../services/storage';
 import { setDecoyPassword, removeDecoyPassword, hasDecoyPassword } from '../../services/auth';
 import { LanguageSwitcher } from '../layout/LanguageSwitcher';
 import { Navigation } from '../layout/Navigation';
+import { BrandLogo } from '../layout/BrandLogo';
 import './SettingsPage.css';
 
 type SettingsTab = 'general' | 'privacy' | 'emergency' | 'backup' | 'archive';
@@ -51,6 +53,7 @@ export function SettingsPage() {
         toggleSetting,
         setAutoLock,
         setAutoDelete,
+        setLayoutMode,
         downloadExport,
         updateSetting,
     } = useSettings();
@@ -71,34 +74,6 @@ export function SettingsPage() {
     const [decoyConfirmPassword, setDecoyConfirmPassword] = useState('');
     const [decoyError, setDecoyError] = useState('');
     const [decoyLoading, setDecoyLoading] = useState(false);
-    
-    // Triple-click detection for panic button
-    const clickCountRef = useRef(0);
-    const clickTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-    const handleBrandClick = useCallback(() => {
-        if (!settings.panicButtonEnabled) return;
-        
-        clickCountRef.current += 1;
-        
-        if (clickCountRef.current === 3) {
-            // Triple click detected
-            setShowPanicConfirm(true);
-            clickCountRef.current = 0;
-            if (clickTimerRef.current) {
-                clearTimeout(clickTimerRef.current);
-                clickTimerRef.current = null;
-            }
-        } else {
-            // Reset counter after 500ms
-            if (clickTimerRef.current) {
-                clearTimeout(clickTimerRef.current);
-            }
-            clickTimerRef.current = setTimeout(() => {
-                clickCountRef.current = 0;
-            }, 500);
-        }
-    }, [settings.panicButtonEnabled]);
 
     // Load entries when archive tab is opened
     useEffect(() => {
@@ -129,6 +104,10 @@ export function SettingsPage() {
         setCurrentTheme(theme);
         await setTheme(theme);
         updateSetting('theme', theme);
+    };
+
+    const handleLayoutModeChange = async (mode: LayoutMode) => {
+        await setLayoutMode(mode);
     };
 
     const handleRestartTutorial = () => {
@@ -278,14 +257,12 @@ export function SettingsPage() {
     return (
         <div className="settings-page-v2">
             <header className="settings-v2-header">
-                <div 
-                    className={`settings-v2-brand ${settings.panicButtonEnabled ? 'panic-enabled' : ''}`}
-                    onClick={handleBrandClick}
-                    title={settings.panicButtonEnabled ? t('settings.panicButtonDesc') : ''}
-                >
-                    <div className="settings-v2-brand-icon"></div>
-                    <span>rockgarden</span>
-                </div>
+                <BrandLogo 
+                    size="small"
+                    showText={true}
+                    panicEnabled={true}
+                    onClick={() => setShowPanicConfirm(true)}
+                />
                 <div className="settings-v2-title">{t('settings.title')}</div>
             </header>
 
@@ -333,6 +310,37 @@ export function SettingsPage() {
                                                     aria-label={`Select theme: ${theme.name}`}
                                                 />
                                             ))}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="setting-row">
+                                    <div className="setting-info">
+                                        <span className="setting-title">{t('settings.layoutMode')}</span>
+                                        <span className="setting-desc">{t('settings.layoutModeDesc')}</span>
+                                    </div>
+                                    <div className="setting-action">
+                                        <div className="layout-mode-selector">
+                                            <button
+                                                className={`layout-mode-btn ${settings.layoutMode === 'scatter' ? 'active' : ''}`}
+                                                onClick={() => handleLayoutModeChange('scatter')}
+                                                title={t('settings.layoutScatter')}
+                                            >
+                                                {t('settings.layoutScatter')}
+                                            </button>
+                                            <button
+                                                className={`layout-mode-btn ${settings.layoutMode === 'piles' ? 'active' : ''}`}
+                                                onClick={() => handleLayoutModeChange('piles')}
+                                                title={t('settings.layoutPiles')}
+                                            >
+                                                {t('settings.layoutPiles')}
+                                            </button>
+                                            <button
+                                                className={`layout-mode-btn ${settings.layoutMode === 'cairn' ? 'active' : ''}`}
+                                                onClick={() => handleLayoutModeChange('cairn')}
+                                                title={t('settings.layoutCairn')}
+                                            >
+                                                {t('settings.layoutCairn')}
+                                            </button>
                                         </div>
                                     </div>
                                 </div>

@@ -151,6 +151,11 @@ export const plTranslations = {
         languageDesc: 'Wybierz język dla wszystkich elementów interfejsu i eksportów.',
         colorTheme: 'Motyw kolorystyczny',
         themeDesc: 'Wizualne metafory kamieni dla estetyki interfejsu.',
+        layoutMode: 'Układ kamieni',
+        layoutModeDesc: 'Jak kamienie są ułożone w ogrodzie.',
+        layoutScatter: 'Rozproszone',
+        layoutPiles: 'Stosy',
+        layoutCairn: 'Cairn',
         securityTitle: 'Aktywne bezpieczeństwo',
         appLock: 'Blokada aplikacji',
         appLockDesc: 'Wymagaj hasła przy każdym uruchomieniu aplikacji.',
@@ -368,6 +373,12 @@ export const plTranslations = {
         restartTitle: 'Uruchom samouczek ponownie',
         restartDesc: 'Obejrzyj wprowadzenie ponownie, aby poznać wszystkie funkcje.',
         restartButton: 'Rozpocznij samouczek',
+        step: 'Krok {{number}}',
+    },
+
+    // Accessibility / Tooltips
+    a11y: {
+        tripleTapPanic: 'Triple-tap for panic button',
     },
 
     languages: {

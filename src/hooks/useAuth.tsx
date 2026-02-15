@@ -11,6 +11,7 @@ import {
     setupPassword as doSetupPassword,
     login as doLogin,
     isDecoyMode as checkDecoyMode,
+    initSession,
 } from '../services/auth';
 import { getSettings, updateLanguage } from '../services/storage';
 import { setLanguage as setI18nLanguage } from '../i18n/config';
@@ -40,19 +41,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 const needsSetup = await checkNeedsSetup();
 
                 if (!needsSetup) {
+                    // Try to restore session from sessionStorage
+                    const sessionRestored = await initSession();
+                    
                     // Load saved language
                     const settings = await getSettings();
                     if (settings?.language) {
                         setI18nLanguage(settings.language);
                     }
-                }
 
-                setState({
-                    isAuthenticated: checkAuth(),
-                    isLoading: false,
-                    needsSetup,
-                    isDecoyMode: checkDecoyMode(),
-                });
+                    setState({
+                        isAuthenticated: sessionRestored || checkAuth(),
+                        isLoading: false,
+                        needsSetup,
+                        isDecoyMode: checkDecoyMode(),
+                    });
+                } else {
+                    setState({
+                        isAuthenticated: false,
+                        isLoading: false,
+                        needsSetup,
+                        isDecoyMode: false,
+                    });
+                }
             } catch (error) {
                 console.error('Auth check failed:', error);
                 setState({

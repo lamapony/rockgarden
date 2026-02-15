@@ -147,6 +147,11 @@ export const deTranslations = {
         languageDesc: 'Wählen Sie die Sprache für alle Oberflächenelemente und Exporte.',
         colorTheme: 'Farbthema',
         themeDesc: 'Visuelle Steinmetaphern für die Oberflächenästhetik.',
+        layoutMode: 'Stein-Anordnung',
+        layoutModeDesc: 'Wie Steine in Ihrem Garten angeordnet sind.',
+        layoutScatter: 'Verstreut',
+        layoutPiles: 'Stapel',
+        layoutCairn: 'Haufen',
         securityTitle: 'Aktive Sicherheit',
         appLock: 'App-Sperre',
         appLockDesc: 'Passwort bei jedem App-Start erfordern.',
@@ -364,6 +369,12 @@ export const deTranslations = {
         restartTitle: 'Tutorial neu starten',
         restartDesc: 'Sehen Sie sich die Einführung erneut an, um alle Funktionen zu kennen.',
         restartButton: 'Tutorial starten',
+        step: 'Schritt {{number}}',
+    },
+
+    // Accessibility / Tooltips
+    a11y: {
+        tripleTapPanic: 'Triple-tap for panic button',
     },
 
     languages: {

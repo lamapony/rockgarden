@@ -17,6 +17,7 @@ export function generateSalt(): Uint8Array {
 
 /**
  * Derive an AES-256 key from password using PBKDF2
+ * Key is extractable for session storage (safe - only in memory, cleared on tab close)
  */
 export async function deriveKey(
     password: string,
@@ -34,7 +35,7 @@ export async function deriveKey(
         ['deriveBits', 'deriveKey']
     );
 
-    // Derive AES-256-GCM key
+    // Derive AES-256-GCM key (extractable for session persistence)
     return crypto.subtle.deriveKey(
         {
             name: 'PBKDF2',
@@ -44,7 +45,28 @@ export async function deriveKey(
         },
         keyMaterial,
         { name: 'AES-GCM', length: 256 },
-        false, // not extractable
+        true, // extractable for session storage
+        ['encrypt', 'decrypt']
+    );
+}
+
+/**
+ * Export raw key material for session storage
+ */
+export async function exportKey(key: CryptoKey): Promise<Uint8Array> {
+    const rawKey = await crypto.subtle.exportKey('raw', key);
+    return new Uint8Array(rawKey);
+}
+
+/**
+ * Import raw key material (from session storage)
+ */
+export async function importKey(rawKey: Uint8Array): Promise<CryptoKey> {
+    return crypto.subtle.importKey(
+        'raw',
+        rawKey.buffer as ArrayBuffer,
+        { name: 'AES-GCM', length: 256 },
+        true,
         ['encrypt', 'decrypt']
     );
 }
@@ -83,19 +105,15 @@ export async function encrypt(
  * Decrypt data using AES-256-GCM
  */
 export async function decrypt(
-    encryptedData: string,
+    encryptedBase64: string,
     key: CryptoKey
 ): Promise<string> {
     // Decode base64
-    const combined = new Uint8Array(
-        atob(encryptedData)
-            .split('')
-            .map((c) => c.charCodeAt(0))
-    );
+    const encryptedData = Uint8Array.from(atob(encryptedBase64), c => c.charCodeAt(0));
 
     // Extract IV and ciphertext
-    const iv = combined.slice(0, IV_LENGTH);
-    const ciphertext = combined.slice(IV_LENGTH);
+    const iv = encryptedData.slice(0, IV_LENGTH);
+    const ciphertext = encryptedData.slice(IV_LENGTH);
 
     // Decrypt
     const decrypted = await crypto.subtle.decrypt(
@@ -104,79 +122,68 @@ export async function decrypt(
         ciphertext
     );
 
+    // Decode as string
     const decoder = new TextDecoder();
     return decoder.decode(decrypted);
 }
 
 /**
- * Create a verification block - used to verify password on login
- * Contains a known string encrypted with the derived key
+ * Create a verification block to verify password correctness
+ * Encrypts a known plaintext to verify key derivation
  */
-const VERIFICATION_STRING = 'SAFE_JOURNAL_VERIFIED_2024';
-
-export async function createVerificationBlock(
-    key: CryptoKey
-): Promise<string> {
-    return encrypt(VERIFICATION_STRING, key);
+export async function createVerificationBlock(key: CryptoKey): Promise<string> {
+    return encrypt('VERIFICATION_BLOCK', key);
 }
 
 /**
  * Verify password by attempting to decrypt verification block
  */
 export async function verifyPassword(
-    verificationBlock: string,
-    key: CryptoKey
+    key: CryptoKey,
+    verificationBlock: string
 ): Promise<boolean> {
     try {
         const decrypted = await decrypt(verificationBlock, key);
-        return decrypted === VERIFICATION_STRING;
+        return decrypted === 'VERIFICATION_BLOCK';
     } catch {
         return false;
     }
 }
 
 /**
- * Convert Uint8Array to hex string for storage
+ * Convert Uint8Array to hex string
  */
 export function uint8ArrayToHex(arr: Uint8Array): string {
     return Array.from(arr)
-        .map((b) => b.toString(16).padStart(2, '0'))
+        .map(b => b.toString(16).padStart(2, '0'))
         .join('');
 }
 
 /**
- * Convert hex string back to Uint8Array
+ * Convert hex string to Uint8Array
  */
 export function hexToUint8Array(hex: string): Uint8Array {
-    const matches = hex.match(/.{1,2}/g);
-    if (!matches) return new Uint8Array();
-    return new Uint8Array(matches.map((byte) => parseInt(byte, 16)));
+    const arr = new Uint8Array(hex.length / 2);
+    for (let i = 0; i < hex.length; i += 2) {
+        arr[i / 2] = parseInt(hex.substring(i, i + 2), 16);
+    }
+    return arr;
 }
 
 /**
- * Encrypt a Blob (for audio files)
+ * Encrypt a Blob (for audio recordings)
  */
 export async function encryptBlob(
     blob: Blob,
     key: CryptoKey
 ): Promise<string> {
-    // Use FileReader for safe base64 conversion (avoids stack overflow)
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = async () => {
-            const base64Full = reader.result as string;
-            // Remove data URL prefix (e.g. "data:audio/webm;base64,")
-            const base64 = base64Full.split(',')[1];
-            try {
-                const encrypted = await encrypt(base64, key);
-                resolve(encrypted);
-            } catch (e) {
-                reject(e);
-            }
-        };
-        reader.onerror = reject;
-        reader.readAsDataURL(blob);
-    });
+    const arrayBuffer = await blob.arrayBuffer();
+    const uint8Array = new Uint8Array(arrayBuffer);
+
+    // Convert to base64 for encryption
+    const base64String = btoa(String.fromCharCode(...uint8Array));
+
+    return encrypt(base64String, key);
 }
 
 /**

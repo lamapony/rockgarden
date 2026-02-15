@@ -163,6 +163,11 @@ export const lvTranslations = {
         languageDesc: 'Izvēlieties valodu visām saskarnes daļām un eksportiem.',
         colorTheme: 'Krāsu motīvs',
         themeDesc: 'Vizuālās akmeņu metaforas saskarnes estētikai.',
+        layoutMode: 'Akmeņu izkārtojums',
+        layoutModeDesc: 'Kā akmeņi ir izkārtoti jūsu dārzā.',
+        layoutScatter: 'Izkaisīts',
+        layoutPiles: 'Kalni',
+        layoutCairn: 'Cairn',
         securityTitle: 'Aktīvā drošība',
         appLock: 'Lietotnes bloķēšana',
         appLockDesc: 'Pieprasīt paroli katru reizi, palaižot lietotni.',
@@ -387,6 +392,12 @@ export const lvTranslations = {
         restartTitle: 'Atsākt pamācību',
         restartDesc: 'Skatiet ievadu vēlreiz, lai uzzinātu par visām funkcijām.',
         restartButton: 'Sākt pamācību',
+        step: 'Solis {{number}}',
+    },
+
+    // Accessibility / Tooltips
+    a11y: {
+        tripleTapPanic: 'Triple-tap for panic button',
     },
 
     // Languages

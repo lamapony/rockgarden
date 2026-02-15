@@ -19,18 +19,24 @@ interface LongPressResult {
  * Hook for detecting long press vs short tap on mobile devices
  * - Short tap: triggers onShortPress
  * - Long press (hold for delay ms): triggers onLongPress with haptic feedback
+ * 
+ * Optimized for mobile UX:
+ * - 300ms delay (industry standard, faster than default 500ms)
+ * - 30px movement threshold (more forgiving than 10px)
+ * - Haptic feedback on long press
+ * - Prevents context menu on mobile
  */
 export function useLongPress({
     onShortPress,
     onLongPress,
-    delay = 500,
+    delay = 300,
     onPressStart,
     onPressEnd,
 }: LongPressOptions): LongPressResult {
     const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const isLongPressRef = useRef(false);
     const startPosRef = useRef<{ x: number; y: number } | null>(null);
-    const maxMoveDistance = 10; // pixels - if finger moves more than this, cancel
+    const maxMoveDistance = 30; // pixels - if finger moves more than this, cancel (30px = industry standard)
 
     const clearTimer = useCallback(() => {
         if (timerRef.current) {

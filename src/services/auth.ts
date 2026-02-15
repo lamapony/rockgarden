@@ -1,6 +1,7 @@
 /**
  * Authentication Service for Safe Journal
  * Handles password verification and session key management
+ * Session key is stored in sessionStorage (cleared on tab close)
  */
 
 import {
@@ -10,18 +11,98 @@ import {
     verifyPassword,
     uint8ArrayToHex,
     hexToUint8Array,
+    exportKey,
+    importKey,
 } from './crypto';
 import { getSettings, saveSettings, isInitialized } from './storage';
 
-// In-memory key storage (cleared on tab close)
-let sessionKey: CryptoKey | null = null;
-let isDecoySession: boolean = false;
+// Session storage keys
+const SESSION_KEY_STORAGE = 'sj_session_key';
+const SESSION_DECOY_KEY = 'sj_session_decoy';
+
+// In-memory key storage (fallback if sessionStorage unavailable)
+let memoryKey: CryptoKey | null = null;
+let memoryDecoy: boolean = false;
+
+/**
+ * Save session key to sessionStorage
+ */
+async function saveSessionKey(key: CryptoKey, isDecoy: boolean): Promise<void> {
+    try {
+        const rawKey = await exportKey(key);
+        const keyHex = uint8ArrayToHex(rawKey);
+        sessionStorage.setItem(SESSION_KEY_STORAGE, keyHex);
+        sessionStorage.setItem(SESSION_DECOY_KEY, isDecoy ? '1' : '0');
+    } catch (e) {
+        // Fallback to memory if sessionStorage fails
+        memoryKey = key;
+        memoryDecoy = isDecoy;
+    }
+}
+
+/**
+ * Load session key from sessionStorage
+ */
+async function loadSessionKey(): Promise<{ key: CryptoKey; isDecoy: boolean } | null> {
+    try {
+        const keyHex = sessionStorage.getItem(SESSION_KEY_STORAGE);
+        const isDecoyStr = sessionStorage.getItem(SESSION_DECOY_KEY);
+        
+        if (!keyHex) {
+            return null;
+        }
+        
+        const rawKey = hexToUint8Array(keyHex);
+        const key = await importKey(rawKey);
+        const isDecoy = isDecoyStr === '1';
+        
+        return { key, isDecoy };
+    } catch (e) {
+        return null;
+    }
+}
+
+/**
+ * Clear session storage
+ */
+function clearSessionStorage(): void {
+    try {
+        sessionStorage.removeItem(SESSION_KEY_STORAGE);
+        sessionStorage.removeItem(SESSION_DECOY_KEY);
+    } catch (e) {
+        // Ignore
+    }
+    memoryKey = null;
+    memoryDecoy = false;
+}
+
+/**
+ * Initialize session from storage (call on app start)
+ */
+export async function initSession(): Promise<boolean> {
+    const session = await loadSessionKey();
+    if (session) {
+        memoryKey = session.key;
+        memoryDecoy = session.isDecoy;
+        return true;
+    }
+    return false;
+}
 
 /**
  * Check if user is authenticated (has valid session key)
  */
 export function isAuthenticated(): boolean {
-    return sessionKey !== null;
+    // Check memory first, then sessionStorage
+    if (memoryKey !== null) {
+        return true;
+    }
+    // sessionStorage will be checked on initSession, but let's check sync fallback
+    try {
+        return sessionStorage.getItem(SESSION_KEY_STORAGE) !== null;
+    } catch (e) {
+        return false;
+    }
 }
 
 /**
@@ -29,25 +110,24 @@ export function isAuthenticated(): boolean {
  * Throws if not authenticated
  */
 export function getSessionKey(): CryptoKey {
-    if (!sessionKey) {
+    if (!memoryKey) {
         throw new Error('Not authenticated');
     }
-    return sessionKey;
+    return memoryKey;
 }
 
 /**
  * Clear session (logout)
  */
 export function clearSession(): void {
-    sessionKey = null;
-    isDecoySession = false;
+    clearSessionStorage();
 }
 
 /**
  * Check if current session is in decoy mode
  */
 export function isDecoyMode(): boolean {
-    return isDecoySession;
+    return memoryDecoy;
 }
 
 /**
@@ -82,140 +162,112 @@ export async function setupPassword(
         createdAt: Date.now(),
     });
 
-    // Store key in session
-    sessionKey = key;
+    // Store session key
+    memoryKey = key;
+    memoryDecoy = false;
+    await saveSessionKey(key, false);
 }
 
 /**
  * Login with password
- * Returns true if password is correct (real or decoy)
- * Sets isDecoySession flag if decoy password was used
+ * Returns true if successful, false if wrong password
+ * Includes artificial delay to prevent brute force attacks
  */
 export async function login(password: string): Promise<boolean> {
+    const startTime = Date.now();
+    
+    // Get settings
     const settings = await getSettings();
-
     if (!settings) {
-        throw new Error('App not initialized');
+        // Artificial delay even on early return to prevent timing attacks
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        return false;
     }
 
-    // Convert salt from hex
-    const salt = hexToUint8Array(settings.salt);
-
     // Derive key from password
+    const salt = hexToUint8Array(settings.salt);
     const key = await deriveKey(password, salt);
 
-    // Verify password against real password
-    const isValid = await verifyPassword(settings.verificationBlock, key);
+    // Verify password by checking verification block
+    const isValid = await verifyPassword(key, settings.verificationBlock);
 
     if (isValid) {
-        // Artificial delay to prevent brute-force and timing attacks
-        const delay = 800 + Math.random() * 700;
-        await new Promise(resolve => setTimeout(resolve, delay));
+        // Store session key
+        memoryKey = key;
+        memoryDecoy = false;
+        await saveSessionKey(key, false);
         
-        sessionKey = key;
-        isDecoySession = false;
+        // Artificial delay to ensure consistent timing (~1000ms total)
+        const elapsed = Date.now() - startTime;
+        const minDelay = 1000;
+        if (elapsed < minDelay) {
+            await new Promise(resolve => setTimeout(resolve, minDelay - elapsed));
+        }
+        
         return true;
     }
 
-    // Check decoy password if set
+    // Check if this is the decoy password
     if (settings.decoySalt && settings.decoyVerificationBlock) {
         const decoySalt = hexToUint8Array(settings.decoySalt);
         const decoyKey = await deriveKey(password, decoySalt);
-        const isDecoyValid = await verifyPassword(settings.decoyVerificationBlock, decoyKey);
+        const isDecoyValid = await verifyPassword(decoyKey, settings.decoyVerificationBlock);
 
         if (isDecoyValid) {
-            // Artificial delay to prevent brute-force and timing attacks
-            const delay = 800 + Math.random() * 700;
-            await new Promise(resolve => setTimeout(resolve, delay));
+            // Decoy mode activated - empty journal
+            memoryKey = decoyKey;
+            memoryDecoy = true;
+            await saveSessionKey(decoyKey, true);
             
-            sessionKey = decoyKey;
-            isDecoySession = true;
+            // Artificial delay for consistent timing
+            const elapsed = Date.now() - startTime;
+            const minDelay = 1000;
+            if (elapsed < minDelay) {
+                await new Promise(resolve => setTimeout(resolve, minDelay - elapsed));
+            }
+            
             return true;
         }
     }
 
-    // Artificial delay to prevent brute-force and timing attacks
-    const delay = 800 + Math.random() * 700;
-    await new Promise(resolve => setTimeout(resolve, delay));
+    // Artificial delay for wrong password (same timing as success to prevent timing attacks)
+    const elapsed = Date.now() - startTime;
+    const minDelay = 1000;
+    if (elapsed < minDelay) {
+        await new Promise(resolve => setTimeout(resolve, minDelay - elapsed));
+    }
 
     return false;
 }
 
 /**
- * Change password
- * Re-encrypts all data with new key
- */
-export async function changePassword(
-    oldPassword: string,
-    newPassword: string
-): Promise<boolean> {
-    // First verify old password
-    const loginSuccess = await login(oldPassword);
-    if (!loginSuccess) {
-        return false;
-    }
-
-    // Cannot change password in decoy mode
-    if (isDecoySession) {
-        return false;
-    }
-
-    // TODO: Re-encrypt all entries with new key
-    // This is a complex operation that needs to:
-    // 1. Decrypt all entries with old key
-    // 2. Generate new salt and key from new password
-    // 3. Re-encrypt all entries with new key
-    // 4. Update settings with new salt and verification block
-
-    // For MVP, we'll just update the password
-    const newSalt = generateSalt();
-    const newKey = await deriveKey(newPassword, newSalt);
-    const newVerificationBlock = await createVerificationBlock(newKey);
-
-    const settings = await getSettings();
-    if (!settings) return false;
-
-    await saveSettings({
-        ...settings,
-        salt: uint8ArrayToHex(newSalt),
-        verificationBlock: newVerificationBlock,
-    });
-
-    sessionKey = newKey;
-    return true;
-}
-
-/**
- * Set up or change decoy password
- * Must be authenticated with real password
+ * Set up or update decoy password
  */
 export async function setDecoyPassword(
     currentPassword: string,
     decoyPassword: string
 ): Promise<boolean> {
-    // Verify current password first
+    // First verify current password
     const loginSuccess = await login(currentPassword);
     if (!loginSuccess) {
         return false;
     }
 
-    // Cannot set decoy password while in decoy mode
-    if (isDecoySession) {
-        return false;
-    }
-
-    // Generate new salt and key for decoy password
+    // Generate new salt and key for decoy
     const decoySalt = generateSalt();
     const decoyKey = await deriveKey(decoyPassword, decoySalt);
     const decoyVerificationBlock = await createVerificationBlock(decoyKey);
 
+    // Save decoy settings
     const settings = await getSettings();
-    if (!settings) return false;
+    if (!settings) {
+        return false;
+    }
 
     await saveSettings({
         ...settings,
         decoySalt: uint8ArrayToHex(decoySalt),
-        decoyVerificationBlock: decoyVerificationBlock,
+        decoyVerificationBlock,
     });
 
     return true;
@@ -224,28 +276,21 @@ export async function setDecoyPassword(
 /**
  * Remove decoy password
  */
-export async function removeDecoyPassword(
-    currentPassword: string
-): Promise<boolean> {
-    // Verify current password first
+export async function removeDecoyPassword(currentPassword: string): Promise<boolean> {
+    // Verify current password
     const loginSuccess = await login(currentPassword);
     if (!loginSuccess) {
         return false;
     }
 
-    // Cannot remove decoy password while in decoy mode
-    if (isDecoySession) {
+    // Remove decoy settings
+    const settings = await getSettings();
+    if (!settings) {
         return false;
     }
 
-    const settings = await getSettings();
-    if (!settings) return false;
-
-    await saveSettings({
-        ...settings,
-        decoySalt: undefined,
-        decoyVerificationBlock: undefined,
-    });
+    const { decoySalt, decoyVerificationBlock, ...rest } = settings;
+    await saveSettings(rest);
 
     return true;
 }
@@ -255,6 +300,49 @@ export async function removeDecoyPassword(
  */
 export async function hasDecoyPassword(): Promise<boolean> {
     const settings = await getSettings();
-    if (!settings) return false;
-    return !!settings.decoySalt && !!settings.decoyVerificationBlock;
+    return !!(settings?.decoySalt && settings?.decoyVerificationBlock);
+}
+
+/**
+ * Change password (requires old password)
+ */
+export async function changePassword(
+    oldPassword: string,
+    newPassword: string
+): Promise<boolean> {
+    // Verify old password
+    const settings = await getSettings();
+    if (!settings) {
+        return false;
+    }
+
+    // Derive key from old password
+    const salt = hexToUint8Array(settings.salt);
+    const oldKey = await deriveKey(oldPassword, salt);
+
+    // Verify
+    const isValid = await verifyPassword(oldKey, settings.verificationBlock);
+    if (!isValid) {
+        return false;
+    }
+
+    // Generate new salt and key
+    const newSalt = generateSalt();
+    const newKey = await deriveKey(newPassword, newSalt);
+    const newVerificationBlock = await createVerificationBlock(newKey);
+
+    // Re-encrypt all entries with new key
+    // For now, we'll just update the settings
+    // In a full implementation, we'd need to re-encrypt all data
+    await saveSettings({
+        ...settings,
+        salt: uint8ArrayToHex(newSalt),
+        verificationBlock: newVerificationBlock,
+    });
+
+    // Update session key
+    memoryKey = newKey;
+    await saveSessionKey(newKey, false);
+
+    return true;
 }

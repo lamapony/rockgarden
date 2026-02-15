@@ -5,6 +5,7 @@ import { useEntries } from '../../hooks/useEntries';
 import { analyzePatterns, exportReportForLegal } from '../../services/patternAnalysis';
 import type { AnalysisReport } from '../../services/patternAnalysis';
 import { Navigation } from '../layout/Navigation';
+import { BrandLogo } from '../layout/BrandLogo';
 import { generatePDF } from '../../services/pdf';
 import './AnalysisPage.css';
 
@@ -91,16 +92,7 @@ export function AnalysisPage() {
         <div className="analysis-page">
             {/* Header */}
             <header className="analysis-header">
-                <div className="analysis-brand">
-                    <div className="analysis-brand-icon"></div>
-                    <span>rockgarden</span>
-                </div>
-
-
-
-
-
-
+                <BrandLogo size="small" showText={true} />
             </header>
 
             {!hasData ? (

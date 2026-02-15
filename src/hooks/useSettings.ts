@@ -5,6 +5,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getSettings, updateSettings } from '../services/storage';
 import type { Theme } from '../services/theme';
+import type { LayoutMode } from '../services/storage';
 
 export interface UserSettings {
     language: string;
@@ -14,6 +15,7 @@ export interface UserSettings {
     offlineMode: boolean;
     autoDeleteDays: number | null; // null = never
     panicButtonEnabled: boolean;
+    layoutMode: LayoutMode;
 }
 
 const DEFAULT_SETTINGS: UserSettings = {
@@ -24,6 +26,7 @@ const DEFAULT_SETTINGS: UserSettings = {
     offlineMode: true,
     autoDeleteDays: null,
     panicButtonEnabled: true,
+    layoutMode: 'scatter',
 };
 
 export function useSettings() {
@@ -49,6 +52,7 @@ export function useSettings() {
                     offlineMode: stored.offlineMode !== undefined ? stored.offlineMode : DEFAULT_SETTINGS.offlineMode,
                     autoDeleteDays: stored.autoDeleteDays !== undefined ? stored.autoDeleteDays : DEFAULT_SETTINGS.autoDeleteDays,
                     panicButtonEnabled: stored.panicButtonEnabled !== undefined ? stored.panicButtonEnabled : DEFAULT_SETTINGS.panicButtonEnabled,
+                    layoutMode: stored.layoutMode || DEFAULT_SETTINGS.layoutMode,
                 });
             }
         } catch (err) {
@@ -99,6 +103,10 @@ export function useSettings() {
 
     const setAutoDelete = useCallback(async (days: number | null) => {
         return await saveSetting('autoDeleteDays', days);
+    }, [saveSetting]);
+
+    const setLayoutMode = useCallback(async (mode: LayoutMode) => {
+        return await saveSetting('layoutMode', mode);
     }, [saveSetting]);
 
     const exportData = useCallback(async (): Promise<string | null> => {
@@ -161,6 +169,7 @@ export function useSettings() {
         toggleSetting,
         setAutoLock,
         setAutoDelete,
+        setLayoutMode,
         exportData,
         downloadExport,
     };

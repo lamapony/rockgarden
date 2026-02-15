@@ -5,15 +5,18 @@
 
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { AlertTriangle } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { deleteAllData } from '../../services/storage';
 import { LanguageSwitcher } from '../layout/LanguageSwitcher';
+import { BrandLogo } from '../layout/BrandLogo';
 import './AuthPage.css';
 
 export function AuthPage() {
     const { t } = useTranslation();
     const { needsSetup, setupPassword, login } = useAuth();
+    const navigate = useNavigate();
 
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -39,9 +42,12 @@ export function AuthPage() {
                     return;
                 }
                 await setupPassword(password);
+                navigate('/', { replace: true });
             } else {
                 const success = await login(password);
-                if (!success) {
+                if (success) {
+                    navigate('/', { replace: true });
+                } else {
                     setError(t('auth.wrongPassword'));
                 }
             }
@@ -60,10 +66,13 @@ export function AuthPage() {
             </div>
 
             <div className="auth-container">
-                {/* Brand icon - white square with cut corner */}
+                {/* Brand logo */}
                 <div className="auth-brand">
-                    <div className="brand-icon-stone"></div>
-                    <h1 className="auth-brand-name">Rockgarden</h1>
+                    <BrandLogo 
+                        size="large"
+                        showText={true}
+                        text="Rockgarden"
+                    />
                 </div>
 
                 <form className="auth-form" onSubmit={handleSubmit}>

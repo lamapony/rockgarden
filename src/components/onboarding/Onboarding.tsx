@@ -143,7 +143,7 @@ export function Onboarding({ onComplete, onSkip }: OnboardingProps) {
                             key={index}
                             className={`onboarding-dot ${index === currentStep ? 'active' : ''} ${index < currentStep ? 'completed' : ''}`}
                             onClick={() => setCurrentStep(index)}
-                            aria-label={`Step ${index + 1}`}
+                            aria-label={t('onboarding.step', { number: index + 1 })}
                         />
                     ))}
                 </div>

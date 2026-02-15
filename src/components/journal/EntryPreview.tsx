@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { X, Edit2, Calendar, Gauge } from 'lucide-react';
+import { X, Edit2, Calendar, Gauge, ChevronDown } from 'lucide-react';
 import type { DecryptedEntry } from '../../types';
 import './EntryPreview.css';
 
@@ -14,11 +14,15 @@ interface EntryPreviewProps {
 export function EntryPreview({ entry, isOpen, onClose, onEdit }: EntryPreviewProps) {
     const { t, i18n } = useTranslation();
     const [isVisible, setIsVisible] = useState(false);
+    const [isDragging, setIsDragging] = useState(false);
+    const [translateY, setTranslateY] = useState(0);
+    const touchStartY = useRef<number | null>(null);
+    const modalRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (isOpen) {
-            // Small delay for animation
             requestAnimationFrame(() => setIsVisible(true));
+            setTranslateY(0);
         } else {
             setIsVisible(false);
         }
@@ -33,6 +37,37 @@ export function EntryPreview({ entry, isOpen, onClose, onEdit }: EntryPreviewPro
         window.addEventListener('keydown', handleEscape);
         return () => window.removeEventListener('keydown', handleEscape);
     }, [isOpen, onClose]);
+
+    // Swipe to dismiss handlers
+    const handleTouchStart = useCallback((e: React.TouchEvent) => {
+        touchStartY.current = e.touches[0].clientY;
+        setIsDragging(true);
+    }, []);
+
+    const handleTouchMove = useCallback((e: React.TouchEvent) => {
+        if (touchStartY.current === null) return;
+        
+        const currentY = e.touches[0].clientY;
+        const diff = currentY - touchStartY.current;
+        
+        // Only allow dragging down
+        if (diff > 0) {
+            setTranslateY(diff * 0.5); // Add resistance
+        }
+    }, []);
+
+    const handleTouchEnd = useCallback(() => {
+        setIsDragging(false);
+        
+        // If dragged more than 100px, close the modal
+        if (translateY > 100) {
+            onClose();
+        } else {
+            setTranslateY(0); // Snap back
+        }
+        
+        touchStartY.current = null;
+    }, [translateY, onClose]);
 
     if (!isOpen || !entry) return null;
 
@@ -61,15 +96,34 @@ export function EntryPreview({ entry, isOpen, onClose, onEdit }: EntryPreviewPro
         return 'intensity-high';
     };
 
+    const isMobile = typeof window !== 'undefined' && window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+
     return (
         <div 
             className={`entry-preview-overlay ${isVisible ? 'visible' : ''}`}
             onClick={onClose}
         >
             <div 
-                className={`entry-preview-modal ${isVisible ? 'visible' : ''}`}
+                ref={modalRef}
+                className={`entry-preview-modal ${isVisible ? 'visible' : ''} ${isDragging ? 'dragging' : ''}`}
                 onClick={(e) => e.stopPropagation()}
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+                style={{
+                    transform: isVisible 
+                        ? `translateY(${translateY}px) scale(${1 - translateY / 2000})` 
+                        : undefined,
+                    transition: isDragging ? 'none' : undefined,
+                }}
             >
+                {/* Drag handle for mobile */}
+                {isMobile && (
+                    <div className="entry-preview-drag-handle">
+                        <ChevronDown size={20} />
+                    </div>
+                )}
+                
                 {/* Header */}
                 <div className="entry-preview-header">
                     <div className="entry-preview-meta">
@@ -114,10 +168,6 @@ export function EntryPreview({ entry, isOpen, onClose, onEdit }: EntryPreviewPro
 
                 {/* Footer with actions */}
                 <div className="entry-preview-footer">
-                    <div className="preview-hint">
-                        <span className="hint-icon">👆</span>
-                        <span>{t('journal.tapHint')}</span>
-                    </div>
                     <button 
                         className="entry-preview-edit"
                         onClick={onEdit}

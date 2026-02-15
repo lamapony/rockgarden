@@ -149,19 +149,23 @@
 /* Tip box */
 .onboarding-tip {
     display: flex;
-    align-items: center;
-    gap: 8px;
+    align-items: flex-start;
+    gap: 10px;
     background: rgba(192, 160, 128, 0.08);
     border: 1px solid rgba(192, 160, 128, 0.2);
     border-radius: 12px;
-    padding: 12px 16px;
+    padding: 14px 16px;
     font-size: 14px;
     color: var(--accent-color, #c0a080);
     text-align: left;
+    line-height: 1.5;
 }
 
 .onboarding-tip svg {
     flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
     color: var(--accent-color, #c0a080);
 }
 

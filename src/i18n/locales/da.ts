@@ -162,6 +162,11 @@ export const daTranslations = {
         languageDesc: 'Vælg sprog for alle grænsefladeelementer og eksporter.',
         colorTheme: 'Farvetema',
         themeDesc: 'Visuelle stenmetaforer for UI-æstetikken.',
+        layoutMode: 'Stenlayout',
+        layoutModeDesc: 'Hvordan sten arrangeres i din have.',
+        layoutScatter: 'Spredt',
+        layoutPiles: 'Bunker',
+        layoutCairn: 'Stabel',
         securityTitle: 'Aktiv sikkerhed',
         appLock: 'App-lås',
         appLockDesc: 'Kræv adgangskode ved hver app-start.',
@@ -386,6 +391,12 @@ export const daTranslations = {
         restartTitle: 'Genstart vejledning',
         restartDesc: 'Se introduktionen igen for at lære om alle funktioner.',
         restartButton: 'Start vejledning',
+        step: 'Trin {{number}}',
+    },
+
+    // Accessibility / Tooltips
+    a11y: {
+        tripleTapPanic: 'Triple-tap for panic button',
     },
 
     // Languages

@@ -147,6 +147,11 @@ export const trTranslations = {
         languageDesc: 'Tüm arayüz öğeleri ve dışa aktarımlar için dil seç.',
         colorTheme: 'Renk teması',
         themeDesc: 'Arayüz estetiği için görsel taş metaforları.',
+        layoutMode: 'Taş Düzeni',
+        layoutModeDesc: 'Taşların bahçenizde nasıl düzenlendiği.',
+        layoutScatter: 'Dağınık',
+        layoutPiles: 'Yığınlar',
+        layoutCairn: 'Cairn',
         securityTitle: 'Aktif güvenlik',
         appLock: 'Uygulama kilidi',
         appLockDesc: 'Her uygulama başlatılışında şifre iste.',
@@ -364,6 +369,12 @@ export const trTranslations = {
         restartTitle: 'Eğitimi yeniden başlat',
         restartDesc: 'Tüm özellikleri öğrenmek için girişi tekrar izle.',
         restartButton: 'Eğitimi başlat',
+        step: 'Adım {{number}}',
+    },
+
+    // Accessibility / Tooltips
+    a11y: {
+        tripleTapPanic: 'Triple-tap for panic button',
     },
 
     languages: {

@@ -166,6 +166,11 @@ export const ukTranslations = {
         languageDesc: 'Виберіть мову для всіх елементів інтерфейсу та експортів.',
         colorTheme: 'Кольорова тема',
         themeDesc: 'Візуальні метафори каменів для естетики інтерфейсу.',
+        layoutMode: 'Розташування каменів',
+        layoutModeDesc: 'Як камені розташовані у саду.',
+        layoutScatter: 'Розкидано',
+        layoutPiles: 'Купи',
+        layoutCairn: 'Каірн',
         securityTitle: 'Активна безпека',
         appLock: 'Блокування додатка',
         appLockDesc: 'Вимагати пароль при кожному запуску.',
@@ -390,6 +395,12 @@ export const ukTranslations = {
         restartTitle: 'Перезапустити навчання',
         restartDesc: 'Перегляньте вступ знову, щоб дізнатися про всі функції.',
         restartButton: 'Почати навчання',
+        step: 'Крок {{number}}',
+    },
+
+    // Accessibility / Tooltips
+    a11y: {
+        tripleTapPanic: 'Triple-tap for panic button',
     },
 
     // Languages

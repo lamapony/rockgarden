@@ -9,6 +9,9 @@ import { z } from 'zod';
 // Supported languages (14 languages including Baltic states and high-violence regions)
 type Language = 'en' | 'ru' | 'da' | 'lt' | 'lv' | 'et' | 'uk' | 'pl' | 'pt' | 'es' | 'fr' | 'de' | 'it' | 'tr';
 
+// Layout mode for stone visualization
+export type LayoutMode = 'scatter' | 'piles' | 'cairn';
+
 // Zod schema for runtime validation of AppSettings
 export const AppSettingsSchema = z.object({
     id: z.string(),
@@ -22,6 +25,7 @@ export const AppSettingsSchema = z.object({
     offlineMode: z.boolean().optional(),
     autoDeleteDays: z.union([z.number().int().positive().nullable(), z.literal(null)]).optional(),
     panicButtonEnabled: z.boolean().optional(),
+    layoutMode: z.enum(['scatter', 'piles', 'cairn']).optional(),
     // Decoy password fields
     decoySalt: z.string().regex(/^[a-f0-9]{32}$/i, 'Decoy salt must be 16 bytes hex encoded').optional(),
     decoyVerificationBlock: z.string().min(1, 'Decoy verification block is required').optional(),
